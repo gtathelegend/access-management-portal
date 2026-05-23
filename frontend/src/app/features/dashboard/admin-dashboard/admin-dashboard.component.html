@@ -1,43 +1,184 @@
-<app-page-header title="Admin dashboard" subtitle="Manage users, roles, and access policies"></app-page-header>
+<app-page-header title="Admin dashboard" subtitle="Manage users and verification operations"></app-page-header>
+
+<section class="topbar">
+  <div class="topbar-text">
+    <div class="topbar-title">Operations overview</div>
+    <div class="topbar-subtitle">Monitor key metrics and administer portal users.</div>
+  </div>
+  <div class="topbar-actions">
+    <button mat-stroked-button type="button" (click)="refreshAll()">
+      <mat-icon aria-hidden="true">refresh</mat-icon>
+      Refresh
+    </button>
+    <button mat-raised-button color="primary" type="button" (click)="openCreateUser()">
+      <mat-icon aria-hidden="true">person_add</mat-icon>
+      Add user
+    </button>
+  </div>
+</section>
 
 <div class="grid">
   <mat-card class="stat">
-    <mat-card-title>Pending approvals</mat-card-title>
-    <div class="value">7</div>
-    <div class="hint">Need action</div>
+    <mat-card-title>Total users</mat-card-title>
+    @if (statsLoading()) {
+      <div class="skeleton-value" aria-hidden="true"></div>
+    } @else {
+      <div class="value">{{ stats().totalUsers }}</div>
+    }
+    <div class="hint">All accounts</div>
   </mat-card>
 
   <mat-card class="stat">
-    <mat-card-title>Disabled accounts</mat-card-title>
-    <div class="value">2</div>
-    <div class="hint">Last 30 days</div>
+    <mat-card-title>Active users</mat-card-title>
+    @if (statsLoading()) {
+      <div class="skeleton-value" aria-hidden="true"></div>
+    } @else {
+      <div class="value">{{ stats().activeUsers }}</div>
+    }
+    <div class="hint">Enabled</div>
   </mat-card>
 
   <mat-card class="stat">
-    <mat-card-title>Policy changes</mat-card-title>
-    <div class="value">4</div>
-    <div class="hint">This week</div>
+    <mat-card-title>Admin count</mat-card-title>
+    @if (statsLoading()) {
+      <div class="skeleton-value" aria-hidden="true"></div>
+    } @else {
+      <div class="value">{{ stats().adminCount }}</div>
+    }
+    <div class="hint">Privileged</div>
   </mat-card>
 
   <mat-card class="stat">
-    <mat-card-title>Connected apps</mat-card-title>
-    <div class="value">8</div>
-    <div class="hint">Provisioned</div>
+    <mat-card-title>Pending verifications</mat-card-title>
+    @if (statsLoading()) {
+      <div class="skeleton-value" aria-hidden="true"></div>
+    } @else {
+      <div class="value">{{ stats().pendingVerifications }}</div>
+    }
+    <div class="hint">Needs review</div>
   </mat-card>
 </div>
 
-<div class="two-col">
-  <mat-card class="panel">
-    <mat-card-title>Risk signals</mat-card-title>
-    <mat-card-content>
-      <div class="placeholder">Wire this to policy evaluation.</div>
-    </mat-card-content>
-  </mat-card>
+<mat-card class="panel users">
+  <mat-card-title>User management</mat-card-title>
+  @if (isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
 
-  <mat-card class="panel">
-    <mat-card-title>Admin tasks</mat-card-title>
-    <mat-card-content>
-      <div class="placeholder">Wire this to workflow queues.</div>
-    </mat-card-content>
-  </mat-card>
-</div>
+  <mat-card-content>
+    <div class="toolbar">
+      <mat-form-field appearance="outline" class="search">
+        <mat-label>Search</mat-label>
+        <input matInput [formControl]="searchControl" placeholder="Search by name or email" />
+        <mat-icon matSuffix aria-hidden="true">search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter">
+        <mat-label>Role</mat-label>
+        <mat-select [formControl]="roleControl">
+          <mat-option value="">All</mat-option>
+          <mat-option value="admin">Admin</mat-option>
+          <mat-option value="user">User</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter">
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="statusControl">
+          <mat-option value="">All</mat-option>
+          <mat-option value="active">Active</mat-option>
+          <mat-option value="disabled">Disabled</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (errorMessage()) {
+      <div class="state error">
+        <div class="state-title">Couldn’t load users</div>
+        <div class="state-subtitle">{{ errorMessage() }}</div>
+        <button mat-raised-button color="primary" type="button" (click)="refreshAll()">Retry</button>
+      </div>
+    } @else if (showEmptyState()) {
+      <div class="state empty">
+        <div class="state-title">No users found</div>
+        <div class="state-subtitle">Try adjusting search and filters, or add a new user.</div>
+        <button mat-raised-button color="primary" type="button" (click)="openCreateUser()">Add user</button>
+      </div>
+    } @else {
+      @if (isLoading()) {
+        <div class="table-skeleton" aria-hidden="true">
+          @for (_ of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
+            <div class="skeleton-row"></div>
+          }
+        </div>
+      } @else {
+        <div class="table-wrap">
+          <table mat-table [dataSource]="items()">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let u">
+                <div class="cell-main">{{ u.name }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let u">
+                <div class="cell-sub">{{ u.email }}</div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef>Role</th>
+              <td mat-cell *matCellDef="let u">
+                <span class="pill">{{ u.role | titlecase }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let u">
+                <span class="pill">{{ u.status | titlecase }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="createdAt">
+              <th mat-header-cell *matHeaderCellDef>Created</th>
+              <td mat-cell *matCellDef="let u">{{ u.createdAt | date: 'mediumDate' }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="actions">Actions</th>
+              <td mat-cell *matCellDef="let u" class="actions">
+                <button mat-icon-button type="button" (click)="openEditUser(u)" aria-label="Edit user">
+                  <mat-icon aria-hidden="true">edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  type="button"
+                  color="warn"
+                  (click)="confirmDelete(u)"
+                  aria-label="Delete user"
+                >
+                  <mat-icon aria-hidden="true">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+
+        <mat-divider></mat-divider>
+        <mat-paginator
+          [length]="total()"
+          [pageIndex]="pageIndex()"
+          [pageSize]="pageSize()"
+          [pageSizeOptions]="[5, 10, 20, 50]"
+          (page)="onPage($event)"
+        ></mat-paginator>
+      }
+    }
+  </mat-card-content>
+</mat-card>

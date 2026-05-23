@@ -1,3 +1,149 @@
 @use '../dashboard.styles' as shared;
 
 @include shared.dashboardLayout();
+
+.topbar {
+	margin-top: 4px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.topbar-title {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.topbar-subtitle {
+	margin-top: 2px;
+	opacity: 0.75;
+}
+
+.topbar-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.users {
+	margin-top: 16px;
+	border-radius: 16px;
+}
+
+.toolbar {
+	display: grid;
+	grid-template-columns: 1fr 180px 180px;
+	gap: 12px;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.search {
+	width: 100%;
+}
+
+.filter {
+	width: 100%;
+}
+
+.table-wrap {
+	overflow: auto;
+}
+
+table {
+	width: 100%;
+}
+
+.actions {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.cell-main {
+	font-weight: 600;
+}
+
+.cell-sub {
+	opacity: 0.85;
+}
+
+.pill {
+	display: inline-block;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: currentColor;
+	opacity: 0.08;
+	font-weight: 700;
+	font-size: 12px;
+}
+
+.state {
+	padding: 20px 8px;
+	display: grid;
+	gap: 8px;
+	justify-items: start;
+}
+
+.state-title {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.state-subtitle {
+	opacity: 0.75;
+	margin-bottom: 8px;
+}
+
+.table-skeleton {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 16px;
+}
+
+.skeleton-row {
+	height: 18px;
+	border-radius: 10px;
+	background: currentColor;
+	opacity: 0.08;
+	animation: pulse 1.2s ease-in-out infinite;
+}
+
+.skeleton-value {
+	height: 28px;
+	width: 68px;
+	border-radius: 12px;
+	background: currentColor;
+	opacity: 0.08;
+	margin-top: 10px;
+	animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 0.06;
+	}
+	50% {
+		opacity: 0.12;
+	}
+	100% {
+		opacity: 0.06;
+	}
+}
+
+@media (max-width: 959px) {
+	.toolbar {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.topbar {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
+
+@media (max-width: 599px) {
+	.toolbar {
+		grid-template-columns: 1fr;
+	}
+}

@@ -1,0 +1,21 @@
+.content {
+  width: min(720px, 92vw);
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 599px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

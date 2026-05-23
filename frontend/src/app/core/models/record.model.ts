@@ -27,4 +27,11 @@ export interface ListRecordsParams {
   limit?: number;
   sortBy?: RecordSortBy;
   sortOrder?: SortOrder;
+  status?: RecordStatus;
+  verificationType?: string;
+  accessLevel?: string;
+  userId?: string;
+  approvedBy?: string;
+  createdFrom?: string;
+  createdTo?: string;
 }

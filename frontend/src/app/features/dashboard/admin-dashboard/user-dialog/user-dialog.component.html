@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>
+  @if (mode === 'create') { Add user } @else { Edit user }
+</h2>
+
+<div mat-dialog-content class="content">
+  <form [formGroup]="form" class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="Full name" />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <mat-error>Name is required (min 2 characters).</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="name@company.com" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <mat-error>Enter a valid email.</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="user">User</mat-option>
+          <mat-option value="admin">Admin</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="active">Active</mat-option>
+          <mat-option value="disabled">Disabled</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (mode === 'create') {
+      <mat-form-field appearance="outline">
+        <mat-label>Temporary password</mat-label>
+        <input matInput formControlName="password" type="password" />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <mat-error>Password must be at least 8 characters.</mat-error>
+        }
+      </mat-form-field>
+    }
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cancel()">Cancel</button>
+  <button mat-raised-button color="primary" type="button" (click)="save()">
+    @if (mode === 'create') { Create } @else { Save }
+  </button>
+</div>

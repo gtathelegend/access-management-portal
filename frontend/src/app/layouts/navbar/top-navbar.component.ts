@@ -1,6 +1,7 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-top-navbar',
   standalone: true,
-  imports: [AsyncPipe, NgIf, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatProgressBarModule],
+  imports: [AsyncPipe, NgIf, MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule, MatDividerModule, MatProgressBarModule],
   templateUrl: './top-navbar.component.html',
   styleUrl: './top-navbar.component.scss',
 })

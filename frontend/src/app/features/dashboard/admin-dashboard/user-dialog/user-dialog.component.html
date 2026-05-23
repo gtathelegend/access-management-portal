@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>
+<h2 mat-dialog-title class="dialog-title">
   @if (mode === 'create') { Add user } @else { Edit user }
 </h2>
 
-<div mat-dialog-content class="content">
-  <form [formGroup]="form" class="form">
+<div mat-dialog-content class="dialog-content">
+  <form [formGroup]="form" class="dialog-form">
     <mat-form-field appearance="outline">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" placeholder="Full name" />
@@ -50,9 +50,9 @@
   </form>
 </div>
 
-<div mat-dialog-actions align="end">
-  <button mat-button type="button" (click)="cancel()">Cancel</button>
-  <button mat-raised-button color="primary" type="button" (click)="save()">
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <app-button variant="ghost" (btnClick)="cancel()">Cancel</app-button>
+  <app-button variant="primary" (btnClick)="save()">
     @if (mode === 'create') { Create } @else { Save }
-  </button>
+  </app-button>
 </div>

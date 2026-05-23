@@ -9,12 +9,14 @@ import { ErrorRetryComponent } from '../../shared/components/error-retry/error-r
 import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
 import { AnalyticsService, AnalyticsStats } from '../../core/services/analytics.service';
 
+import { AppCardComponent } from '../../shared/ui/card/card.component';
+
 @Component({
   selector: 'app-analytics-page',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
+    AppCardComponent,
     MatIconModule,
     MatProgressSpinnerModule,
     NgxChartsModule,

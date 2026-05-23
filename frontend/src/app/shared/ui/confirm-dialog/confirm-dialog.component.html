@@ -1,17 +1,17 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<h2 mat-dialog-title class="dialog-title">{{ data.title }}</h2>
 
-<div mat-dialog-content class="content">
-  {{ data.message }}
+<div mat-dialog-content class="dialog-content">
+  <p class="dialog-message">{{ data.message }}</p>
 </div>
 
-<div mat-dialog-actions align="end">
-  <button mat-button type="button" (click)="cancel()">{{ data.cancelText ?? 'Cancel' }}</button>
-  <button
-    mat-raised-button
-    type="button"
-    (click)="confirm()"
-    [color]="data.danger ? 'warn' : 'primary'"
+<div mat-dialog-actions align="end" class="dialog-actions">
+  <app-button variant="ghost" (btnClick)="cancel()">
+    {{ data.cancelText ?? 'Cancel' }}
+  </app-button>
+  <app-button
+    [variant]="data.danger ? 'danger' : 'primary'"
+    (btnClick)="confirm()"
   >
     {{ data.confirmText ?? 'Confirm' }}
-  </button>
+  </app-button>
 </div>

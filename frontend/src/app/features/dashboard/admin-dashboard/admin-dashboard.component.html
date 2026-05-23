@@ -1,278 +1,236 @@
-<section class="hero-card">
-  <div class="hero-copy">
-    <div class="eyebrow">Operations console</div>
-    <h1>Welcome back, {{ welcomeName }}</h1>
-    <p>
-      Monitor portal activity, review access requests, and manage users from a calm Apple-like workspace.
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Operations console</div>
+    <h1 class="hero-title">Welcome back, {{ welcomeName }}</h1>
+    <p class="hero-subtitle">
+      Monitor portal activity, review access requests, and manage users from your calm workspace.
     </p>
   </div>
-
   <div class="hero-actions">
-    <button mat-stroked-button type="button" (click)="refreshAll()">
-      <mat-icon aria-hidden="true">refresh</mat-icon>
+    <app-button variant="ghost" (btnClick)="refreshAll()">
+      <span class="material-icons">refresh</span>
       Refresh
-    </button>
-    <button mat-raised-button color="primary" type="button" (click)="openCreateUser()">
-      <mat-icon aria-hidden="true">person_add</mat-icon>
+    </app-button>
+    <app-button variant="primary" (btnClick)="openCreateUser()">
+      <span class="material-icons">person_add</span>
       Add user
-    </button>
+    </app-button>
   </div>
-</section>
+</header>
 
 <section class="stats-grid">
-  <mat-card class="stat-card stat-blue">
-    <div class="stat-label">Total users</div>
-    @if (statsLoading()) {
-      <div class="skeleton-value" aria-hidden="true"></div>
-    } @else {
-      <div class="stat-value">{{ stats().totalUsers }}</div>
-    }
-    <div class="stat-foot">All accounts in the portal</div>
-  </mat-card>
+  <app-card [compact]="true" class="stat-card">
+    <div class="stat-icon-box blue">
+      <span class="material-icons">group</span>
+    </div>
+    <div class="stat-data">
+      <span class="stat-label">Total Users</span>
+      <h3 class="stat-value">
+        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().totalUsers }} }
+      </h3>
+      <span class="stat-trend success">All accounts</span>
+    </div>
+  </app-card>
 
-  <mat-card class="stat-card stat-green">
-    <div class="stat-label">Active users</div>
-    @if (statsLoading()) {
-      <div class="skeleton-value" aria-hidden="true"></div>
-    } @else {
-      <div class="stat-value">{{ stats().activeUsers }}</div>
-    }
-    <div class="stat-foot">Enabled and ready</div>
-  </mat-card>
+  <app-card [compact]="true" class="stat-card">
+    <div class="stat-icon-box green">
+      <span class="material-icons">check_circle</span>
+    </div>
+    <div class="stat-data">
+      <span class="stat-label">Active Users</span>
+      <h3 class="stat-value">
+        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().activeUsers }} }
+      </h3>
+      <span class="stat-trend success">Enabled</span>
+    </div>
+  </app-card>
 
-  <mat-card class="stat-card stat-purple">
-    <div class="stat-label">Admin count</div>
-    @if (statsLoading()) {
-      <div class="skeleton-value" aria-hidden="true"></div>
-    } @else {
-      <div class="stat-value">{{ stats().adminCount }}</div>
-    }
-    <div class="stat-foot">Privileged operators</div>
-  </mat-card>
+  <app-card [compact]="true" class="stat-card">
+    <div class="stat-icon-box purple">
+      <span class="material-icons">admin_panel_settings</span>
+    </div>
+    <div class="stat-data">
+      <span class="stat-label">Administrators</span>
+      <h3 class="stat-value">
+        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().adminCount }} }
+      </h3>
+      <span class="stat-trend">Privileged</span>
+    </div>
+  </app-card>
 
-  <mat-card class="stat-card stat-amber">
-    <div class="stat-label">Pending verifications</div>
-    @if (statsLoading()) {
-      <div class="skeleton-value" aria-hidden="true"></div>
-    } @else {
-      <div class="stat-value">{{ stats().pendingVerifications }}</div>
-    }
-    <div class="stat-foot">Needs review today</div>
-  </mat-card>
+  <app-card [compact]="true" class="stat-card">
+    <div class="stat-icon-box warning">
+      <span class="material-icons">pending_actions</span>
+    </div>
+    <div class="stat-data">
+      <span class="stat-label">Pending</span>
+      <h3 class="stat-value">
+        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().pendingVerifications }} }
+      </h3>
+      <span class="stat-trend warning">Needs review</span>
+    </div>
+  </app-card>
 </section>
 
-<section class="dashboard-grid">
-  <mat-card class="panel users-panel">
-    <div class="panel-head">
-      <div>
-        <div class="panel-kicker">User management</div>
-        <div class="panel-title">Active account directory</div>
+<div class="main-grid">
+  <div class="content-column">
+    <app-card title="User Directory" subtitle="Manage account access and roles">
+      <div class="table-filters">
+        <app-input 
+          [formControl]="searchControl" 
+          placeholder="Search users..." 
+          icon="search"
+          [pill]="true"
+        ></app-input>
+
+        <div class="filter-group">
+          <mat-form-field appearance="outline" class="compact-select">
+            <mat-select [formControl]="roleControl" placeholder="All Roles">
+              <mat-option value="">All Roles</mat-option>
+              <mat-option value="admin">Admin</mat-option>
+              <mat-option value="user">User</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="compact-select">
+            <mat-select [formControl]="statusControl" placeholder="All Status">
+              <mat-option value="">All Status</mat-option>
+              <mat-option value="active">Active</mat-option>
+              <mat-option value="disabled">Disabled</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
-      <button mat-icon-button type="button" (click)="openCreateUser()" aria-label="Add user">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
 
-    @if (isLoading()) {
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    }
-
-    <mat-card-content>
-      <div class="toolbar">
-        <mat-form-field appearance="outline" class="search">
-          <mat-label>Search</mat-label>
-          <input matInput [formControl]="searchControl" placeholder="Search by name or email" />
-          <mat-icon matSuffix aria-hidden="true">search</mat-icon>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter">
-          <mat-label>Role</mat-label>
-          <mat-select [formControl]="roleControl">
-            <mat-option value="">All</mat-option>
-            <mat-option value="admin">Admin</mat-option>
-            <mat-option value="user">User</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="filter">
-          <mat-label>Status</mat-label>
-          <mat-select [formControl]="statusControl">
-            <mat-option value="">All</mat-option>
-            <mat-option value="active">Active</mat-option>
-            <mat-option value="disabled">Disabled</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      @if (isLoading()) {
+        <div class="table-loading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+      }
 
       @if (errorMessage()) {
         <app-error-retry
-          class="state-shell"
-          title="Couldn’t load users"
-          description="The portal could not fetch the latest user list."
           [errorMessage]="errorMessage()"
           (retry)="refreshAll()"
         ></app-error-retry>
       } @else if (showEmptyState()) {
-        <div class="state empty">
-          <mat-icon aria-hidden="true">group_off</mat-icon>
-          <div class="state-title">No users found</div>
-          <div class="state-subtitle">Try adjusting search and filters, or add a new user.</div>
-          <button mat-raised-button color="primary" type="button" (click)="openCreateUser()">Add user</button>
+        <div class="empty-state">
+          <span class="material-icons">group_off</span>
+          <h3>No users found</h3>
+          <p>Try adjusting your search or filters.</p>
         </div>
       } @else {
-        @if (isLoading()) {
-          <div class="table-skeleton" aria-hidden="true">
-            @for (_ of [1, 2, 3, 4, 5, 6, 7, 8]; track $index) {
-              <div class="skeleton-row"></div>
-            }
-          </div>
-        } @else {
-          <div class="table-wrap">
-            <table mat-table [dataSource]="items()">
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let u">
-                  <div class="cell-main">{{ u.name }}</div>
-                </td>
-              </ng-container>
+        <app-table>
+          <tr appTableHeader>
+            <th>User</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Joined</th>
+            <th class="text-right">Actions</th>
+          </tr>
+          @for (user of items(); track user.id) {
+            <tr appTableBody>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">{{ user.name.charAt(0) }}</div>
+                  <div class="user-meta">
+                    <span class="user-name">{{ user.name }}</span>
+                    <span class="user-email">{{ user.email }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <app-badge [variant]="user.role === 'admin' ? 'purple' : 'primary'">
+                  {{ user.role }}
+                </app-badge>
+              </td>
+              <td>
+                <app-badge [variant]="user.status === 'active' ? 'success' : 'gray'">
+                  {{ user.status }}
+                </app-badge>
+              </td>
+              <td>{{ user.createdAt | date:'mediumDate' }}</td>
+              <td class="text-right">
+                <div class="row-actions">
+                  <app-button variant="ghost" [iconOnly]="true" (btnClick)="openEditUser(user)">
+                    <span class="material-icons">edit</span>
+                  </app-button>
+                  <app-button variant="ghost" [iconOnly]="true" (btnClick)="confirmDelete(user)">
+                    <span class="material-icons danger">delete</span>
+                  </app-button>
+                </div>
+              </td>
+            </tr>
+          }
+        </app-table>
 
-              <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef>Email</th>
-                <td mat-cell *matCellDef="let u">
-                  <div class="cell-sub">{{ u.email }}</div>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="role">
-                <th mat-header-cell *matHeaderCellDef>Role</th>
-                <td mat-cell *matCellDef="let u">
-                  <span class="pill pill-role">{{ u.role | titlecase }}</span>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Status</th>
-                <td mat-cell *matCellDef="let u">
-                  <span class="pill pill-status">{{ u.status | titlecase }}</span>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="createdAt">
-                <th mat-header-cell *matHeaderCellDef>Created</th>
-                <td mat-cell *matCellDef="let u">{{ u.createdAt | date: 'mediumDate' }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef class="actions">Actions</th>
-                <td mat-cell *matCellDef="let u" class="actions">
-                  <button mat-icon-button type="button" (click)="openEditUser(u)" aria-label="Edit user">
-                    <mat-icon aria-hidden="true">edit</mat-icon>
-                  </button>
-                  <button
-                    mat-icon-button
-                    type="button"
-                    color="warn"
-                    (click)="confirmDelete(u)"
-                    aria-label="Delete user"
-                  >
-                    <mat-icon aria-hidden="true">delete</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          </div>
-
-          <mat-divider></mat-divider>
-          <mat-paginator
-            [length]="total()"
-            [pageIndex]="pageIndex()"
-            [pageSize]="pageSize()"
-            [pageSizeOptions]="[5, 10, 20, 50]"
-            (page)="onPage($event)"
-          ></mat-paginator>
-        }
+        <mat-paginator
+          class="custom-paginator"
+          [length]="total()"
+          [pageIndex]="pageIndex()"
+          [pageSize]="pageSize()"
+          [pageSizeOptions]="[5, 10, 20]"
+          (page)="onPage($event)"
+        ></mat-paginator>
       }
-    </mat-card-content>
-  </mat-card>
+    </app-card>
+  </div>
 
-  <div class="insights-column">
-    <mat-card class="panel insight-card verification-card">
-      <div class="panel-head compact">
-        <div>
-          <div class="panel-kicker">Verification overview</div>
-          <div class="panel-title">Status distribution</div>
-        </div>
-        <button mat-icon-button type="button" aria-label="Refresh overview" (click)="refreshAll()">
-          <mat-icon>autorenew</mat-icon>
-        </button>
-      </div>
-
-      <div class="ring-wrap">
-        <div class="ring">
-          <div class="ring-inner">
-            <div class="ring-value">{{ stats().activeUsers }}</div>
-            <div class="ring-label">active</div>
+  <aside class="insights-column">
+    <app-card title="Verification" class="insight-card">
+      <div class="chart-box">
+        <div class="ring-chart">
+          <div class="ring-center">
+            <span class="ring-value">{{ stats().activeUsers }}</span>
+            <span class="ring-label">Active</span>
           </div>
         </div>
-        <div class="ring-copy">
-          <div class="ring-figure">{{ stats().pendingVerifications }} pending</div>
-          <div class="ring-text">Operations are stable and ready for review.</div>
-        </div>
       </div>
-
       <div class="legend-list">
         <div class="legend-item">
-          <span class="legend-dot dot-green"></span>
-          <span>Active accounts</span>
-          <strong>{{ stats().activeUsers }}</strong>
+          <div class="legend-dot green"></div>
+          <span class="legend-name">Active Accounts</span>
+          <span class="legend-val">{{ stats().activeUsers }}</span>
         </div>
         <div class="legend-item">
-          <span class="legend-dot dot-blue"></span>
-          <span>Administrators</span>
-          <strong>{{ stats().adminCount }}</strong>
+          <div class="legend-dot purple"></div>
+          <span class="legend-name">Admins</span>
+          <span class="legend-val">{{ stats().adminCount }}</span>
         </div>
         <div class="legend-item">
-          <span class="legend-dot dot-amber"></span>
-          <span>Pending reviews</span>
-          <strong>{{ stats().pendingVerifications }}</strong>
+          <div class="legend-dot warning"></div>
+          <span class="legend-name">Pending Reviews</span>
+          <span class="legend-val">{{ stats().pendingVerifications }}</span>
         </div>
       </div>
-    </mat-card>
+    </app-card>
 
-    <mat-card class="panel insight-card activity-card">
-      <div class="panel-head compact">
-        <div>
-          <div class="panel-kicker">Recent activity</div>
-          <div class="panel-title">Latest updates</div>
-        </div>
-      </div>
-
-      <div class="activity-list">
+    <app-card title="Recent Activity" class="insight-card">
+      <div class="activity-feed">
         <div class="activity-item">
-          <div class="activity-dot activity-blue"></div>
-          <div>
-            <div class="activity-title">Access policy synced</div>
-            <div class="activity-meta">Updated a few minutes ago</div>
+          <div class="activity-line"></div>
+          <div class="activity-point blue"></div>
+          <div class="activity-content">
+            <p class="activity-text">Access policy synced</p>
+            <span class="activity-time">2m ago</span>
           </div>
         </div>
         <div class="activity-item">
-          <div class="activity-dot activity-green"></div>
-          <div>
-            <div class="activity-title">2 users activated</div>
-            <div class="activity-meta">Today, 08:32 AM</div>
+          <div class="activity-line"></div>
+          <div class="activity-point green"></div>
+          <div class="activity-content">
+            <p class="activity-text">2 users activated</p>
+            <span class="activity-time">08:32 AM</span>
           </div>
         </div>
         <div class="activity-item">
-          <div class="activity-dot activity-purple"></div>
-          <div>
-            <div class="activity-title">Audit exports completed</div>
-            <div class="activity-meta">Yesterday, 06:15 PM</div>
+          <div class="activity-point purple"></div>
+          <div class="activity-content">
+            <p class="activity-text">Audit exports completed</p>
+            <span class="activity-time">Yesterday</span>
           </div>
         </div>
       </div>
-    </mat-card>
-  </div>
-</section>
+    </app-card>
+  </aside>
+</div>

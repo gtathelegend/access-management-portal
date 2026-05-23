@@ -1,47 +1,68 @@
 .shell {
+  display: flex;
   height: 100vh;
-  background: var(--app-background);
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-primary);
 }
 
-.sidenav {
-  width: 240px;
-  border-right: 1px solid color-mix(in srgb, var(--app-divider) 85%, transparent);
-  background: linear-gradient(180deg, #ffffff, #fbfcfe);
-  box-shadow: 8px 0 24px rgba(15, 23, 42, 0.04);
+.sidebar-wrapper {
+  width: var(--sidebar-width);
+  height: 100%;
+  flex-shrink: 0;
+  z-index: 100;
+  transition: transform var(--transition-normal);
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-subtle);
+
+  @media (max-width: 959.98px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
 }
 
-.content {
-  display: grid;
-  grid-template-rows: auto 1fr;
+.main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-.page {
-  padding: 20px 24px 24px;
-  width: 100%;
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-large);
+  
+  @media (max-width: 599.98px) {
+    padding: var(--space-normal);
+  }
 }
 
-.page-frame {
-  max-width: 1440px;
-  width: 100%;
+.page-inner {
+  max-width: 1400px;
   margin: 0 auto;
-  animation: pageIn 220ms ease-out;
+  width: 100%;
 }
 
-@media (max-width: 599px) {
-  .page {
-    padding: 14px;
-  }
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  animation: fadeIn 0.2s ease-out;
 }
 
-@keyframes pageIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

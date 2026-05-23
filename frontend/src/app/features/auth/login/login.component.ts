@@ -11,6 +11,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AuthService } from '../../../core/services/auth.service';
 
+import { AppCardComponent } from '../../../shared/ui/card/card.component';
+import { AppButtonComponent } from '../../../shared/ui/button/button.component';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,10 +21,10 @@ import { AuthService } from '../../../core/services/auth.service';
     NgIf,
     RouterLink,
     ReactiveFormsModule,
-    MatCardModule,
+    AppCardComponent,
+    AppButtonComponent,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
   ],

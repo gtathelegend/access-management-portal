@@ -17,6 +17,11 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
+import { AppCardComponent } from '../../../shared/ui/card/card.component';
+import { AppButtonComponent } from '../../../shared/ui/button/button.component';
+import { AppBadgeComponent } from '../../../shared/ui/badge/badge.component';
+import { AppTableComponent } from '../../../shared/ui/table/table.component';
+import { AppInputComponent } from '../../../shared/ui/input/input.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { RecordsService } from '../../../core/services/records.service';
 import type { RecordSortBy, SortOrder, VerificationRecord } from '../../../core/models/record.model';
@@ -30,16 +35,17 @@ import type { RecordSortBy, SortOrder, VerificationRecord } from '../../../core/
     ReactiveFormsModule,
     TitleCasePipe,
 
-    MatButtonModule,
-    MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,
     MatIconModule,
-    MatInputModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatSortModule,
-    MatTableModule,
+    
+    AppCardComponent,
+    AppButtonComponent,
+    AppBadgeComponent,
+    AppTableComponent,
+    AppInputComponent,
     ErrorRetryComponent,
   ],
   templateUrl: './user-dashboard.component.html',

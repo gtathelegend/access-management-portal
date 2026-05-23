@@ -1,6 +1,6 @@
 import { DatePipe, isPlatformBrowser, TitleCasePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,11 @@ import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged, forkJoin, of, switchMap } from 'rxjs';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
+import { AppCardComponent } from '../../../shared/ui/card/card.component';
+import { AppButtonComponent } from '../../../shared/ui/button/button.component';
+import { AppBadgeComponent } from '../../../shared/ui/badge/badge.component';
+import { AppTableComponent } from '../../../shared/ui/table/table.component';
+import { AppInputComponent } from '../../../shared/ui/input/input.component';
 import { ConfirmDialogComponent } from '../../../shared/ui/confirm-dialog/confirm-dialog.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { RecordsService } from '../../../core/services/records.service';
@@ -33,17 +38,18 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
     ReactiveFormsModule,
     TitleCasePipe,
 
-    MatButtonModule,
-    MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,
     MatIconModule,
-    MatInputModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatTableModule,
+    
+    AppCardComponent,
+    AppButtonComponent,
+    AppBadgeComponent,
+    AppTableComponent,
+    AppInputComponent,
     ErrorRetryComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
@@ -56,6 +62,7 @@ export class AdminDashboardComponent {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly destroyRef = inject(DestroyRef);
   readonly currentUser = this.authService.currentUser;
 
   readonly displayedColumns: Array<'name' | 'email' | 'role' | 'status' | 'createdAt' | 'actions'> = [
@@ -103,20 +110,20 @@ export class AdminDashboardComponent {
 
   constructor() {
     this.searchControl.valueChanges
-      .pipe(debounceTime(250), distinctUntilChanged(), takeUntilDestroyed())
+      .pipe(debounceTime(250), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => {
         this.q.set(value.trim());
         this.pageIndex.set(0);
         this.loadUsers();
       });
 
-    this.roleControl.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
+    this.roleControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
       this.roleFilter.set(value === '' ? undefined : value);
       this.pageIndex.set(0);
       this.loadUsers();
     });
 
-    this.statusControl.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
+    this.statusControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((value) => {
       this.statusFilter.set(value === '' ? undefined : value);
       this.pageIndex.set(0);
       this.loadUsers();
@@ -150,7 +157,7 @@ export class AdminDashboardComponent {
     ref
       .afterClosed()
       .pipe(
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
         switchMap((result) => {
           if (!result || result.mode !== 'create') {
             return of(null);
@@ -183,7 +190,7 @@ export class AdminDashboardComponent {
     ref
       .afterClosed()
       .pipe(
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
         switchMap((result) => {
           if (!result || result.mode !== 'edit') {
             return of(null);
@@ -219,7 +226,7 @@ export class AdminDashboardComponent {
     ref
       .afterClosed()
       .pipe(
-        takeUntilDestroyed(),
+        takeUntilDestroyed(this.destroyRef),
         switchMap((ok) => {
           if (!ok) return of(null);
           this.isLoading.set(true);
@@ -255,7 +262,7 @@ export class AdminDashboardComponent {
         role: this.roleFilter(),
         status: this.statusFilter(),
       })
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
           this.users.set(res.items);
@@ -280,7 +287,7 @@ export class AdminDashboardComponent {
       adminCount: this.usersService.listUsers({ page: 1, limit: 1, role: 'admin' }),
       pendingVerifications: this.recordsService.listRecords({ page: 1, limit: 1, status: 'pending' }),
     })
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
           this.stats.set({

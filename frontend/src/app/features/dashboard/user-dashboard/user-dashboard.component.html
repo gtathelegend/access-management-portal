@@ -1,134 +1,107 @@
-<section class="hero-card">
-  <div class="hero-copy">
-    <div class="eyebrow">Personal dashboard</div>
-    <h1>Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</h1>
-    <p>Track your verification history and keep an eye on the account details tied to your workspace access.</p>
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow">Personal dashboard</div>
+    <h1 class="hero-title">Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</h1>
+    <p class="hero-subtitle">Track your verification history and keep an eye on the account details tied to your workspace access.</p>
   </div>
 
-  <button mat-stroked-button type="button" (click)="refresh()">
-    <mat-icon aria-hidden="true">refresh</mat-icon>
+  <app-button variant="ghost" (btnClick)="refresh()">
+    <span class="material-icons">refresh</span>
     Refresh
-  </button>
-</section>
+  </app-button>
+</header>
 
-<section class="layout">
-  <mat-card class="panel profile">
-    <div class="panel-title">Profile</div>
-    <mat-card-content>
+<div class="main-grid">
+  <aside class="sidebar-column">
+    <app-card title="Profile" subtitle="Your account details">
       @if (user()) {
-        <div class="profile-row">
-          <div class="label">Name</div>
-          <div class="value">{{ user()!.name }}</div>
-        </div>
-        <div class="profile-row">
-          <div class="label">Email</div>
-          <div class="value">{{ user()!.email }}</div>
-        </div>
-        <div class="profile-row">
-          <div class="label">Role</div>
-          <div class="value">{{ user()!.role | titlecase }}</div>
+        <div class="profile-details">
+          <div class="detail-item">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">{{ user()!.name }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ user()!.email }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Role</span>
+            <app-badge variant="primary">{{ user()!.role }}</app-badge>
+          </div>
         </div>
       } @else {
-        <div class="skeleton-block"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
+        <div class="skeleton-list">
+          <div class="skeleton-item"></div>
+          <div class="skeleton-item"></div>
+          <div class="skeleton-item"></div>
+        </div>
       }
-    </mat-card-content>
-  </mat-card>
+    </app-card>
+  </aside>
 
-  <mat-card class="panel records">
-    <div class="panel-title">Verification records</div>
-
-    @if (isLoading()) {
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    }
-
-    <mat-card-content>
+  <div class="content-column">
+    <app-card title="Verification Records" subtitle="Your access request history">
       <div class="table-toolbar">
-        <mat-form-field appearance="outline" class="search">
-          <mat-label>Search</mat-label>
-          <input
-            matInput
-            [formControl]="filterControl"
-            placeholder="Type to filter by verification type, access level, status…"
-          />
-          <mat-icon matSuffix aria-hidden="true">search</mat-icon>
-        </mat-form-field>
+        <app-input 
+          [formControl]="filterControl" 
+          placeholder="Filter records..." 
+          icon="filter_list"
+          [pill]="true"
+        ></app-input>
       </div>
+
+      @if (isLoading()) {
+        <div class="table-loading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+      }
 
       @if (errorMessage()) {
         <app-error-retry
-          class="state-shell"
-          title="Couldn’t load records"
-          description="The access history could not be loaded right now."
-          [errorMessage]="errorMessage()"
+          [errorMessage]="errorMessage()!"
           (retry)="refresh()"
         ></app-error-retry>
       } @else if (showEmptyState()) {
-        <div class="state empty">
-          <mat-icon aria-hidden="true">assignment_late</mat-icon>
-          <div class="state-title">No verification records yet</div>
-          <div class="state-subtitle">When you request access, your records will appear here.</div>
+        <div class="empty-state">
+          <span class="material-icons">assignment_late</span>
+          <h3>No records yet</h3>
+          <p>When you request access, your records will appear here.</p>
         </div>
       } @else {
-        @if (isLoading()) {
-          <div class="table-skeleton" aria-hidden="true">
-            @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
-              <div class="skeleton-row"></div>
-            }
-          </div>
-        } @else {
-          <div class="table-wrap">
-            <table mat-table [dataSource]="filteredRecords()" matSort (matSortChange)="onSortChange($event)">
-              <ng-container matColumnDef="createdAt">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header="createdAt">Created</th>
-                <td mat-cell *matCellDef="let r">{{ r.createdAt | date: 'medium' }}</td>
-              </ng-container>
+        <app-table>
+          <tr appTableHeader>
+            <th>Created</th>
+            <th>Verification</th>
+            <th>Access Level</th>
+            <th>Status</th>
+            <th>Approved By</th>
+          </tr>
+          @for (record of filteredRecords(); track record._id) {
+            <tr appTableBody>
+              <td>{{ record.createdAt | date: 'medium' }}</td>
+              <td>{{ record.verificationType }}</td>
+              <td>{{ record.accessLevel }}</td>
+              <td>
+                <app-badge [variant]="record.status === 'approved' ? 'success' : record.status === 'pending' ? 'warning' : 'danger'">
+                  {{ record.status }}
+                </app-badge>
+              </td>
+              <td>
+                <span class="mono">{{ record.approvedBy ?? '—' }}</span>
+              </td>
+            </tr>
+          }
+        </app-table>
 
-              <ng-container matColumnDef="verificationType">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header="verificationType">Verification</th>
-                <td mat-cell *matCellDef="let r">{{ r.verificationType }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="accessLevel">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header="accessLevel">Access level</th>
-                <td mat-cell *matCellDef="let r">{{ r.accessLevel }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
-                <td mat-cell *matCellDef="let r">
-                  <span class="status">{{ r.status | titlecase }}</span>
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="approvedBy">
-                <th mat-header-cell *matHeaderCellDef>Approved by</th>
-                <td mat-cell *matCellDef="let r">
-                  @if (r.approvedBy) {
-                    <span class="mono">{{ r.approvedBy }}</span>
-                  } @else {
-                    <span style="opacity: 0.7">—</span>
-                  }
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-          </div>
-
-          <mat-divider></mat-divider>
-          <mat-paginator
-            [length]="total()"
-            [pageIndex]="pageIndex()"
-            [pageSize]="pageSize()"
-            [pageSizeOptions]="[5, 10, 20, 50]"
-            (page)="onPage($event)"
-          ></mat-paginator>
-        }
+        <mat-paginator
+          class="custom-paginator"
+          [length]="total()"
+          [pageIndex]="pageIndex()"
+          [pageSize]="pageSize()"
+          [pageSizeOptions]="[5, 10, 20]"
+          (page)="onPage($event)"
+        ></mat-paginator>
       }
-    </mat-card-content>
-  </mat-card>
-</section>
+    </app-card>
+  </div>
+</div>

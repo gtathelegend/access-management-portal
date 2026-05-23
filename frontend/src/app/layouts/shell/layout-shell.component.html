@@ -1,23 +1,24 @@
-<mat-sidenav-container class="shell">
-  <mat-sidenav
-    class="sidenav"
-    [mode]="isHandset() ? 'over' : 'side'"
-    [opened]="!isHandset() || sidenavOpened()"
-    (backdropClick)="closeSidenavIfHandset()"
-  >
+<div class="shell" [class.sidebar-open]="sidenavOpened() || !isHandset()">
+  <aside class="sidebar-wrapper" [class.mobile-open]="sidenavOpened() && isHandset()">
     <app-sidebar-nav></app-sidebar-nav>
-  </mat-sidenav>
+  </aside>
 
-  <mat-sidenav-content class="content">
+  <div class="main-container">
     <app-top-navbar
       [showMenuButton]="isHandset()"
       (menuToggle)="toggleSidenav()"
     ></app-top-navbar>
 
-    <main class="page" (click)="closeSidenavIfHandset()">
-      <div class="page-frame">
+    <main class="page-content" (click)="closeSidenavIfHandset()">
+      <div class="page-inner">
         <router-outlet></router-outlet>
       </div>
     </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+
+  <div 
+    *ngIf="isHandset() && sidenavOpened()" 
+    class="sidebar-overlay" 
+    (click)="toggleSidenav()"
+  ></div>
+</div>

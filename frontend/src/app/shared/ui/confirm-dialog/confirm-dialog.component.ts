@@ -10,10 +10,12 @@ export interface ConfirmDialogData {
   danger?: boolean;
 }
 
+import { AppButtonComponent } from '../button/button.component';
+
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule],
+  imports: [MatDialogModule, AppButtonComponent],
   templateUrl: './confirm-dialog.component.html',
   styleUrl: './confirm-dialog.component.scss',
 })

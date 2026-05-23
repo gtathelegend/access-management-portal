@@ -1,37 +1,40 @@
 <div class="sidebar">
-  <div class="sidebar-header">
-    <div class="logo">AMP</div>
-    <div class="copy">
-      <div class="eyebrow">Access portal</div>
-      <div class="subtitle">Operations console</div>
+  <div class="sidebar-top">
+    <div class="brand">
+      <div class="logo-box">
+        <span class="logo-icon">A</span>
+      </div>
+      <div class="brand-text">
+        <h2 class="brand-name">Portal</h2>
+        <p class="brand-subtitle">Management</p>
+      </div>
     </div>
+
+    <nav class="nav">
+      @for (item of items; track item.route) {
+        <a
+          class="nav-link"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <span class="nav-icon material-icons">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      }
+    </nav>
   </div>
 
-  <mat-divider></mat-divider>
-
-  <mat-nav-list class="nav">
-    @for (item of items; track item.route) {
-      <a
-        mat-list-item
-        class="nav-item"
-        [routerLink]="item.route"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
-        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-        <span matListItemTitle>{{ item.label }}</span>
-      </a>
-    }
-  </mat-nav-list>
-
-  <div class="sidebar-footer">
-    <div class="profile-card" *ngIf="user() as u">
-      <div class="profile-avatar">{{ avatarLabel }}</div>
-      <div class="profile-copy">
-        <div class="profile-name">{{ u.name }}</div>
-        <div class="profile-role">{{ u.role | titlecase }}</div>
+  <div class="sidebar-bottom">
+    <div class="user-profile" *ngIf="user() as u">
+      <div class="avatar">
+        {{ avatarLabel }}
       </div>
-      <mat-icon class="profile-chevron">chevron_right</mat-icon>
+      <div class="user-info">
+        <span class="user-name">{{ u.name }}</span>
+        <span class="user-role">{{ u.role | titlecase }}</span>
+      </div>
+      <span class="material-icons more-icon">unfold_more</span>
     </div>
   </div>
 </div>

@@ -19,16 +19,18 @@ export type UserDialogResult =
   | { mode: 'create'; payload: CreateUserRequest }
   | { mode: 'edit'; id: string; payload: UpdateUserRequest };
 
+import { AppButtonComponent } from '../../../../shared/ui/button/button.component';
+
 @Component({
   selector: 'app-user-dialog',
   standalone: true,
   imports: [
-    MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
+    AppButtonComponent,
   ],
   templateUrl: './user-dialog.component.html',
   styleUrl: './user-dialog.component.scss',

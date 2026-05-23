@@ -1,21 +1,43 @@
-.content {
-  width: min(720px, 92vw);
+.dialog-title {
+  margin: 0;
+  padding: var(--space-section) var(--space-section) var(--space-normal) !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
 }
 
-.form {
-  display: grid;
-  gap: 12px;
-  padding-top: 4px;
+.dialog-content {
+  padding: 0 var(--space-section) var(--space-normal) !important;
+  max-height: 70vh;
+}
+
+.dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-normal);
+  padding-top: var(--space-micro);
 }
 
 .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: var(--space-normal);
+
+  @media (max-width: 599.98px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-@media (max-width: 599px) {
-  .row {
-    grid-template-columns: 1fr;
+.dialog-actions {
+  padding: var(--space-normal) var(--space-section) var(--space-section) !important;
+  gap: var(--space-small);
+  border-top: 1px solid var(--border-subtle);
+}
+
+::ng-deep {
+  .mat-mdc-dialog-container {
+    border-radius: var(--radius-xl) !important;
+    background: var(--bg-surface) !important;
+    box-shadow: var(--shadow-lg) !important;
   }
 }

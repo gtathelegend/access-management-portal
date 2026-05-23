@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-
+import { AppCardComponent } from '../../shared/ui/card/card.component';
 import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule, PageHeaderComponent],
+  imports: [AppCardComponent, PageHeaderComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

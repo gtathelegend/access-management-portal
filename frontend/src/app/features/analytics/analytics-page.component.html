@@ -1,117 +1,67 @@
-<app-page-header title="Analytics" subtitle="System-wide access and usage statistics"></app-page-header>
+<app-page-header title="Analytics" subtitle="Insights and portal metrics"></app-page-header>
 
-@if (errorMessage()) {
-  <app-error-retry
-    class="analytics-state"
-    title="Analytics unavailable"
-    description="We hit a temporary problem while loading the dashboard metrics."
-    [errorMessage]="errorMessage()"
-    (retry)="refresh()"
-  ></app-error-retry>
-} @else if (stats) {
-  <div class="analytics-container">
-    <!-- Summary Cards -->
-    <div class="summary-cards">
-      <mat-card class="stat-card">
-        <mat-card-header>
-          <mat-card-title>Total Users</mat-card-title>
-          <mat-icon mat-card-avatar color="primary">people</mat-icon>
-        </mat-card-header>
-        <mat-card-content>
-          <h2 class="stat-value">{{ stats.totalUsers }}</h2>
-          <p class="stat-desc">Registered users in system</p>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="stat-card">
-        <mat-card-header>
-          <mat-card-title>Active Users</mat-card-title>
-          <mat-icon mat-card-avatar style="color: #4caf50;">how_to_reg</mat-icon>
-        </mat-card-header>
-        <mat-card-content>
-          <h2 class="stat-value">{{ stats.activeUsers }}</h2>
-          <p class="stat-desc">Users with active status</p>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="stat-card">
-        <mat-card-header>
-          <mat-card-title>Total Records</mat-card-title>
-          <mat-icon mat-card-avatar color="accent">assignment</mat-icon>
-        </mat-card-header>
-        <mat-card-content>
-          <h2 class="stat-value">{{ stats.totalRecords }}</h2>
-          <p class="stat-desc">Access requests processed</p>
-        </mat-card-content>
-      </mat-card>
+<div class="analytics-container">
+  @if (loading) {
+    <div class="loading-state">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Crunching portal data...</p>
     </div>
-
-    <!-- Charts Row 1 -->
-    <div class="charts-row">
-      <mat-card class="chart-card">
-        <mat-card-header>
-          <mat-card-title>Role Distribution</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="chart-container">
-            <ngx-charts-pie-chart
-              [scheme]="colorScheme"
-              [results]="stats.roleDistribution"
-              [gradient]="gradient"
-              [legend]="showLegend"
-              [labels]="true"
-              [doughnut]="true">
-            </ngx-charts-pie-chart>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="chart-card">
-        <mat-card-header>
-          <mat-card-title>Verification Status Breakdown</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="chart-container">
-            <ngx-charts-bar-vertical
-              [scheme]="colorScheme"
-              [results]="stats.statusBreakdown"
-              [gradient]="gradient"
-              [xAxis]="showXAxis"
-              [yAxis]="showYAxis"
-              [legend]="showLegend"
-              [showXAxisLabel]="false"
-              [showYAxisLabel]="false">
-            </ngx-charts-bar-vertical>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <!-- Trends Chart -->
-    <mat-card class="trends-card">
-      <mat-card-header>
-        <mat-card-title>Access Request Trends (Last 30 Days)</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="line-chart-container">
-          <ngx-charts-line-chart
+  } @else if (errorMessage()) {
+    <app-error-retry
+      [errorMessage]="errorMessage()!"
+      (retry)="refresh()"
+    ></app-error-retry>
+  } @else {
+    <div class="grid">
+      <app-card title="Requests by Status" class="chart-card">
+        <div class="chart-wrapper">
+          <ngx-charts-pie-chart
             [scheme]="colorScheme"
-            [results]="[{ name: 'Requests', series: stats.verificationTrends }]"
+            [results]="stats?.statusBreakdown"
+            [gradient]="gradient"
+            [legend]="showLegend"
+            [labels]="true"
+            [doughnut]="true"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+      </app-card>
+
+      <app-card title="Verification Trends" class="chart-card">
+        <div class="chart-wrapper">
+          <ngx-charts-bar-vertical
+            [scheme]="colorScheme"
+            [results]="stats?.verificationTrends"
             [gradient]="gradient"
             [xAxis]="showXAxis"
             [yAxis]="showYAxis"
-            [legend]="false"
-            [showXAxisLabel]="true"
-            [showYAxisLabel]="true"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
             xAxisLabel="Date"
-            yAxisLabel="Count">
-          </ngx-charts-line-chart>
+            yAxisLabel="Verifications"
+          >
+          </ngx-charts-bar-vertical>
         </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-} @else if (loading) {
-  <div class="loading-container">
-    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
-  </div>
-}
+      </app-card>
+
+      <app-card title="Role Distribution" class="chart-card full-width">
+        <div class="chart-wrapper">
+          <ngx-charts-bar-horizontal
+            [scheme]="colorScheme"
+            [results]="stats?.roleDistribution"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="showLegend"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            xAxisLabel="Users"
+            yAxisLabel="Role"
+          >
+          </ngx-charts-bar-horizontal>
+        </div>
+      </app-card>
+    </div>
+  }
+</div>

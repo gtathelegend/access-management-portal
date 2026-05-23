@@ -1,5 +1,32 @@
-.content {
-  max-width: 520px;
-  opacity: 0.85;
-  line-height: 1.5;
+.dialog-title {
+  margin: 0;
+  padding: var(--space-section) var(--space-section) var(--space-normal) !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+.dialog-content {
+  padding: 0 var(--space-section) var(--space-normal) !important;
+}
+
+.dialog-message {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.dialog-actions {
+  padding: var(--space-normal) var(--space-section) var(--space-section) !important;
+  gap: var(--space-small);
+  border-top: 1px solid var(--border-subtle);
+}
+
+::ng-deep {
+  .mat-mdc-dialog-container {
+    border-radius: var(--radius-xl) !important;
+    background: var(--bg-surface) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
 }

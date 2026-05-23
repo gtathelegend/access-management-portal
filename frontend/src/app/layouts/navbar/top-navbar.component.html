@@ -1,55 +1,61 @@
-<mat-toolbar class="topbar">
-  <button
-    *ngIf="showMenuButton"
-    mat-icon-button
-    class="menu-button"
-    type="button"
-    aria-label="Open navigation"
-    (click)="menuToggle.emit()"
-  >
-    <mat-icon>menu</mat-icon>
-  </button>
-
-  <div class="topbar-center">
-    <div class="search-shell">
-      <mat-icon aria-hidden="true">search</mat-icon>
-      <input type="text" placeholder="Search users, records..." aria-label="Search" />
-      <div class="shortcut">⌘ K</div>
-    </div>
-  </div>
-
-  <div class="topbar-actions">
-    @if (loading | async) {
-      <mat-progress-bar mode="indeterminate" class="loading-bar"></mat-progress-bar>
-    }
-
-    <button mat-icon-button type="button" aria-label="Notifications" disabled>
-      <mat-icon>notifications_none</mat-icon>
-    </button>
-
+<header class="navbar">
+  <div class="navbar-left">
     <button
-      mat-icon-button
-      type="button"
-      aria-label="Toggle theme"
-      (click)="toggleTheme()"
+      *ngIf="showMenuButton"
+      class="icon-btn menu-toggle"
+      (click)="menuToggle.emit()"
+      aria-label="Toggle navigation"
     >
-      <mat-icon>{{ themeMode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
-    </button>
-
-    <button class="avatar-button" mat-icon-button type="button" aria-label="User menu" [matMenuTriggerFor]="userMenu">
-      <span class="avatar-fallback">{{ avatarLabel }}</span>
+      <span class="material-icons">menu</span>
     </button>
   </div>
 
-  <mat-menu #userMenu="matMenu">
-    <div class="user-summary" *ngIf="user() as u">
-      <div class="user-name">{{ u.name }}</div>
-      <div class="user-email">{{ u.email }}</div>
+  <div class="navbar-center">
+    <div class="search-bar">
+      <span class="material-icons search-icon">search</span>
+      <input type="text" placeholder="Search anything..." aria-label="Search" />
+      <div class="search-shortcut">
+        <span class="shortcut-key">⌘</span>
+        <span class="shortcut-key">K</span>
+      </div>
     </div>
+  </div>
 
-    <button mat-menu-item type="button" (click)="logout()">
+  <div class="navbar-right">
+    <div class="actions">
+      <button class="icon-btn" aria-label="Notifications">
+        <span class="material-icons">notifications_none</span>
+      </button>
+
+      <button
+        class="icon-btn"
+        (click)="toggleTheme()"
+        [attr.aria-label]="themeMode() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <span class="material-icons">
+          {{ themeMode() === 'dark' ? 'light_mode' : 'dark_mode' }}
+        </span>
+      </button>
+
+      <div class="user-trigger" [matMenuTriggerFor]="userMenu">
+        <div class="avatar-small">{{ avatarLabel }}</div>
+      </div>
+    </div>
+  </div>
+
+  <mat-menu #userMenu="matMenu" class="user-dropdown">
+    <div class="user-dropdown-header" *ngIf="user() as u">
+      <div class="dropdown-name">{{ u.name }}</div>
+      <div class="dropdown-email">{{ u.email }}</div>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()">
       <mat-icon>logout</mat-icon>
-      <span>Logout</span>
+      <span>Sign out</span>
     </button>
   </mat-menu>
-</mat-toolbar>
+</header>
+
+<div class="loading-container" *ngIf="loading | async">
+  <div class="loading-bar"></div>
+</div>

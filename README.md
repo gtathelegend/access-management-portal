@@ -1,97 +1,332 @@
 # Access Management Portal
 
-This project consists of a frontend (Angular) and a backend (Node.js/Express).
+Access Management Portal is an enterprise-style role-based access control and verification management system built with Angular, Node.js, TypeScript, Express, and MongoDB.
 
-## Project Structure
+It includes secure login, role-based dashboards, user administration, verification record browsing, analytics, async loading states, and a polished SaaS-style UI inspired by products like Linear, Vercel, Clerk, and Notion.
 
-- `frontend/`: Angular 17+ application (Standalone architecture, Material, SCSS).
-- `backend/`: Node.js Express server (TypeScript, ESLint, Prettier).
+## Overview
 
-## Getting Started
+The application is split into two parts:
 
-### Backend
+- `frontend/`: Angular 17 standalone SPA with Angular Material, SSR/prerender support, responsive dashboards, and global HTTP interceptors.
+- `backend/`: Express + TypeScript API with JWT authentication, role authorization, MongoDB/Mongoose models, and modular service/controller architecture.
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run in development mode:
-   ```bash
-   npm run dev
-   ```
-   The server will start at `http://localhost:3000`.
+The backend exposes versioned REST endpoints under `/api/v1`, while the frontend consumes those APIs through environment-configured service clients.
 
-### Frontend
+## Features
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm start
-   ```
-   The application will be available at `http://localhost:4200`.
+### Authentication and Authorization
 
-## Scripts
+- JWT-based sign-in
+- Persistent session handling
+- Route protection for authenticated users
+- Admin-only authorization for management pages and APIs
 
-### Backend
-- `npm run dev`: Start development server with nodemon.
-- `npm run build`: Compile TypeScript to JavaScript.
-- `npm run start`: Run the compiled backend.
-- `npm run lint`: Run ESLint.
-- `npm run format`: Format code with Prettier.
+### User Dashboard
 
-### Frontend
-- `npm start`: Start Angular development server.
-- `npm run build`: Build for production.
-- `npm run test`: Run unit tests.
-- `npm run lint`: Run Angular linting.
+- Personal profile summary
+- Verification records table
+- Sorting, pagination, and search filtering
+- Loading skeletons, empty states, and retry UI
 
-## API Delay Simulation
+### Admin Dashboard
 
-For testing loading states, the backend supports non-blocking artificial delays via a query parameter:
+- User management table
+- Create, edit, and delete users
+- Role and status filters
+- Server-side pagination and search
+- Admin summary stats and operational overview
 
-- Example: `GET http://localhost:3000/api/v1/users?delay=2000`
+### Async UX
 
-This is implemented as Express middleware using an async timer (does not block the Node.js event loop).
+- Global loading spinner
+- Progress bar feedback
+- Request retry handling
+- Error retry UI
+- Artificial API delay simulation for testing loading states
 
-Per-route usage (optional):
+### Deployment Ready
 
-```ts
-import { delayFromQuery, fixedDelay } from './middleware/delay.middleware.js';
+- Vercel-friendly frontend configuration
+- Production environment file replacement
+- SPA route rewrites
+- Environment-based API base URL handling
 
-router.get('/slow', fixedDelay(500), handler);
-router.get('/maybe-slow', delayFromQuery(), handler);
+## Tech Stack
+
+| Layer | Technologies |
+|---|---|
+| Frontend | Angular 17, TypeScript, RxJS, Angular Material, SCSS, NGX Charts |
+| Backend | Node.js, Express, TypeScript, Mongoose, JWT, bcryptjs |
+| Database | MongoDB Atlas / MongoDB Cluster |
+| Tooling | ESLint, Prettier, tsx, Angular CLI |
+
+## Architecture
+
+### Frontend Architecture
+
+```txt
+src/app
+├── core
+│   ├── services
+│   ├── guards
+│   ├── interceptors
+│   └── models
+├── features
+│   ├── auth
+│   ├── dashboard
+│   ├── users
+│   ├── records
+│   └── analytics
+├── layouts
+└── shared
 ```
 
-## MongoDB Collection and Seed Data
+### Backend Architecture
 
-The backend creates these collections in MongoDB when seeded:
+```txt
+backend/src
+├── config
+├── controllers
+├── middleware
+├── models
+├── routes
+├── services
+├── scripts
+└── utils
+```
 
-- `users`
-- `records`
+### Request Flow
 
-Run the seed script from the backend folder:
+```mermaid
+flowchart LR
+  A[Angular UI] --> B[HTTP Interceptors]
+  B --> C[Express API /api/v1]
+  C --> D[Controllers]
+  D --> E[Services]
+  E --> F[Mongoose Models]
+  F --> G[MongoDB Cluster]
+```
+
+## Folder Structure
+
+```txt
+access-management-portal
+├── backend
+│   ├── src
+│   └── package.json
+├── frontend
+│   ├── src
+│   ├── angular.json
+│   ├── vercel.json
+│   └── package.json
+└── README.md
+```
+
+## API Documentation
+
+All API routes are served under `/api/v1`.
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/api/v1/auth/login` | Sign in with email and password |
+
+Request body:
+
+```json
+{
+  "email": "admin@amp.local",
+  "password": "Admin@1234"
+}
+```
+
+### Users
+
+Admin-only endpoints.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/users` | List users with pagination, filtering, and search |
+| POST | `/api/v1/users` | Create a new user |
+| PUT | `/api/v1/users/:id` | Update a user |
+| DELETE | `/api/v1/users/:id` | Delete a user |
+
+Query parameters supported by `GET /users`:
+
+- `page`
+- `limit`
+- `role`
+- `status`
+- `q`
+
+### Records
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/records` | List access records with pagination and filtering |
+| GET | `/api/v1/records/:id` | Get a specific record |
+
+Supported filters include:
+
+- `page`
+- `limit`
+- `sortBy`
+- `sortOrder`
+- `status`
+- `verificationType`
+- `accessLevel`
+- `userId`
+- `approvedBy`
+- `createdFrom`
+- `createdTo`
+
+### Analytics
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/analytics/dashboard-stats` | Dashboard statistics for the analytics page |
+
+### Health
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api/v1/health` | Health and readiness check |
+
+## Setup Instructions
+
+### 1. Clone and install dependencies
+
+```bash
+git clone <your-repo-url>
+cd access-management-portal
+cd backend && npm install
+cd ../frontend && npm install
+```
+
+### 2. Configure backend environment
+
+Create a `backend/.env` file with the variables listed below.
+
+### 3. Seed the database
 
 ```bash
 cd backend
 npm run seed
 ```
 
-Seeded demo accounts:
+### 4. Run locally
 
-- Admin: `admin@amp.local` / `Admin@1234`
-- User: `ava.carter@amp.local` / `User@1234`
-- User: `noah.patel@amp.local` / `User@1234`
-- Disabled user: `mia.gomez@amp.local` / `User@1234`
+Backend:
 
-Sample seeded records include approved, pending, and rejected verification entries so the dashboards have realistic data immediately after seeding.
+```bash
+cd backend
+npm run dev
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm start
+```
+
+## Deployment Instructions
+
+### Frontend on Vercel
+
+- Production builds use `src/environments/environment.production.ts`
+- API requests are routed through `/api/v1`
+- `vercel.json` rewrites `/api/v1/*` to your deployed backend host and supports client-side routing
+
+Before deployment, replace the backend placeholder URL in `frontend/vercel.json` with your actual backend host.
+
+Production build:
+
+```bash
+cd frontend
+npm run build
+```
+
+### Backend Deployment
+
+Deploy the Express API to your hosting platform of choice and set the required environment variables.
+
+Recommended runtime settings:
+
+- `NODE_ENV=production`
+- `PORT=<your-host-provided-port>`
+- `MONGODB_URI=<your MongoDB connection string>`
+
+## Environment Variables
+
+### Backend
+
+| Variable | Required | Description |
+|---|---|---|
+| `MONGODB_URI` | Yes | MongoDB connection string |
+| `JWT_SECRET` | Yes | Secret used to sign and verify JWTs |
+| `JWT_EXPIRES_IN` | No | JWT expiration, defaults to `1h` |
+| `PORT` | No | Server port, defaults to `3000` |
+| `CORS_ORIGIN` | No | Allowed frontend origin(s), comma-separated |
+| `NODE_ENV` | No | `development`, `test`, or `production` |
+| `BCRYPT_SALT_ROUNDS` | No | Password hashing cost, defaults to `12` |
+
+### Frontend
+
+| Variable/File | Required | Description |
+|---|---|---|
+| `src/environments/environment.ts` | Yes | Development API base URL |
+| `src/environments/environment.production.ts` | Yes | Production API base URL for builds |
+
+## Screenshots
+
+Add screenshots here to showcase the app in action:
+
+- Login page
+- User dashboard
+- Admin dashboard
+- Analytics dashboard
+
+Suggested location:
+
+```txt
+docs/screenshots/
+```
+
+## Dummy Credentials
+
+Run the seed script first to populate the database, then use these demo accounts:
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@amp.local` | `Admin@1234` |
+| User | `ava.carter@amp.local` | `User@1234` |
+| User | `noah.patel@amp.local` | `User@1234` |
+| Disabled user | `mia.gomez@amp.local` | `User@1234` |
+
+## MongoDB Collections
+
+The seed script populates these collections:
+
+- `users`
+- `records`
+
+## Scripts
+
+### Backend
+
+- `npm run dev`: Start the backend in development mode
+- `npm run build`: Compile TypeScript
+- `npm run start`: Run the compiled backend
+- `npm run seed`: Seed MongoDB with demo users and records
+- `npm run lint`: Run ESLint
+- `npm run format`: Format backend source files
+
+### Frontend
+
+- `npm start`: Start Angular development server
+- `npm run build`: Build the frontend for production
+- `npm run test`: Run unit tests
+- `npm run lint`: Run Angular linting

@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 export interface HealthStatus {
   status: 'ok';
+  timestamp: string;
   uptimeSeconds: number;
   mongo: {
     state: number;
@@ -28,6 +29,7 @@ export const getHealth = (): HealthStatus => {
   const state = mongoose.connection.readyState;
   return {
     status: 'ok',
+    timestamp: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime()),
     mongo: {
       state,

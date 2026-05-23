@@ -29,6 +29,15 @@ export const createApp = () => {
     });
   });
 
+  app.get('/health', (_req, res) => {
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      timestamp: new Date().toISOString(),
+      status: 'ok',
+    });
+  });
+
   app.use('/api/v1', delayFromQuery({ maxMs: 30_000 }), v1Router);
 
   app.use(notFoundHandler);

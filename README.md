@@ -236,11 +236,18 @@ npm start
 
 ### Frontend on Vercel
 
-- Production builds use `src/environments/environment.production.ts`
-- API requests are routed through `/api/v1`
-- `vercel.json` rewrites `/api/v1/*` to your deployed backend host and supports client-side routing
+- Production builds use `frontend/src/environments/environment.production.ts`
+- The frontend reads its API base URL from `environment.apiUrl`
+- On Vercel, the API base URL is injected at build time via the `BACKEND_API_URL` environment variable
 
-Before deployment, replace the backend placeholder URL in `frontend/vercel.json` with your actual backend host.
+Steps:
+
+1. Deploy the backend API (any host is fine).
+2. In your Vercel project (Frontend), set `BACKEND_API_URL` to your backend API base URL, including `/api/v1`.
+   - Example: `https://your-backend.example.com/api/v1`
+3. Redeploy the frontend.
+
+If `BACKEND_API_URL` is not set, the build falls back to `/api/v1` (which will hit the same host as the frontend).
 
 Production build:
 
@@ -277,8 +284,9 @@ Recommended runtime settings:
 
 | Variable/File | Required | Description |
 |---|---|---|
-| `src/environments/environment.ts` | Yes | Development API base URL |
-| `src/environments/environment.production.ts` | Yes | Production API base URL for builds |
+| `frontend/src/environments/environment.ts` | Yes | Development API base URL |
+| `frontend/src/environments/environment.production.ts` | Yes | Production API base URL for builds |
+| `BACKEND_API_URL` (Vercel env var) | No | Backend API base URL used for the Vercel build (defaults to `/api/v1`) |
 
 ## Screenshots
 

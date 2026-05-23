@@ -1,0 +1,113 @@
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.login-inner {
+  width: 100%;
+  max-width: 420px;
+  display: grid;
+  gap: 16px;
+}
+
+.brand {
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  background: color-mix(in srgb, var(--app-foreground) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--app-divider) 45%, transparent);
+}
+
+.title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.subtitle {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.card {
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--app-background) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--app-divider) 65%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.card-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.form {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.error {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--app-divider) 70%, transparent);
+  background: color-mix(in srgb, var(--app-foreground) 6%, transparent);
+  font-size: 13px;
+}
+
+.submit {
+  height: 44px;
+  border-radius: 14px;
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.spinner {
+  display: inline-block;
+}
+
+.hint {
+  font-size: 12px;
+  opacity: 0.75;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.footer {
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.footer a {
+  color: inherit;
+}
+
+@media (max-width: 599px) {
+  .login {
+    padding: 16px;
+  }
+}

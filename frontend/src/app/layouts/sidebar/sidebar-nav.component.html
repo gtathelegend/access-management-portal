@@ -1,21 +1,30 @@
 <div class="sidebar">
   <div class="sidebar-header">
     <div class="logo">AMP</div>
-    <div class="subtitle">Access Portal</div>
+    <div class="copy">
+      <div class="eyebrow">Access portal</div>
+      <div class="subtitle">Operations console</div>
+    </div>
   </div>
 
   <mat-divider></mat-divider>
 
   <mat-nav-list class="nav">
-    <a
-      mat-list-item
-      *ngFor="let item of items"
-      [routerLink]="item.route"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-      <span matListItemTitle>{{ item.label }}</span>
-    </a>
+    @for (item of items; track item.route) {
+      <a
+        mat-list-item
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.label }}</span>
+      </a>
+    }
   </mat-nav-list>
+
+  <div class="sidebar-footer">
+    <div class="footer-chip">Linear-inspired layout</div>
+  </div>
 </div>

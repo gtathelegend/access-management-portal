@@ -15,6 +15,7 @@ import { MatSortModule, type Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
+import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { RecordsService } from '../../../core/services/records.service';
@@ -39,6 +40,7 @@ import type { RecordSortBy, SortOrder, VerificationRecord } from '../../../core/
     MatProgressBarModule,
     MatSortModule,
     MatTableModule,
+    ErrorRetryComponent,
   ],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.scss',

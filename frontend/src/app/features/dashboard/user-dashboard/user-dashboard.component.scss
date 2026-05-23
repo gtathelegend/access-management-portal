@@ -28,7 +28,8 @@
 }
 
 .panel {
-	border-radius: 16px;
+	border-radius: 24px;
+	overflow: hidden;
 }
 
 .profile-row {
@@ -59,10 +60,24 @@
 }
 .table-wrap {
 	overflow: auto;
+	border-radius: 18px;
+	border: 1px solid rgba(148, 163, 184, 0.12);
+	background: rgba(255, 255, 255, 0.66);
 }
 
 table {
 	width: 100%;
+	border-collapse: collapse;
+}
+
+tr.mat-mdc-row,
+tr.mat-mdc-header-row {
+	height: 60px;
+}
+
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+	padding-inline: 18px;
 }
 
 .status {
@@ -76,62 +91,64 @@ table {
 }
 
 .state {
-	padding: 20px 8px;
+	padding: 24px;
 	display: grid;
-	gap: 8px;
+	gap: 10px;
 	justify-items: start;
+	border-radius: 20px;
+	background: linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(241, 245, 249, 0.82));
+	border: 1px dashed rgba(148, 163, 184, 0.26);
 }
 
 .state-title {
 	font-size: 16px;
 	font-weight: 700;
+	color: #0f172a;
 }
 
 .state-subtitle {
-	opacity: 0.75;
-	margin-bottom: 8px;
+	color: rgba(15, 23, 42, 0.7);
+	line-height: 1.5;
+	margin-bottom: 6px;
 }
 
 .table-skeleton {
 	display: grid;
-	gap: 10px;
-	padding: 8px 0 16px;
+	gap: 12px;
+	padding: 12px 0 18px;
 }
 
 .skeleton-row {
 	height: 18px;
-	border-radius: 10px;
-	background: currentColor;
-	opacity: 0.08;
-	animation: pulse 1.2s ease-in-out infinite;
+	border-radius: 12px;
+	background: linear-gradient(90deg, rgba(148, 163, 184, 0.12), rgba(148, 163, 184, 0.24), rgba(148, 163, 184, 0.12));
+	background-size: 200% 100%;
+	animation: shimmer 1.35s ease-in-out infinite;
 }
 
 .skeleton-block {
 	height: 28px;
-	border-radius: 12px;
-	background: currentColor;
-	opacity: 0.08;
-	animation: pulse 1.2s ease-in-out infinite;
+	border-radius: 14px;
+	background: linear-gradient(90deg, rgba(148, 163, 184, 0.12), rgba(148, 163, 184, 0.24), rgba(148, 163, 184, 0.12));
+	background-size: 200% 100%;
+	animation: shimmer 1.35s ease-in-out infinite;
 }
 
 .skeleton-line {
 	height: 16px;
-	border-radius: 10px;
-	background: currentColor;
-	opacity: 0.08;
+	border-radius: 999px;
+	background: linear-gradient(90deg, rgba(148, 163, 184, 0.12), rgba(148, 163, 184, 0.24), rgba(148, 163, 184, 0.12));
+	background-size: 200% 100%;
 	margin-top: 10px;
-	animation: pulse 1.2s ease-in-out infinite;
+	animation: shimmer 1.35s ease-in-out infinite;
 }
 
-@keyframes pulse {
+@keyframes shimmer {
 	0% {
-		opacity: 0.06;
-	}
-	50% {
-		opacity: 0.12;
+		background-position: 0% 50%;
 	}
 	100% {
-		opacity: 0.06;
+		background-position: 200% 50%;
 	}
 }
 

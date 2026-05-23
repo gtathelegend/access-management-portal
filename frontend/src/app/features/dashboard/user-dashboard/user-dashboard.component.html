@@ -63,13 +63,16 @@
       </div>
 
       @if (errorMessage()) {
-        <div class="state error">
-          <div class="state-title">Couldn’t load records</div>
-          <div class="state-subtitle">{{ errorMessage() }}</div>
-          <button mat-raised-button type="button" (click)="refresh()">Retry</button>
-        </div>
+        <app-error-retry
+          class="state-shell"
+          title="Couldn’t load records"
+          description="The access history could not be loaded right now."
+          [errorMessage]="errorMessage()"
+          (retry)="refresh()"
+        ></app-error-retry>
       } @else if (showEmptyState()) {
         <div class="state empty">
+          <mat-icon aria-hidden="true">assignment_late</mat-icon>
           <div class="state-title">No verification records yet</div>
           <div class="state-subtitle">When you request access, your records will appear here.</div>
         </div>

@@ -1,0 +1,51 @@
+.spinner-overlay {
+	position: fixed;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	background:
+		radial-gradient(circle at top, rgba(99, 102, 241, 0.18), transparent 36%),
+		rgba(9, 12, 24, 0.28);
+	backdrop-filter: blur(10px) saturate(140%);
+	z-index: 10000;
+	animation: overlayIn 180ms ease-out;
+}
+
+.spinner-card {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 18px 20px;
+	border-radius: 20px;
+	background: rgba(15, 23, 42, 0.78);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 0 24px 80px rgba(2, 6, 23, 0.42);
+	color: #f8fafc;
+}
+
+.copy {
+	display: grid;
+	gap: 4px;
+}
+
+.title {
+	font-size: 14px;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+}
+
+.subtitle {
+	font-size: 13px;
+	opacity: 0.72;
+	max-width: 260px;
+}
+
+@keyframes overlayIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}

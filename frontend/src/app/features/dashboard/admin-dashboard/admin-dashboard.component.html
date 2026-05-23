@@ -93,13 +93,16 @@
     </div>
 
     @if (errorMessage()) {
-      <div class="state error">
-        <div class="state-title">Couldn’t load users</div>
-        <div class="state-subtitle">{{ errorMessage() }}</div>
-        <button mat-raised-button color="primary" type="button" (click)="refreshAll()">Retry</button>
-      </div>
+      <app-error-retry
+        class="state-shell"
+        title="Couldn’t load users"
+        description="The portal could not fetch the latest user list."
+        [errorMessage]="errorMessage()"
+        (retry)="refreshAll()"
+      ></app-error-retry>
     } @else if (showEmptyState()) {
       <div class="state empty">
+        <mat-icon aria-hidden="true">group_off</mat-icon>
         <div class="state-title">No users found</div>
         <div class="state-subtitle">Try adjusting search and filters, or add a new user.</div>
         <button mat-raised-button color="primary" type="button" (click)="openCreateUser()">Add user</button>

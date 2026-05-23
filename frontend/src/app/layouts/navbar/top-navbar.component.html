@@ -1,7 +1,8 @@
-<mat-toolbar class="topbar" color="primary">
+<mat-toolbar class="topbar">
   <button
     *ngIf="showMenuButton"
     mat-icon-button
+    class="menu-button"
     type="button"
     aria-label="Open navigation"
     (click)="menuToggle.emit()"
@@ -9,9 +10,19 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <div class="brand">Access Management</div>
+  <div class="brand-block">
+    <div class="brand-mark">AMP</div>
+    <div class="brand-copy">
+      <div class="brand">Access Management</div>
+      <div class="brand-subtitle">Enterprise portal</div>
+    </div>
+  </div>
 
   <span class="spacer"></span>
+
+  @if (loading | async) {
+    <mat-progress-bar mode="indeterminate" class="loading-bar"></mat-progress-bar>
+  }
 
   <button mat-icon-button type="button" aria-label="Notifications" disabled>
     <mat-icon>notifications</mat-icon>

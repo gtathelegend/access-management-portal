@@ -17,6 +17,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged, forkJoin, of, switchMap } from 'rxjs';
 
+import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { ConfirmDialogComponent } from '../../../shared/ui/confirm-dialog/confirm-dialog.component';
 import { RecordsService } from '../../../core/services/records.service';
@@ -44,6 +45,7 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
     MatSelectModule,
     MatSnackBarModule,
     MatTableModule,
+    ErrorRetryComponent,
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss',

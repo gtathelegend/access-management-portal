@@ -1,23 +1,33 @@
 .page-header {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 8px 0;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0 6px;
+}
+
+.accent {
+  width: 10px;
+  height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #6366f1, #06b6d4);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.22);
 }
 
 .titles {
   display: grid;
-  gap: 4px;
+  gap: 6px;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: clamp(24px, 2vw, 34px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #0f172a;
 }
 
 .subtitle {
-  font-size: 13px;
-  opacity: 0.78;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(15, 23, 42, 0.68);
 }

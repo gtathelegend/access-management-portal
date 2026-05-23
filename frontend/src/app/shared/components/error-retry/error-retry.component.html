@@ -1,1 +1,18 @@
-<p>error-retry works!</p>
+@if (errorMessage) {
+	<div class="error-shell">
+		<div class="icon-wrap">
+			<mat-icon aria-hidden="true">cloud_off</mat-icon>
+		</div>
+
+		<div class="content">
+			<div class="title">{{ title }}</div>
+			<div class="description">{{ description }}</div>
+			<div class="message">{{ errorMessage }}</div>
+		</div>
+
+		<button mat-stroked-button color="primary" type="button" (click)="retry.emit()">
+			<mat-icon aria-hidden="true">refresh</mat-icon>
+			Retry
+		</button>
+	</div>
+}

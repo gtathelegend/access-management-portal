@@ -29,6 +29,13 @@ const seedUsers: SeedUser[] = [
     status: 'active',
   },
   {
+    name: 'Security Lead',
+    email: 'security@amp.local',
+    password: 'Security@1234',
+    role: 'admin',
+    status: 'active',
+  },
+  {
     name: 'Ava Carter',
     email: 'ava.carter@amp.local',
     password: 'User@1234',
@@ -43,8 +50,43 @@ const seedUsers: SeedUser[] = [
     status: 'active',
   },
   {
+    name: 'Sophia Chen',
+    email: 'sophia.chen@amp.local',
+    password: 'User@1234',
+    role: 'user',
+    status: 'active',
+  },
+  {
+    name: 'Lucas Miller',
+    email: 'lucas.miller@amp.local',
+    password: 'User@1234',
+    role: 'user',
+    status: 'active',
+  },
+  {
+    name: 'Emma Wilson',
+    email: 'emma.wilson@amp.local',
+    password: 'User@1234',
+    role: 'user',
+    status: 'active',
+  },
+  {
+    name: 'James Taylor',
+    email: 'james.taylor@amp.local',
+    password: 'User@1234',
+    role: 'user',
+    status: 'active',
+  },
+  {
     name: 'Mia Gomez',
     email: 'mia.gomez@amp.local',
+    password: 'User@1234',
+    role: 'user',
+    status: 'disabled',
+  },
+  {
+    name: 'Oliver Brown',
+    email: 'oliver.brown@amp.local',
     password: 'User@1234',
     role: 'user',
     status: 'disabled',
@@ -73,16 +115,56 @@ const seedRecords: SeedRecord[] = [
     approvedByEmail: 'admin@amp.local',
   },
   {
+    userEmail: 'sophia.chen@amp.local',
+    verificationType: 'Cloud Console Access',
+    status: 'approved',
+    accessLevel: 'Developer Sandbox',
+    approvedByEmail: 'security@amp.local',
+  },
+  {
+    userEmail: 'lucas.miller@amp.local',
+    verificationType: 'HR Database Access',
+    status: 'pending',
+    accessLevel: 'HR Coordinator',
+  },
+  {
+    userEmail: 'emma.wilson@amp.local',
+    verificationType: 'Marketing Tools',
+    status: 'approved',
+    accessLevel: 'Campaign Manager',
+    approvedByEmail: 'admin@amp.local',
+  },
+  {
+    userEmail: 'james.taylor@amp.local',
+    verificationType: 'Customer Support Portal',
+    status: 'pending',
+    accessLevel: 'Support Agent',
+  },
+  {
     userEmail: 'mia.gomez@amp.local',
     verificationType: 'Legacy VPN Access',
     status: 'pending',
     accessLevel: 'Remote Access',
   },
   {
+    userEmail: 'oliver.brown@amp.local',
+    verificationType: 'Archived Files Access',
+    status: 'rejected',
+    accessLevel: 'Legacy Auditor',
+    approvedByEmail: 'security@amp.local',
+  },
+  {
     userEmail: 'admin@amp.local',
     verificationType: 'Admin Privilege Review',
     status: 'approved',
     accessLevel: 'Platform Admin',
+    approvedByEmail: 'security@amp.local',
+  },
+  {
+    userEmail: 'security@amp.local',
+    verificationType: 'Security Audit Access',
+    status: 'approved',
+    accessLevel: 'Global Auditor',
     approvedByEmail: 'admin@amp.local',
   },
 ];
@@ -90,7 +172,9 @@ const seedRecords: SeedRecord[] = [
 const upsertUser = async (seed: SeedUser) => {
   const existing = await UserModel.findOne({ email: seed.email }).exec();
   if (existing) {
-    return existing;
+    // Update existing user to match seed data (e.g. status)
+    Object.assign(existing, seed);
+    return existing.save();
   }
 
   return UserModel.create(seed);
@@ -148,7 +232,8 @@ const main = async (): Promise<void> => {
     for (const seed of seedRecords) {
       const owner = createdUsers.get(seed.userEmail);
       if (!owner) {
-        throw new Error(`Seed owner not found for ${seed.userEmail}`);
+        logger.warn(`Seed owner not found for ${seed.userEmail}, skipping record`);
+        continue;
       }
 
       const approvedBy = seed.approvedByEmail ? createdUsers.get(seed.approvedByEmail) : undefined;

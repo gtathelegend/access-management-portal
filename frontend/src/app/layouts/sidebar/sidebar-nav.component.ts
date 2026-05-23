@@ -16,5 +16,9 @@ import { NavItem } from '../../core/models/nav-item.model';
 export class SidebarNavComponent {
   readonly items: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+    { label: 'Users', icon: 'group', route: '/users' },
+    { label: 'Records', icon: 'folder_open', route: '/records' },
+    { label: 'Analytics', icon: 'query_stats', route: '/analytics' },
+    { label: 'Settings', icon: 'settings', route: '/settings' },
   ];
 }

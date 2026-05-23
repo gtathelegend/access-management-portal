@@ -13,6 +13,10 @@
 
   <span class="spacer"></span>
 
+  <button mat-icon-button type="button" aria-label="Notifications" disabled>
+    <mat-icon>notifications</mat-icon>
+  </button>
+
   <button
     mat-icon-button
     type="button"
@@ -27,9 +31,14 @@
   </button>
 
   <mat-menu #userMenu="matMenu">
-    <button mat-menu-item type="button" disabled>
-      <mat-icon>badge</mat-icon>
-      <span>Signed in</span>
+    <div class="user-summary" *ngIf="user() as u">
+      <div class="user-name">{{ u.name }}</div>
+      <div class="user-email">{{ u.email }}</div>
+    </div>
+
+    <button mat-menu-item type="button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
     </button>
   </mat-menu>
 </mat-toolbar>

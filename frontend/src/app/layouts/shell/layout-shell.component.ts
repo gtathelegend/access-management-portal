@@ -2,10 +2,11 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import { Component, PLATFORM_ID, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { SidebarNavComponent } from '../sidebar/sidebar-nav.component';
 import { TopNavbarComponent } from '../navbar/top-navbar.component';
@@ -20,6 +21,7 @@ import { TopNavbarComponent } from '../navbar/top-navbar.component';
 export class LayoutShellComponent {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  private readonly router = inject(Router);
 
   readonly isHandset = isPlatformBrowser(this.platformId)
     ? toSignal(
@@ -40,6 +42,15 @@ export class LayoutShellComponent {
       },
       { allowSignalWrites: true },
     );
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.router.events
+        .pipe(
+          filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+          takeUntilDestroyed(),
+        )
+        .subscribe(() => this.closeSidenavIfHandset());
+    }
   }
 
   toggleSidenav(): void {

@@ -46,6 +46,26 @@ export const routes: Routes = [
 						(m) => m.DashboardRedirectComponent,
 					),
 			},
+			{
+				path: 'users',
+				loadComponent: () =>
+					import('./features/users/users-page.component').then((m) => m.UsersPageComponent),
+			},
+			{
+				path: 'records',
+				loadComponent: () =>
+					import('./features/records/records-page.component').then((m) => m.RecordsPageComponent),
+			},
+			{
+				path: 'analytics',
+				loadComponent: () =>
+					import('./features/analytics/analytics-page.component').then((m) => m.AnalyticsPageComponent),
+			},
+			{
+				path: 'settings',
+				loadComponent: () =>
+					import('./features/settings/settings-page.component').then((m) => m.SettingsPageComponent),
+			},
 		],
 	},
 	{ path: '**', redirectTo: 'dashboard' },

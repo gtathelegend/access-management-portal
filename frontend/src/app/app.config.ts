@@ -1,4 +1,4 @@
-import { ApplicationConfig, inject, provideAppInitializer } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -14,8 +14,13 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideHttpClient(withInterceptors([authInterceptor])),
-    provideAppInitializer(() => {
-      inject(AuthService).initFromStorage();
-    }),
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: () => {
+        const authService = inject(AuthService);
+        return () => authService.initFromStorage();
+      },
+    },
   ]
 };

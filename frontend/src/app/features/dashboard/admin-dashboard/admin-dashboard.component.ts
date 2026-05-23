@@ -18,8 +18,8 @@ import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged, forkJoin, of, switchMap } from 'rxjs';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
-import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { ConfirmDialogComponent } from '../../../shared/ui/confirm-dialog/confirm-dialog.component';
+import { AuthService } from '../../../core/services/auth.service';
 import { RecordsService } from '../../../core/services/records.service';
 import { UsersService } from '../../../core/services/users.service';
 import type { AdminUser, UserRole, UserStatus } from '../../../core/models/user-admin.model';
@@ -30,7 +30,6 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
   standalone: true,
   imports: [
     DatePipe,
-    PageHeaderComponent,
     ReactiveFormsModule,
     TitleCasePipe,
 
@@ -51,11 +50,13 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
   styleUrl: './admin-dashboard.component.scss',
 })
 export class AdminDashboardComponent {
+  private readonly authService = inject(AuthService);
   private readonly usersService = inject(UsersService);
   private readonly recordsService = inject(RecordsService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly platformId = inject(PLATFORM_ID);
+  readonly currentUser = this.authService.currentUser;
 
   readonly displayedColumns: Array<'name' | 'email' | 'role' | 'status' | 'createdAt' | 'actions'> = [
     'name',
@@ -95,6 +96,10 @@ export class AdminDashboardComponent {
   readonly showEmptyState = computed(() => {
     return !this.isLoading() && !this.errorMessage() && this.items().length === 0;
   });
+
+  get welcomeName(): string {
+    return this.currentUser()?.name ?? 'Admin';
+  }
 
   constructor() {
     this.searchControl.valueChanges

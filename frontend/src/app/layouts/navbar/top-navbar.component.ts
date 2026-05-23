@@ -31,6 +31,19 @@ export class TopNavbarComponent {
   readonly user = this.authService.currentUser;
   readonly loading = this.loadingService.loading$;
 
+  get avatarLabel(): string {
+    const name = this.user()?.name?.trim();
+    if (!name) {
+      return 'A';
+    }
+
+    return name
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join('');
+  }
+
   toggleTheme(): void {
     this.themeService.toggle();
   }

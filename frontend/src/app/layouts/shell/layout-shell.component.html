@@ -15,7 +15,9 @@
     ></app-top-navbar>
 
     <main class="page" (click)="closeSidenavIfHandset()">
-      <router-outlet></router-outlet>
+      <div class="page-frame">
+        <router-outlet></router-outlet>
+      </div>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

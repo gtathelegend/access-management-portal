@@ -2,34 +2,59 @@
 
 @include shared.dashboardLayout();
 
-.welcome {
-	margin-top: 4px;
+.hero-card {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
+	padding: 26px 28px;
+	margin-bottom: 18px;
+	border-radius: 28px;
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.92));
+	border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
-.welcome-title {
-	font-size: 20px;
+.hero-copy {
+	display: grid;
+	gap: 10px;
+	max-width: 720px;
+}
+
+.eyebrow,
+.panel-title {
+	font-size: 12px;
 	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--app-muted);
 }
 
-.welcome-subtitle {
-	margin-top: 2px;
-	opacity: 0.75;
+.hero-copy h1 {
+	margin: 0;
+	font-size: clamp(28px, 3vw, 42px);
+	line-height: 1.04;
+	letter-spacing: -0.04em;
+	color: #0f172a;
+}
+
+.hero-copy p {
+	margin: 0;
+	color: var(--app-muted);
+	line-height: 1.7;
 }
 
 .layout {
-	margin-top: 16px;
 	display: grid;
-	grid-template-columns: 0.8fr 1.2fr;
-	gap: 16px;
+	grid-template-columns: 0.82fr 1.18fr;
+	gap: 18px;
 }
 
 .panel {
-	border-radius: 24px;
+	border-radius: 28px;
 	overflow: hidden;
+	padding: 22px;
+	background: rgba(255, 255, 255, 0.94);
+	border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
 .profile-row {
@@ -40,11 +65,12 @@
 }
 
 .label {
-	opacity: 0.75;
+	color: var(--app-muted);
 }
 
 .value {
 	font-weight: 600;
+	color: #0f172a;
 }
 
 .table-toolbar {
@@ -60,9 +86,9 @@
 }
 .table-wrap {
 	overflow: auto;
-	border-radius: 18px;
+	border-radius: 22px;
 	border: 1px solid rgba(148, 163, 184, 0.12);
-	background: rgba(255, 255, 255, 0.66);
+	background: rgba(248, 250, 252, 0.85);
 }
 
 table {
@@ -82,6 +108,7 @@ th.mat-mdc-header-cell {
 
 .status {
 	font-weight: 600;
+	color: #0f172a;
 }
 
 .mono {
@@ -153,11 +180,16 @@ th.mat-mdc-header-cell {
 }
 
 @media (max-width: 959px) {
+	.hero-card {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
 	.layout {
 		grid-template-columns: 1fr;
 	}
 
-	.welcome {
+	.table-toolbar {
 		flex-direction: column;
 		align-items: stretch;
 	}

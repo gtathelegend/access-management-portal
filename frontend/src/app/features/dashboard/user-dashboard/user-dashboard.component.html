@@ -1,24 +1,19 @@
-<app-page-header
-  title="Your dashboard"
-  subtitle="Track your verification requests and approvals"
-></app-page-header>
+<section class="hero-card">
+  <div class="hero-copy">
+    <div class="eyebrow">Personal dashboard</div>
+    <h1>Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</h1>
+    <p>Track your verification history and keep an eye on the account details tied to your workspace access.</p>
+  </div>
 
-<section class="welcome">
-  <div class="welcome-text">
-    <div class="welcome-title">Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</div>
-    <div class="welcome-subtitle">Here’s a quick overview of your account and verification history.</div>
-  </div>
-  <div class="welcome-actions">
-    <button mat-stroked-button type="button" (click)="refresh()">
-      <mat-icon aria-hidden="true">refresh</mat-icon>
-      Refresh
-    </button>
-  </div>
+  <button mat-stroked-button type="button" (click)="refresh()">
+    <mat-icon aria-hidden="true">refresh</mat-icon>
+    Refresh
+  </button>
 </section>
 
-<div class="layout">
+<section class="layout">
   <mat-card class="panel profile">
-    <mat-card-title>Profile</mat-card-title>
+    <div class="panel-title">Profile</div>
     <mat-card-content>
       @if (user()) {
         <div class="profile-row">
@@ -43,7 +38,7 @@
   </mat-card>
 
   <mat-card class="panel records">
-    <mat-card-title>Verification records</mat-card-title>
+    <div class="panel-title">Verification records</div>
 
     @if (isLoading()) {
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -136,4 +131,4 @@
       }
     </mat-card-content>
   </mat-card>
-</div>
+</section>

@@ -1,14 +1,23 @@
 <div class="login">
   <div class="login-inner">
-    <div class="brand">
+    <section class="intro-panel">
       <div class="logo">AMP</div>
-      <div class="title">Access Management Portal</div>
-      <div class="subtitle">Sign in to manage access requests and policies</div>
-    </div>
+      <div class="eyebrow">Access Management Portal</div>
+      <h1>Sign in to a calmer access workspace.</h1>
+      <p>
+        Manage approvals, review records, and keep the portal in sync with a light Apple-like control surface.
+      </p>
+
+      <div class="feature-row">
+        <div class="feature-pill">SSO-ready</div>
+        <div class="feature-pill">Role-based views</div>
+        <div class="feature-pill">Audit trail</div>
+      </div>
+    </section>
 
     <mat-card class="card">
       <mat-card-content>
-        <div class="card-title">Sign in</div>
+        <div class="card-title">Welcome back</div>
         <div class="card-subtitle">Use your work email and password</div>
 
         <form class="form" [formGroup]="form" (ngSubmit)="submit()">

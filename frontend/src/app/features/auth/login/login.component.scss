@@ -2,61 +2,99 @@
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 32px 24px;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.12), transparent 24%),
+    linear-gradient(180deg, #f7f8fb 0%, #eef2f7 100%);
 }
 
 .login-inner {
   width: 100%;
-  max-width: 420px;
+  max-width: 1080px;
   display: grid;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+  gap: 28px;
+  align-items: center;
 }
 
-.brand {
-  text-align: center;
+.intro-panel {
   display: grid;
-  gap: 6px;
+  gap: 18px;
+  max-width: 540px;
 }
 
 .logo {
   width: 44px;
   height: 44px;
-  margin: 0 auto;
   border-radius: 14px;
   display: grid;
   place-items: center;
   font-weight: 700;
   letter-spacing: 0.6px;
-  background: color-mix(in srgb, var(--app-foreground) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--app-divider) 45%, transparent);
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.24);
 }
 
-.title {
+.eyebrow {
+  font-size: 12px;
   font-weight: 700;
-  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--app-muted);
 }
 
-.subtitle {
-  font-size: 13px;
-  opacity: 0.8;
+.intro-panel h1 {
+  margin: 0;
+  font-size: clamp(38px, 4vw, 56px);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  color: #0f172a;
+}
+
+.intro-panel p {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--app-muted);
+}
+
+.feature-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.feature-pill {
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(148, 163, 184, 0.18);
 }
 
 .card {
-  border-radius: 18px;
-  background: color-mix(in srgb, var(--app-background) 70%, transparent);
-  border: 1px solid color-mix(in srgb, var(--app-divider) 65%, transparent);
-  backdrop-filter: blur(10px);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.1);
 }
 
 .card-title {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
+  color: #0f172a;
 }
 
 .card-subtitle {
   margin-top: 4px;
   font-size: 13px;
-  opacity: 0.8;
+  color: var(--app-muted);
 }
 
 .form {
@@ -68,8 +106,8 @@
 .error {
   padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid color-mix(in srgb, var(--app-divider) 70%, transparent);
-  background: color-mix(in srgb, var(--app-foreground) 6%, transparent);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  background: rgba(254, 226, 226, 0.72);
   font-size: 13px;
 }
 
@@ -91,7 +129,7 @@
 
 .hint {
   font-size: 12px;
-  opacity: 0.75;
+  color: var(--app-muted);
   text-align: center;
   margin-top: 2px;
 }
@@ -99,7 +137,7 @@
 .footer {
   text-align: center;
   font-size: 13px;
-  opacity: 0.8;
+  color: var(--app-muted);
 }
 
 .footer a {
@@ -109,5 +147,9 @@
 @media (max-width: 599px) {
   .login {
     padding: 16px;
+  }
+
+  .login-inner {
+    grid-template-columns: 1fr;
   }
 }

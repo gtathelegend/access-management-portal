@@ -10,36 +10,36 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <div class="brand-block">
-    <div class="brand-mark">AMP</div>
-    <div class="brand-copy">
-      <div class="brand">Access Management</div>
-      <div class="brand-subtitle">Enterprise portal</div>
+  <div class="topbar-center">
+    <div class="search-shell">
+      <mat-icon aria-hidden="true">search</mat-icon>
+      <input type="text" placeholder="Search users, records..." aria-label="Search" />
+      <div class="shortcut">⌘ K</div>
     </div>
   </div>
 
-  <span class="spacer"></span>
+  <div class="topbar-actions">
+    @if (loading | async) {
+      <mat-progress-bar mode="indeterminate" class="loading-bar"></mat-progress-bar>
+    }
 
-  @if (loading | async) {
-    <mat-progress-bar mode="indeterminate" class="loading-bar"></mat-progress-bar>
-  }
+    <button mat-icon-button type="button" aria-label="Notifications" disabled>
+      <mat-icon>notifications_none</mat-icon>
+    </button>
 
-  <button mat-icon-button type="button" aria-label="Notifications" disabled>
-    <mat-icon>notifications</mat-icon>
-  </button>
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Toggle theme"
+      (click)="toggleTheme()"
+    >
+      <mat-icon>{{ themeMode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
 
-  <button
-    mat-icon-button
-    type="button"
-    aria-label="Toggle theme"
-    (click)="toggleTheme()"
-  >
-    <mat-icon>{{ themeMode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
-  </button>
-
-  <button mat-icon-button type="button" aria-label="User menu" [matMenuTriggerFor]="userMenu">
-    <mat-icon>account_circle</mat-icon>
-  </button>
+    <button class="avatar-button" mat-icon-button type="button" aria-label="User menu" [matMenuTriggerFor]="userMenu">
+      <span class="avatar-fallback">{{ avatarLabel }}</span>
+    </button>
+  </div>
 
   <mat-menu #userMenu="matMenu">
     <div class="user-summary" *ngIf="user() as u">

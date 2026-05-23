@@ -25,6 +25,13 @@
   </mat-nav-list>
 
   <div class="sidebar-footer">
-    <div class="footer-chip">Linear-inspired layout</div>
+    <div class="profile-card" *ngIf="user() as u">
+      <div class="profile-avatar">{{ avatarLabel }}</div>
+      <div class="profile-copy">
+        <div class="profile-name">{{ u.name }}</div>
+        <div class="profile-role">{{ u.role | titlecase }}</div>
+      </div>
+      <mat-icon class="profile-chevron">chevron_right</mat-icon>
+    </div>
   </div>
 </div>

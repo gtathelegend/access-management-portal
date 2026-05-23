@@ -9,6 +9,8 @@ export interface Env {
   port: number;
   mongoDbUri: string;
   corsOrigin?: string;
+  jwtSecret: string;
+  jwtExpiresIn: string;
 }
 
 const parseNodeEnv = (value: string | undefined): NodeEnv => {
@@ -31,4 +33,6 @@ export const env: Env = {
   port: Number(process.env.PORT ?? 3000),
   mongoDbUri: requireEnv('MONGODB_URI'),
   corsOrigin: process.env.CORS_ORIGIN,
+  jwtSecret: requireEnv('JWT_SECRET'),
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '1h',
 };

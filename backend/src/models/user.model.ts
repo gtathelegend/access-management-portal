@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import mongoose, { Schema, type HydratedDocument, type Model } from 'mongoose';
 
 export type UserRole = 'admin' | 'user';

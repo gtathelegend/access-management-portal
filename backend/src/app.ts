@@ -3,6 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 
 import { env } from './config/env.js';
+import { delayFromQuery } from './middleware/delay.middleware.js';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware.js';
 import { requestLogger } from './middleware/request-logger.middleware.js';
 import { v1Router } from './routes/v1/index.js';
@@ -28,7 +29,7 @@ export const createApp = () => {
     });
   });
 
-  app.use('/api/v1', v1Router);
+  app.use('/api/v1', delayFromQuery({ maxMs: 30_000 }), v1Router);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -55,3 +55,20 @@ This project consists of a frontend (Angular) and a backend (Node.js/Express).
 - `npm run build`: Build for production.
 - `npm run test`: Run unit tests.
 - `npm run lint`: Run Angular linting.
+
+## API Delay Simulation
+
+For testing loading states, the backend supports non-blocking artificial delays via a query parameter:
+
+- Example: `GET http://localhost:3000/api/v1/users?delay=2000`
+
+This is implemented as Express middleware using an async timer (does not block the Node.js event loop).
+
+Per-route usage (optional):
+
+```ts
+import { delayFromQuery, fixedDelay } from './middleware/delay.middleware.js';
+
+router.get('/slow', fixedDelay(500), handler);
+router.get('/maybe-slow', delayFromQuery(), handler);
+```

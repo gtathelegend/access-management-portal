@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 
 import { ThemeService } from './core/services/theme.service';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,11 @@ import { ThemeService } from './core/services/theme.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  constructor(private readonly themeService: ThemeService) {
+  private readonly themeService = inject(ThemeService);
+  private readonly authService = inject(AuthService);
+
+  constructor() {
     this.themeService.init();
+    this.authService.initFromStorage();
   }
 }

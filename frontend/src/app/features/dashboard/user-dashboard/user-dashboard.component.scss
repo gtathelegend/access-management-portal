@@ -1,3 +1,147 @@
 @use '../dashboard.styles' as shared;
 
 @include shared.dashboardLayout();
+
+.welcome {
+	margin-top: 4px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 16px;
+}
+
+.welcome-title {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.welcome-subtitle {
+	margin-top: 2px;
+	opacity: 0.75;
+}
+
+.layout {
+	margin-top: 16px;
+	display: grid;
+	grid-template-columns: 0.8fr 1.2fr;
+	gap: 16px;
+}
+
+.panel {
+	border-radius: 16px;
+}
+
+.profile-row {
+	display: grid;
+	grid-template-columns: 110px 1fr;
+	gap: 12px;
+	padding: 10px 0;
+}
+
+.label {
+	opacity: 0.75;
+}
+
+.value {
+	font-weight: 600;
+}
+
+.table-toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.search {
+	width: 100%;
+}
+.table-wrap {
+	overflow: auto;
+}
+
+table {
+	width: 100%;
+}
+
+.status {
+	font-weight: 600;
+}
+
+.mono {
+	font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;
+	font-size: 12px;
+	opacity: 0.85;
+}
+
+.state {
+	padding: 20px 8px;
+	display: grid;
+	gap: 8px;
+	justify-items: start;
+}
+
+.state-title {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.state-subtitle {
+	opacity: 0.75;
+	margin-bottom: 8px;
+}
+
+.table-skeleton {
+	display: grid;
+	gap: 10px;
+	padding: 8px 0 16px;
+}
+
+.skeleton-row {
+	height: 18px;
+	border-radius: 10px;
+	background: currentColor;
+	opacity: 0.08;
+	animation: pulse 1.2s ease-in-out infinite;
+}
+
+.skeleton-block {
+	height: 28px;
+	border-radius: 12px;
+	background: currentColor;
+	opacity: 0.08;
+	animation: pulse 1.2s ease-in-out infinite;
+}
+
+.skeleton-line {
+	height: 16px;
+	border-radius: 10px;
+	background: currentColor;
+	opacity: 0.08;
+	margin-top: 10px;
+	animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 0.06;
+	}
+	50% {
+		opacity: 0.12;
+	}
+	100% {
+		opacity: 0.06;
+	}
+}
+
+@media (max-width: 959px) {
+	.layout {
+		grid-template-columns: 1fr;
+	}
+
+	.welcome {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}

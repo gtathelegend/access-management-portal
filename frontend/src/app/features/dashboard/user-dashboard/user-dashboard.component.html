@@ -1,43 +1,136 @@
-<app-page-header title="Your dashboard" subtitle="Track your access requests and approvals"></app-page-header>
+<app-page-header
+  title="Your dashboard"
+  subtitle="Track your verification requests and approvals"
+></app-page-header>
 
-<div class="grid">
-  <mat-card class="stat">
-    <mat-card-title>My open requests</mat-card-title>
-    <div class="value">2</div>
-    <div class="hint">In review</div>
-  </mat-card>
+<section class="welcome">
+  <div class="welcome-text">
+    <div class="welcome-title">Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</div>
+    <div class="welcome-subtitle">Here’s a quick overview of your account and verification history.</div>
+  </div>
+  <div class="welcome-actions">
+    <button mat-stroked-button type="button" (click)="refresh()">
+      <mat-icon aria-hidden="true">refresh</mat-icon>
+      Refresh
+    </button>
+  </div>
+</section>
 
-  <mat-card class="stat">
-    <mat-card-title>Approved this month</mat-card-title>
-    <div class="value">5</div>
-    <div class="hint">Completed</div>
-  </mat-card>
-
-  <mat-card class="stat">
-    <mat-card-title>Access expiring</mat-card-title>
-    <div class="value">1</div>
-    <div class="hint">Next 14 days</div>
-  </mat-card>
-
-  <mat-card class="stat">
-    <mat-card-title>Connected apps</mat-card-title>
-    <div class="value">3</div>
-    <div class="hint">Assigned</div>
-  </mat-card>
-</div>
-
-<div class="two-col">
-  <mat-card class="panel">
-    <mat-card-title>Recent activity</mat-card-title>
+<div class="layout">
+  <mat-card class="panel profile">
+    <mat-card-title>Profile</mat-card-title>
     <mat-card-content>
-      <div class="placeholder">Wire this to audit logs.</div>
+      @if (user()) {
+        <div class="profile-row">
+          <div class="label">Name</div>
+          <div class="value">{{ user()!.name }}</div>
+        </div>
+        <div class="profile-row">
+          <div class="label">Email</div>
+          <div class="value">{{ user()!.email }}</div>
+        </div>
+        <div class="profile-row">
+          <div class="label">Role</div>
+          <div class="value">{{ user()!.role | titlecase }}</div>
+        </div>
+      } @else {
+        <div class="skeleton-block"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      }
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="panel">
-    <mat-card-title>Recommended access</mat-card-title>
+  <mat-card class="panel records">
+    <mat-card-title>Verification records</mat-card-title>
+
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
     <mat-card-content>
-      <div class="placeholder">Wire this to request templates.</div>
+      <div class="table-toolbar">
+        <mat-form-field appearance="outline" class="search">
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            [formControl]="filterControl"
+            placeholder="Type to filter by verification type, access level, status…"
+          />
+          <mat-icon matSuffix aria-hidden="true">search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      @if (errorMessage()) {
+        <div class="state error">
+          <div class="state-title">Couldn’t load records</div>
+          <div class="state-subtitle">{{ errorMessage() }}</div>
+          <button mat-raised-button type="button" (click)="refresh()">Retry</button>
+        </div>
+      } @else if (showEmptyState()) {
+        <div class="state empty">
+          <div class="state-title">No verification records yet</div>
+          <div class="state-subtitle">When you request access, your records will appear here.</div>
+        </div>
+      } @else {
+        @if (isLoading()) {
+          <div class="table-skeleton" aria-hidden="true">
+            @for (_ of [1, 2, 3, 4, 5, 6]; track $index) {
+              <div class="skeleton-row"></div>
+            }
+          </div>
+        } @else {
+          <div class="table-wrap">
+            <table mat-table [dataSource]="filteredRecords()" matSort (matSortChange)="onSortChange($event)">
+              <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="createdAt">Created</th>
+                <td mat-cell *matCellDef="let r">{{ r.createdAt | date: 'medium' }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="verificationType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="verificationType">Verification</th>
+                <td mat-cell *matCellDef="let r">{{ r.verificationType }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="accessLevel">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="accessLevel">Access level</th>
+                <td mat-cell *matCellDef="let r">{{ r.accessLevel }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</th>
+                <td mat-cell *matCellDef="let r">
+                  <span class="status">{{ r.status | titlecase }}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="approvedBy">
+                <th mat-header-cell *matHeaderCellDef>Approved by</th>
+                <td mat-cell *matCellDef="let r">
+                  @if (r.approvedBy) {
+                    <span class="mono">{{ r.approvedBy }}</span>
+                  } @else {
+                    <span style="opacity: 0.7">—</span>
+                  }
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+
+          <mat-divider></mat-divider>
+          <mat-paginator
+            [length]="total()"
+            [pageIndex]="pageIndex()"
+            [pageSize]="pageSize()"
+            [pageSizeOptions]="[5, 10, 20, 50]"
+            (page)="onPage($event)"
+          ></mat-paginator>
+        }
+      }
     </mat-card-content>
   </mat-card>
 </div>

@@ -72,3 +72,26 @@ import { delayFromQuery, fixedDelay } from './middleware/delay.middleware.js';
 router.get('/slow', fixedDelay(500), handler);
 router.get('/maybe-slow', delayFromQuery(), handler);
 ```
+
+## MongoDB Collection and Seed Data
+
+The backend creates these collections in MongoDB when seeded:
+
+- `users`
+- `records`
+
+Run the seed script from the backend folder:
+
+```bash
+cd backend
+npm run seed
+```
+
+Seeded demo accounts:
+
+- Admin: `admin@amp.local` / `Admin@1234`
+- User: `ava.carter@amp.local` / `User@1234`
+- User: `noah.patel@amp.local` / `User@1234`
+- Disabled user: `mia.gomez@amp.local` / `User@1234`
+
+Sample seeded records include approved, pending, and rejected verification entries so the dashboards have realistic data immediately after seeding.

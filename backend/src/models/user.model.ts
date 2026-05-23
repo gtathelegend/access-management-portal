@@ -36,7 +36,6 @@ const userSchema = new Schema<User, UserModelType, UserMethods>(
       type: String,
       required: [true, 'Email is required'],
       unique: true,
-      index: true,
       trim: true,
       lowercase: true,
       match: [EMAIL_REGEX, 'Email is invalid'],
@@ -73,8 +72,6 @@ const userSchema = new Schema<User, UserModelType, UserMethods>(
     versionKey: false,
   },
 );
-
-userSchema.index({ email: 1 }, { unique: true });
 
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) {

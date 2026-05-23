@@ -1,0 +1,35 @@
+<mat-toolbar class="topbar" color="primary">
+  <button
+    *ngIf="showMenuButton"
+    mat-icon-button
+    type="button"
+    aria-label="Open navigation"
+    (click)="menuToggle.emit()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <div class="brand">Access Management</div>
+
+  <span class="spacer"></span>
+
+  <button
+    mat-icon-button
+    type="button"
+    aria-label="Toggle theme"
+    (click)="toggleTheme()"
+  >
+    <mat-icon>{{ themeMode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+
+  <button mat-icon-button type="button" aria-label="User menu" [matMenuTriggerFor]="userMenu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item type="button" disabled>
+      <mat-icon>badge</mat-icon>
+      <span>Signed in</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

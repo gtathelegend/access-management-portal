@@ -21,18 +21,44 @@ $frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // system-level components such as typography and color.
-$frontend-theme: mat.define-light-theme((
+$frontend-light-theme: mat.define-light-theme((
   color: (
     primary: $frontend-primary,
     accent: $frontend-accent,
     warn: $frontend-warn,
-  )
+  ),
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($frontend-theme);
+$frontend-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $frontend-primary,
+    accent: $frontend-accent,
+    warn: $frontend-warn,
+  ),
+));
+
+// Scope the theme so we can toggle light/dark by switching a class on <body>.
+// This keeps all Material component colors consistent with the active mode.
+$app-grey: mat.define-palette(mat.$grey-palette);
+
+.theme-light {
+  @include mat.all-component-themes($frontend-light-theme);
+  --app-background: #{mat.get-color-from-palette($app-grey, 50)};
+  --app-foreground: #{mat.get-color-from-palette($app-grey, 900)};
+  --app-divider: #{mat.get-color-from-palette($app-grey, 200)};
+}
+
+.theme-dark {
+  @include mat.all-component-colors($frontend-dark-theme);
+  --app-background: #{mat.get-color-from-palette($app-grey, 900)};
+  --app-foreground: #{mat.get-color-from-palette($app-grey, 50)};
+  --app-divider: #{mat.get-color-from-palette($app-grey, 700)};
+}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: var(--app-background);
+  color: var(--app-foreground);
+}

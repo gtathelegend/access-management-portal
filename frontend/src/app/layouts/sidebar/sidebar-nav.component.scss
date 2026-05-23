@@ -1,0 +1,30 @@
+.sidebar {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+}
+
+.sidebar-header {
+  padding: 16px 16px 12px;
+  display: grid;
+  gap: 2px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.8px;
+}
+
+.subtitle {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.nav {
+  padding-top: 8px;
+}
+
+:host ::ng-deep .active {
+  font-weight: 600;
+}

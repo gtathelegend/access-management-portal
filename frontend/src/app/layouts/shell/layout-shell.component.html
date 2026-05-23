@@ -1,0 +1,21 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav
+    class="sidenav"
+    [mode]="isHandset() ? 'over' : 'side'"
+    [opened]="!isHandset() || sidenavOpened()"
+    (backdropClick)="closeSidenavIfHandset()"
+  >
+    <app-sidebar-nav></app-sidebar-nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <app-top-navbar
+      [showMenuButton]="isHandset()"
+      (menuToggle)="toggleSidenav()"
+    ></app-top-navbar>
+
+    <main class="page" (click)="closeSidenavIfHandset()">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

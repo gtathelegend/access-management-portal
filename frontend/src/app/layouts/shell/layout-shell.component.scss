@@ -1,0 +1,25 @@
+.shell {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 280px;
+}
+
+.content {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.page {
+  padding: 24px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 599px) {
+  .page {
+    padding: 16px;
+  }
+}

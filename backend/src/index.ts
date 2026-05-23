@@ -1,21 +1,38 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import helmet from 'helmet';
+import { connectDb, disconnectDb } from './config/db.js';
+import { env } from './config/env.js';
+import { createApp } from './app.js';
+import { logger } from './utils/logger.js';
 
-dotenv.config();
+const start = async (): Promise<void> => {
+  await connectDb(env.mongoDbUri);
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+  const app = createApp();
+  const server = app.listen(env.port, () => {
+    logger.info('server_started', {
+      port: env.port,
+      nodeEnv: env.nodeEnv,
+    });
+  });
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
+  const shutdown = async (signal: string) => {
+    logger.warn('shutdown', { signal });
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Access Management Portal API');
-});
+    server.close(async () => {
+      try {
+        await disconnectDb();
+      } finally {
+        process.exit(0);
+      }
+    });
+  };
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+  process.on('SIGINT', () => void shutdown('SIGINT'));
+  process.on('SIGTERM', () => void shutdown('SIGTERM'));
+};
+
+start().catch((err) => {
+  logger.error('startup_failed', {
+    err: err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : err,
+  });
+  process.exit(1);
 });

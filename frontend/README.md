@@ -25,3 +25,19 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Vercel Deployment
+
+This frontend is configured for static deployment on Vercel.
+
+- Production builds use `src/environments/environment.production.ts`.
+- The production API base URL defaults to `/api/v1`.
+- `vercel.json` rewrites `/api/v1/*` to your backend host and keeps client-side routes working.
+
+Before deploying, replace `https://YOUR_BACKEND_HOST.example.com` in `vercel.json` with your actual backend URL.
+
+Typical production build command:
+
+```bash
+npm run build
+```

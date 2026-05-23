@@ -4,6 +4,7 @@ import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core
 import { catchError, map, throwError } from 'rxjs';
 
 import type { AuthUser, LoginRequest, LoginResponse, UserRole } from '../models/auth.model';
+import { environment } from '../../../environments/environment';
 
 const STORAGE_TOKEN_KEY = 'amp.auth.token';
 const STORAGE_USER_KEY = 'amp.auth.user';
@@ -40,7 +41,7 @@ export class AuthService {
   }
 
   login(payload: LoginRequest) {
-    return this.http.post<LoginResponse>('/api/v1/auth/login', payload).pipe(
+    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, payload).pipe(
       map((res) => {
         this.persistAuth(res.token, res.user);
         return res;
@@ -91,7 +92,7 @@ export class AuthService {
       const message =
         (typeof err.error?.message === 'string' && err.error.message) ||
         (typeof err.error === 'string' && err.error) ||
-        (err.status === 0 ? 'Unable to reach server' : null) ||
+        (err.status === 0 ? `Unable to reach the API at ${environment.apiUrl}` : null) ||
         'Login failed';
 
       return new Error(message);

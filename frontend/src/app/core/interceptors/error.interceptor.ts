@@ -4,6 +4,7 @@ import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
@@ -31,11 +32,19 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           case 404:
             errorMessage = 'The requested resource was not found.';
             break;
+          case 502:
+          case 503:
+          case 504:
+            errorMessage = 'The service is temporarily unavailable. Please try again in a moment.';
+            break;
           case 500:
             errorMessage = 'Internal server error. Please try again later.';
             break;
           default:
-            errorMessage = error.error?.message || `Error Code: ${error.status}\nMessage: ${error.message}`;
+            errorMessage =
+              error.status === 0
+                ? `Unable to reach the API at ${environment.apiUrl}. Check that the backend is deployed and the Vercel rewrite points to the correct host.`
+                : error.error?.message || `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
       }
 

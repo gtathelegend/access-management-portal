@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 import type {
   AdminUser,
@@ -22,18 +23,18 @@ export class UsersService {
     if (params.status) httpParams = httpParams.set('status', params.status);
     if (params.q) httpParams = httpParams.set('q', params.q);
 
-    return this.http.get<UsersListResponse>('/api/v1/users', { params: httpParams });
+    return this.http.get<UsersListResponse>(`${environment.apiUrl}/users`, { params: httpParams });
   }
 
   createUser(payload: CreateUserRequest) {
-    return this.http.post<AdminUser>('/api/v1/users', payload);
+    return this.http.post<AdminUser>(`${environment.apiUrl}/users`, payload);
   }
 
   updateUser(id: string, payload: UpdateUserRequest) {
-    return this.http.put<AdminUser>(`/api/v1/users/${encodeURIComponent(id)}`, payload);
+    return this.http.put<AdminUser>(`${environment.apiUrl}/users/${encodeURIComponent(id)}`, payload);
   }
 
   deleteUser(id: string) {
-    return this.http.delete<void>(`/api/v1/users/${encodeURIComponent(id)}`);
+    return this.http.delete<void>(`${environment.apiUrl}/users/${encodeURIComponent(id)}`);
   }
 }

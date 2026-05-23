@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 import type { ListRecordsParams, RecordsListResponse, VerificationRecord } from '../models/record.model';
 
@@ -22,10 +23,10 @@ export class RecordsService {
     if (params.createdFrom) httpParams = httpParams.set('createdFrom', params.createdFrom);
     if (params.createdTo) httpParams = httpParams.set('createdTo', params.createdTo);
 
-    return this.http.get<RecordsListResponse>('/api/v1/records', { params: httpParams });
+    return this.http.get<RecordsListResponse>(`${environment.apiUrl}/records`, { params: httpParams });
   }
 
   getRecord(id: string) {
-    return this.http.get<VerificationRecord>(`/api/v1/records/${encodeURIComponent(id)}`);
+    return this.http.get<VerificationRecord>(`${environment.apiUrl}/records/${encodeURIComponent(id)}`);
   }
 }

@@ -1,13 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "buildCommand": "sed -i \"s|BACKEND_API_URL_PLACEHOLDER|${BACKEND_API_URL:-/api/v1}|g\" src/environments/environment.production.ts && npm run build",
   "outputDirectory": "dist/frontend/browser",
   "trailingSlash": false,
   "rewrites": [
-    {
-      "source": "/api/v1/:path*",
-      "destination": "https://YOUR_BACKEND_HOST.example.com/api/v1/:path*"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

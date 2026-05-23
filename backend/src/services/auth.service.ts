@@ -1,4 +1,4 @@
-import { sign, type Secret, type SignOptions } from 'jsonwebtoken';
+import jsonwebtoken, { type Secret, type SignOptions } from 'jsonwebtoken';
 
 import { AppError } from '../utils/app-error.js';
 import { env } from '../config/env.js';
@@ -50,7 +50,7 @@ export const loginWithEmailPassword = async (input: LoginInput): Promise<LoginRe
     expiresIn: env.jwtExpiresIn as SignOptions['expiresIn'],
   };
 
-  const token = sign(
+  const token = jsonwebtoken.sign(
     {
       sub: user.id,
       role: user.role,

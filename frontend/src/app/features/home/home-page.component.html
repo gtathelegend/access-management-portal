@@ -1,0 +1,123 @@
+<div class="home-wrapper">
+  <header class="home-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo-mark">
+          <span class="material-icons">shield</span>
+        </div>
+        <span class="brand-name">Access<span class="weight-light">Portal</span></span>
+      </div>
+      <nav class="nav-actions">
+        <app-button variant="ghost" size="sm" routerLink="/auth/login">Sign in</app-button>
+        <app-button variant="primary" size="sm" (btnClick)="goToApp()" class="btn-rounded">Open Portal</app-button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Trusted by Enterprise Teams
+        </div>
+        <h1 class="hero-title">
+          The Intelligent Layer for <span class="text-gradient">Access Control.</span>
+        </h1>
+        <p class="hero-description">
+          Modernize your organization's security posture with a streamlined platform for RBAC management, automated audits, and real-time operational visibility.
+        </p>
+        <div class="hero-cta">
+          <app-button variant="primary" size="lg" (btnClick)="goToApp()" class="btn-xl btn-rounded shadow-primary">
+            Get Started Now
+            <span class="material-icons btn-icon-right">arrow_forward</span>
+          </app-button>
+          <app-button variant="ghost" size="lg" class="btn-xl btn-rounded">
+            View Case Studies
+          </app-button>
+        </div>
+        <div class="hero-social-proof">
+          <span class="proof-label">Integrated with</span>
+          <div class="proof-icons">
+            <span class="material-icons">cloud</span>
+            <span class="material-icons">lock</span>
+            <span class="material-icons">hub</span>
+            <span class="material-icons">api</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-visual">
+        <div class="visual-orb"></div>
+        <div class="glass-card main-card">
+          <div class="card-header">
+            <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <div class="address-bar">api.access-portal.io/v1/audit</div>
+          </div>
+          <div class="card-body">
+            <div class="skeleton-line long"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-grid">
+              <div class="skeleton-box"></div>
+              <div class="skeleton-box"></div>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card side-card">
+          <div class="stat-icon"><span class="material-icons">verified_user</span></div>
+          <div class="stat-label">System Posture</div>
+          <div class="stat-value">Robust</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Engineered for Modern Compliance</h2>
+        <p class="section-subtitle">A unified experience for security teams and end users alike.</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box blue">
+            <span class="material-icons">security</span>
+          </div>
+          <h3 class="feature-name">RBAC Enforcement</h3>
+          <p class="feature-desc">Pixel-perfect permission management with granular role definitions that scale with your team.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon-box purple">
+            <span class="material-icons">history</span>
+          </div>
+          <h3 class="feature-name">Audit Trails</h3>
+          <p class="feature-desc">Immutable records of every access request, approval, and rejection for total compliance confidence.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon-box green">
+            <span class="material-icons">insights</span>
+          </div>
+          <h3 class="feature-name">Real-time Analytics</h3>
+          <p class="feature-desc">Live operational snapshots and trend analysis to help you stay ahead of potential security gaps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="home-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="brand-name">Access<span class="weight-light">Portal</span></span>
+        <p class="footer-copy">&copy; 2026 Access Portal Enterprise. Crafted for security excellence.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </footer>
+</div>

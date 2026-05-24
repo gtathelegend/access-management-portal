@@ -45,6 +45,12 @@
   color: var(--text-secondary);
 }
 
+.hero-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .main-grid {
   display: grid;
   grid-template-columns: 320px minmax(0, 1fr);
@@ -155,6 +161,12 @@
 .table-toolbar {
   margin-bottom: var(--space-section);
   max-width: 420px;
+}
+
+.records-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-normal);
 }
 
 .mono {

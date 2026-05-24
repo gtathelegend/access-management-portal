@@ -22,6 +22,8 @@ export interface UsersListResponse {
 export interface ListUsersParams {
   page?: number;
   limit?: number;
+  sortBy?: 'createdAt' | 'name' | 'email' | 'role' | 'status';
+  sortOrder?: 'asc' | 'desc';
   role?: UserRole;
   status?: UserStatus;
   q?: string;

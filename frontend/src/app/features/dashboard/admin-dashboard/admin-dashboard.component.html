@@ -3,7 +3,7 @@
     <div class="hero-eyebrow">Operations console</div>
     <h1 class="hero-title">Welcome back, {{ welcomeName }}</h1>
     <p class="hero-subtitle">
-      Review access approvals, track portal health, and manage the directory from a calmer, more spacious workspace.
+      Review portal health, monitor access posture, and jump into the dedicated management routes when you need deeper control.
     </p>
     <div class="hero-chips">
       <span class="app-chip">Enterprise ready</span>
@@ -17,9 +17,13 @@
       <span class="material-icons">refresh</span>
       Refresh
     </app-button>
-    <app-button variant="primary" size="sm" (btnClick)="openCreateUser()">
-      <span class="material-icons">person_add</span>
-      Add user
+    <app-button variant="primary" size="sm" (btnClick)="goToUsers()">
+      <span class="material-icons">group</span>
+      View users
+    </app-button>
+    <app-button variant="primary" size="sm" (btnClick)="goToRecords()">
+      <span class="material-icons">assignment</span>
+      View records
     </app-button>
   </div>
 </section>
@@ -35,115 +39,61 @@
   } @else {
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
-        <div class="stat-bubble blue"><span class="material-icons">group</span></div>
-        <span class="stat-trend success">All accounts</span>
-      </div>
-      <div class="stat-data">
         <span class="stat-label">Total users</span>
-        <h3 class="stat-value">{{ stats().totalUsers }}</h3>
+        <span class="material-icons stat-icon">people</span>
       </div>
+      <h3 class="stat-value">{{ stats().totalUsers }}</h3>
     </app-card>
-
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
-        <div class="stat-bubble green"><span class="material-icons">verified_user</span></div>
-        <span class="stat-trend success">Enabled</span>
+        <span class="stat-label">Active</span>
+        <span class="material-icons stat-icon">how_to_reg</span>
       </div>
-      <div class="stat-data">
-        <span class="stat-label">Active users</span>
-        <h3 class="stat-value">{{ stats().activeUsers }}</h3>
-      </div>
+      <h3 class="stat-value">{{ stats().activeUsers }}</h3>
     </app-card>
-
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
-        <div class="stat-bubble purple"><span class="material-icons">admin_panel_settings</span></div>
-        <span class="stat-trend">Privileged</span>
+        <span class="stat-label">Admins</span>
+        <span class="material-icons stat-icon">admin_panel_settings</span>
       </div>
-      <div class="stat-data">
-        <span class="stat-label">Administrators</span>
-        <h3 class="stat-value">{{ stats().adminCount }}</h3>
-      </div>
+      <h3 class="stat-value">{{ stats().adminCount }}</h3>
     </app-card>
-
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
-        <div class="stat-bubble warning"><span class="material-icons">pending_actions</span></div>
-        <span class="stat-trend warning">Needs review</span>
+        <span class="stat-label">Pending reviews</span>
+        <span class="material-icons stat-icon">pending_actions</span>
       </div>
-      <div class="stat-data">
-        <span class="stat-label">Pending</span>
-        <h3 class="stat-value">{{ stats().pendingVerifications }}</h3>
-      </div>
+      <h3 class="stat-value">{{ stats().pendingVerifications }}</h3>
     </app-card>
-
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
-        <div class="stat-bubble neutral"><span class="material-icons">block</span></div>
-        <span class="stat-trend">Restricted</span>
+        <span class="stat-label">Disabled</span>
+        <span class="material-icons stat-icon">person_off</span>
       </div>
-      <div class="stat-data">
-        <span class="stat-label">Disabled users</span>
-        <h3 class="stat-value">{{ stats().disabledUsers }}</h3>
-      </div>
+      <h3 class="stat-value">{{ stats().disabledUsers }}</h3>
     </app-card>
-
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
-        <div class="stat-bubble blue"><span class="material-icons">schedule</span></div>
-        <span class="stat-trend success">Recent</span>
+        <span class="stat-label">Recent events</span>
+        <span class="material-icons stat-icon">history</span>
       </div>
-      <div class="stat-data">
-        <span class="stat-label">Activity window</span>
-        <h3 class="stat-value">{{ stats().recentActivityCount }}</h3>
-      </div>
+      <h3 class="stat-value">{{ stats().recentActivityCount }}</h3>
     </app-card>
   }
 </section>
 
 <section class="main-grid">
   <div class="content-column">
-    <app-card title="User directory" subtitle="Manage account access, roles, and lifecycle status" eyebrow="Primary workspace" [divider]="true">
-      <div class="table-filters">
-        <app-input
-          [formControl]="searchControl"
-          placeholder="Search users"
-          icon="search"
-          [pill]="true"
-          size="sm"
-          helperText="Name or email"
-        ></app-input>
-
-        <div class="filter-group">
-          <mat-form-field appearance="outline" class="compact-select">
-            <mat-select [formControl]="roleControl" placeholder="All Roles">
-              <mat-option value="">All roles</mat-option>
-              <mat-option value="admin">Admin</mat-option>
-              <mat-option value="user">User</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="compact-select">
-            <mat-select [formControl]="statusControl" placeholder="All Status">
-              <mat-option value="">All status</mat-option>
-              <mat-option value="active">Active</mat-option>
-              <mat-option value="disabled">Disabled</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-
+    <app-card title="Recent users" subtitle="A live snapshot of the latest accounts" eyebrow="Overview" [divider]="true">
       @if (isLoading()) {
-        <app-skeleton-table [rows]="8" [columns]="5"></app-skeleton-table>
-      }
-
-      @if (errorMessage()) {
+        <app-skeleton-table [rows]="5" [columns]="3"></app-skeleton-table>
+      } @else if (errorMessage()) {
         <app-error-retry [errorMessage]="errorMessage()" (retry)="refreshAll()"></app-error-retry>
-      } @else if (showEmptyState()) {
+      } @else if (items().length === 0) {
         <div class="empty-state">
           <span class="material-icons">group_off</span>
-          <h3>No users found</h3>
-          <p>Try adjusting search or filters.</p>
+          <h3>No users yet</h3>
+          <p>Use the dedicated users page for full management.</p>
         </div>
       } @else {
         <app-table>
@@ -151,10 +101,8 @@
             <th>User</th>
             <th>Role</th>
             <th>Status</th>
-            <th>Joined</th>
-            <th class="text-right">Actions</th>
           </tr>
-          @for (user of items(); track user.id) {
+          @for (user of items().slice(0, 5); track user.id) {
             <tr appTableBody>
               <td>
                 <div class="user-cell">
@@ -165,40 +113,16 @@
                   </div>
                 </div>
               </td>
-              <td>
-                <app-badge [variant]="user.role === 'admin' ? 'purple' : 'primary'" size="sm">
-                  {{ user.role }}
-                </app-badge>
-              </td>
-              <td>
-                <app-badge [variant]="user.status === 'active' ? 'success' : 'gray'" size="sm">
-                  {{ user.status }}
-                </app-badge>
-              </td>
-              <td>{{ user.createdAt | date:'mediumDate' }}</td>
-              <td class="text-right">
-                <div class="row-actions">
-                  <app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="openEditUser(user)">
-                    <span class="material-icons">edit</span>
-                  </app-button>
-                  <app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="confirmDelete(user)">
-                    <span class="material-icons danger">delete</span>
-                  </app-button>
-                </div>
-              </td>
+              <td><app-badge [variant]="user.role === 'admin' ? 'purple' : 'primary'" size="sm">{{ user.role }}</app-badge></td>
+              <td><app-badge [variant]="user.status === 'active' ? 'success' : 'gray'" size="sm">{{ user.status }}</app-badge></td>
             </tr>
           }
         </app-table>
-
-        <mat-paginator
-          class="custom-paginator"
-          [length]="total()"
-          [pageIndex]="pageIndex()"
-          [pageSize]="pageSize()"
-          [pageSizeOptions]="[5, 10, 20]"
-          (page)="onPage($event)"
-        ></mat-paginator>
       }
+
+      <div class="card-actions">
+        <app-button variant="ghost" size="sm" (btnClick)="goToUsers()"><span class="material-icons">group</span>Open users</app-button>
+      </div>
     </app-card>
   </div>
 
@@ -207,7 +131,7 @@
       <app-skeleton-chart kind="pie"></app-skeleton-chart>
       <app-skeleton-card [showHeader]="true"></app-skeleton-card>
     } @else {
-      <app-card title="Verification" subtitle="Live access posture" eyebrow="Secondary panel" [divider]="true" class="insight-card">
+      <app-card title="Access posture" subtitle="Live operational summary" eyebrow="Insights" [divider]="true" class="insight-card">
         <div class="chart-box">
           <div class="ring-chart">
             <div class="ring-center">
@@ -217,30 +141,14 @@
           </div>
         </div>
         <div class="legend-list">
-          <div class="legend-item">
-            <div class="legend-dot green"></div>
-            <span class="legend-name">Active accounts</span>
-            <span class="legend-val">{{ stats().activeUsers }}</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot purple"></div>
-            <span class="legend-name">Admins</span>
-            <span class="legend-val">{{ stats().adminCount }}</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot warning"></div>
-            <span class="legend-name">Pending reviews</span>
-            <span class="legend-val">{{ stats().pendingVerifications }}</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot neutral"></div>
-            <span class="legend-name">Disabled accounts</span>
-            <span class="legend-val">{{ stats().disabledUsers }}</span>
-          </div>
+          <div class="legend-item"><div class="legend-dot green"></div><span class="legend-name">Active accounts</span><span class="legend-val">{{ stats().activeUsers }}</span></div>
+          <div class="legend-item"><div class="legend-dot purple"></div><span class="legend-name">Admins</span><span class="legend-val">{{ stats().adminCount }}</span></div>
+          <div class="legend-item"><div class="legend-dot warning"></div><span class="legend-name">Pending reviews</span><span class="legend-val">{{ stats().pendingVerifications }}</span></div>
+          <div class="legend-item"><div class="legend-dot neutral"></div><span class="legend-name">Disabled accounts</span><span class="legend-val">{{ stats().disabledUsers }}</span></div>
         </div>
       </app-card>
 
-      <app-card title="Recent activity" subtitle="Latest system events" eyebrow="Workspace feed" [divider]="true" class="insight-card">
+      <app-card title="Recent activity" subtitle="Latest system events" eyebrow="Feed" [divider]="true" class="insight-card">
         <div class="activity-feed">
           <div class="activity-item">
             <div class="activity-line"></div>
@@ -265,6 +173,13 @@
               <span class="activity-time">Yesterday</span>
             </div>
           </div>
+        </div>
+      </app-card>
+
+      <app-card title="Quick links" subtitle="Dedicated workspaces" eyebrow="Navigation" [divider]="true" class="insight-card">
+        <div class="quick-links">
+          <app-button variant="primary" size="sm" (btnClick)="goToUsers()"><span class="material-icons">group</span>Users</app-button>
+          <app-button variant="primary" size="sm" (btnClick)="goToRecords()"><span class="material-icons">assignment</span>Records</app-button>
         </div>
       </app-card>
     }

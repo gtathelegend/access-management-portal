@@ -48,11 +48,15 @@ export const routes: Routes = [
 			},
 			{
 				path: 'users',
+				canActivate: [roleGuard],
+				data: { roles: ['admin'] },
 				loadComponent: () =>
 					import('./features/users/users-page.component').then((m) => m.UsersPageComponent),
 			},
 			{
 				path: 'records',
+				canActivate: [roleGuard],
+				data: { roles: ['admin', 'user'] },
 				loadComponent: () =>
 					import('./features/records/records-page.component').then((m) => m.RecordsPageComponent),
 			},

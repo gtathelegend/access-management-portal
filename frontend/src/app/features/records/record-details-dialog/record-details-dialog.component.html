@@ -1,0 +1,16 @@
+<app-modal [title]="'Record details'" [subtitle]="data.record.verificationType" [icon]="'assignment'" [compact]="true">
+  <div class="details-grid">
+    <div class="detail-item"><span class="detail-label">Record ID</span><span class="detail-value mono">{{ data.record._id }}</span></div>
+    <div class="detail-item"><span class="detail-label">User</span><span class="detail-value">{{ data.userLabel }}</span></div>
+    <div class="detail-item"><span class="detail-label">Verification type</span><span class="detail-value">{{ data.record.verificationType }}</span></div>
+    <div class="detail-item"><span class="detail-label">Status</span><span class="detail-value">{{ data.record.status }}</span></div>
+    <div class="detail-item"><span class="detail-label">Access level</span><span class="detail-value">{{ data.record.accessLevel }}</span></div>
+    <div class="detail-item"><span class="detail-label">Approved by</span><span class="detail-value mono">{{ data.record.approvedBy ?? '—' }}</span></div>
+    <div class="detail-item"><span class="detail-label">Created</span><span class="detail-value">{{ data.record.createdAt | date:'medium' }}</span></div>
+    <div class="detail-item"><span class="detail-label">Updated</span><span class="detail-value">{{ data.record.updatedAt | date:'medium' }}</span></div>
+  </div>
+
+  <div modalFooter class="detail-actions">
+    <app-button variant="primary" size="sm" (btnClick)="close()">Close</app-button>
+  </div>
+</app-modal>

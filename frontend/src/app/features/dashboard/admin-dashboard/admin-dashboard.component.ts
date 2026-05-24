@@ -15,6 +15,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
@@ -70,6 +71,7 @@ export class AdminDashboardComponent {
   private readonly statsService = inject(StatsService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly destroyRef = inject(DestroyRef);
   readonly currentUser = this.authService.currentUser;
@@ -177,6 +179,14 @@ export class AdminDashboardComponent {
   refreshAll(): void {
     this.loadStats();
     this.loadUsers();
+  }
+
+  goToUsers(): void {
+    this.router.navigate(['/users']);
+  }
+
+  goToRecords(): void {
+    this.router.navigate(['/records']);
   }
 
   onPage(e: PageEvent): void {

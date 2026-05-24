@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
 import { AppError } from '../utils/app-error.js';
-import { createUser, deleteUser, listUsers, updateUser } from '../services/users.service.js';
+import { createUser, deleteUser, listUsers, updateUser, type UserSortBy, type UserSortOrder } from '../services/users.service.js';
 import type { UserRole, UserStatus } from '../models/user.model.js';
 
 interface CreateUserBody {
@@ -38,6 +38,18 @@ const parseStatus = (value: unknown): UserStatus | undefined => {
   return undefined;
 };
 
+const parseSortBy = (value: unknown): UserSortBy => {
+  if (value === 'name' || value === 'email' || value === 'role' || value === 'status' || value === 'createdAt') {
+    return value;
+  }
+  return 'createdAt';
+};
+
+const parseSortOrder = (value: unknown): UserSortOrder => {
+  if (value === 'asc' || value === 'desc') return value;
+  return 'desc';
+};
+
 const requireAdminAuth = (req: Request) => {
   if (!req.auth) {
     throw new AppError('Unauthorized', 401);
@@ -52,6 +64,8 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
   const page = Math.max(1, Math.floor(parseNumber(req.query.page) ?? 1));
   const limit = Math.min(100, Math.max(1, Math.floor(parseNumber(req.query.limit) ?? 20)));
+  const sortBy = parseSortBy(req.query.sortBy);
+  const sortOrder = parseSortOrder(req.query.sortOrder);
 
   const role = parseRole(req.query.role);
   const status = parseStatus(req.query.status);
@@ -60,6 +74,8 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
   const result = await listUsers({
     page,
     limit,
+    sortBy,
+    sortOrder,
     filters: {
       role,
       status,

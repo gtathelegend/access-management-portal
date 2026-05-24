@@ -3,14 +3,20 @@
     <div class="hero-eyebrow">Personal dashboard</div>
     <h1 class="hero-title">Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</h1>
     <p class="hero-subtitle">
-      Track your verification history and keep an eye on the account details tied to your workspace access.
+      Review your current access posture and jump to the dedicated records workspace for the full history view.
     </p>
   </div>
 
-  <app-button variant="ghost" size="sm" (btnClick)="refresh()">
-    <span class="material-icons">refresh</span>
-    Refresh
-  </app-button>
+  <div class="hero-actions">
+    <app-button variant="ghost" size="sm" (btnClick)="refresh()">
+      <span class="material-icons">refresh</span>
+      Refresh
+    </app-button>
+    <app-button variant="primary" size="sm" (btnClick)="goToRecords()">
+      <span class="material-icons">assignment</span>
+      View records
+    </app-button>
+  </div>
 </section>
 
 <section class="main-grid">
@@ -54,20 +60,20 @@
   </aside>
 
   <div class="content-column">
-    <app-card title="Verification records" subtitle="Your access request history" eyebrow="Workspace history" [divider]="true">
+    <app-card title="Recent records" subtitle="A quick read on your latest verification activity" eyebrow="Workspace history" [divider]="true">
       <div class="table-toolbar">
         <app-input
           [formControl]="filterControl"
-          placeholder="Filter records"
+          placeholder="Filter loaded records"
           icon="filter_list"
           [pill]="true"
           size="sm"
-          helperText="Search type, status, or approver"
+          helperText="Search type, status, approver, or date"
         ></app-input>
       </div>
 
       @if (isLoading()) {
-        <app-skeleton-table [rows]="8" [columns]="5"></app-skeleton-table>
+        <app-skeleton-table [rows]="5" [columns]="5"></app-skeleton-table>
       }
 
       @if (errorMessage()) {
@@ -77,6 +83,7 @@
           <span class="material-icons">assignment_late</span>
           <h3>No records yet</h3>
           <p>When you request access, your records will appear here.</p>
+          <app-button variant="primary" size="sm" (btnClick)="goToRecords()">Open records</app-button>
         </div>
       } @else {
         <app-table>
@@ -87,7 +94,7 @@
             <th>Status</th>
             <th>Approved by</th>
           </tr>
-          @for (record of filteredRecords(); track record._id) {
+          @for (record of filteredRecords().slice(0, 5); track record._id) {
             <tr appTableBody>
               <td>{{ record.createdAt | date: 'medium' }}</td>
               <td>{{ record.verificationType }}</td>
@@ -104,14 +111,9 @@
           }
         </app-table>
 
-        <mat-paginator
-          class="custom-paginator"
-          [length]="total()"
-          [pageIndex]="pageIndex()"
-          [pageSize]="pageSize()"
-          [pageSizeOptions]="[5, 10, 20]"
-          (page)="onPage($event)"
-        ></mat-paginator>
+        <div class="records-actions">
+          <app-button variant="ghost" size="sm" (btnClick)="goToRecords()"><span class="material-icons">assignment</span>Open full records</app-button>
+        </div>
       }
     </app-card>
   </div>

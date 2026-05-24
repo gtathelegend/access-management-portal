@@ -9,13 +9,21 @@
 
 Modern enterprise-grade role-based access management platform built with Angular and Node.js.
 
-Access Management Portal is a premium SaaS-style dashboard that demonstrates secure authentication, RBAC, admin user management, analytics, responsive layout engineering, and polished async UX. It is designed to feel like a production enterprise product while remaining easy to inspect as a portfolio project.
+Access Management Portal is a premium SaaS-style platform that demonstrates secure authentication, RBAC, dedicated user and records management pages, analytics, responsive layout engineering, and polished async UX. It is designed to feel like a production enterprise product while remaining easy to inspect as a portfolio project.
 
 ## Project Preview
 
-### Dashboard
+### Dashboard Overview
 
-![Dashboard Screenshot](screenshots/dashboard.png)
+![Dashboard Overview](screenshots/dashboard-overview.png)
+
+### Users Page
+
+![Users Page](screenshots/users-page.png)
+
+### Records Page
+
+![Records Page](screenshots/records-page.png)
 
 ### Login
 
@@ -69,17 +77,18 @@ The application supports:
 
 ### Admin Features
 
-- User management dashboard
-- Create, edit, and delete users
+- Dedicated user management page at `/users`
+- Create, edit, disable, and delete users
 - Role assignment and status management
+- Dedicated records page at `/records`
 - Analytics and operational stats
 - Pending verification monitoring
-- Activity-oriented admin workspace
+- Overview-only admin dashboard with route shortcuts
 
 ### User Features
 
-- Personalized dashboard
-- Records table with filtering and search
+- Personalized dashboard overview
+- Dedicated records page for verification history
 - Verification status visibility
 - Responsive profile-oriented layout
 - Scoped access to user-specific data
@@ -781,21 +790,19 @@ The backend exposes versioned REST endpoints under `/api/v1`, while the frontend
   - `admin` → `/dashboard/admin`
   - `user` → `/dashboard/user`
 - Admin-only routes are protected via a role guard (non-admins are redirected back to `/dashboard`).
+- `/users` is admin-only and `/records` is available to both `admin` and `user` roles.
 
 ### Admin Dashboard (`/dashboard/admin`)
 
 - “Operations console” overview cards are calculated from API totals (users + pending verifications).
-- User directory supports:
-  - Search by name/email (debounced)
-  - Role/status filters
-  - Server-side pagination
-  - CRUD flows with dialogs + confirm delete
-- Empty states and retry UI are shown when there are no results or when the API is unreachable.
+- The dashboard now shows overview snapshots rather than the full CRUD directory.
+- Quick actions route to `/users` and `/records` for full management.
+- Empty states and retry UI are shown when the API is unreachable.
 
 ### User Dashboard (`/dashboard/user`)
 
-- Shows the logged-in user’s verification records (API enforces scoping).
-- Supports sort + pagination, and a quick filter box for client-side searching.
+- Shows a compact snapshot of the logged-in user’s verification records.
+- Supports quick filtering on the loaded subset and includes a shortcut to `/records`.
 - Includes loading states, empty states, and a retry action.
 
 ### Analytics (`/analytics`)
@@ -807,7 +814,7 @@ The backend exposes versioned REST endpoints under `/api/v1`, while the frontend
 
 ### Notes
 
-- `/users` and `/records` pages exist but currently contain placeholder UI; the “live” functionality is in the dashboards above.
+- `/users` and `/records` are now dedicated management pages, while the dashboards are overview-only.
 - SSR/prerender paths avoid making API calls while rendering on the server (browser-only fetch).
 
 ## Tech Stack
@@ -1124,14 +1131,15 @@ Recommended runtime settings:
 Add screenshots here to showcase the app in action:
 
 - Login page
-- User dashboard
-- Admin dashboard
+- Dashboard overview
+- Users page
+- Records page
 - Analytics dashboard
 
 Suggested location:
 
 ```txt
-docs/screenshots/
+screenshots/
 ```
 
 ## Test Credentials

@@ -19,6 +19,8 @@ export class UsersService {
 
     if (typeof params.page === 'number') httpParams = httpParams.set('page', String(params.page));
     if (typeof params.limit === 'number') httpParams = httpParams.set('limit', String(params.limit));
+    if (params.sortBy) httpParams = httpParams.set('sortBy', params.sortBy);
+    if (params.sortOrder) httpParams = httpParams.set('sortOrder', params.sortOrder);
     if (params.role) httpParams = httpParams.set('role', params.role);
     if (params.status) httpParams = httpParams.set('status', params.status);
     if (params.q) httpParams = httpParams.set('q', params.q);

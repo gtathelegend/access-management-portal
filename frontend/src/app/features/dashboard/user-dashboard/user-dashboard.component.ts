@@ -13,6 +13,7 @@ import { MatPaginatorModule, type PageEvent } from '@angular/material/paginator'
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSortModule, type Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
@@ -58,6 +59,7 @@ import type { RecordSortBy, SortOrder, VerificationRecord } from '../../../core/
 export class UserDashboardComponent {
   private readonly authService = inject(AuthService);
   private readonly recordsService = inject(RecordsService);
+  private readonly router = inject(Router);
   private readonly platformId = inject(PLATFORM_ID);
 
   readonly user = this.authService.currentUser;
@@ -126,6 +128,10 @@ export class UserDashboardComponent {
     }
 
     this.loadRecords();
+  }
+
+  goToRecords(): void {
+    this.router.navigate(['/records']);
   }
 
   onPage(e: PageEvent): void {

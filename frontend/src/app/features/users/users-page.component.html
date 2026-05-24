@@ -1,9 +1,68 @@
 <app-page-header
   title="Users"
-  subtitle="Manage account directory and permissions"
+  subtitle="Dedicated enterprise directory for search, filtering, sorting, and role management"
   eyebrow="Directory"
 ></app-page-header>
 
-<app-card title="User Directory">
-  <div class="placeholder">Connect this to user management APIs.</div>
+<section class="stats-grid">
+  @if (statsLoading()) {
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+  } @else {
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Total users</span><h3 class="stat-value">{{ stats().totalUsers }}</h3></app-card>
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Active users</span><h3 class="stat-value">{{ stats().activeUsers }}</h3></app-card>
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Admins</span><h3 class="stat-value">{{ stats().adminCount }}</h3></app-card>
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Disabled</span><h3 class="stat-value">{{ stats().disabledUsers }}</h3></app-card>
+  }
+</section>
+
+<app-card title="User Management" subtitle="Search, sort, and manage accounts from one dedicated workspace" eyebrow="Administration" [divider]="true">
+  <div class="toolbar">
+    <app-input [formControl]="searchControl" placeholder="Search users" icon="search" [pill]="true" size="sm" helperText="Search name or email"></app-input>
+    <div class="toolbar-actions">
+      <app-button variant="ghost" size="sm" (btnClick)="refreshAll()"><span class="material-icons">refresh</span>Refresh</app-button>
+      <app-button variant="primary" size="sm" (btnClick)="openCreateUser()"><span class="material-icons">person_add</span>Add user</app-button>
+    </div>
+  </div>
+
+  <div class="filters-grid">
+    <mat-form-field appearance="outline"><mat-label>Role</mat-label><mat-select [formControl]="roleControl"><mat-option value="">All roles</mat-option><mat-option value="admin">Admin</mat-option><mat-option value="user">User</mat-option></mat-select></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>Status</mat-label><mat-select [formControl]="statusControl"><mat-option value="">All statuses</mat-option><mat-option value="active">Active</mat-option><mat-option value="disabled">Disabled</mat-option></mat-select></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>Sort by</mat-label><mat-select [formControl]="sortByControl"><mat-option value="createdAt">Created</mat-option><mat-option value="name">Name</mat-option><mat-option value="email">Email</mat-option><mat-option value="role">Role</mat-option><mat-option value="status">Status</mat-option></mat-select></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>Order</mat-label><mat-select [formControl]="sortOrderControl"><mat-option value="desc">Newest first</mat-option><mat-option value="asc">Oldest first</mat-option></mat-select></mat-form-field>
+  </div>
+
+  @if (usersLoading()) {
+    <app-skeleton-table [rows]="8" [columns]="7"></app-skeleton-table>
+  }
+
+  @if (errorMessage()) {
+    <app-error-retry [errorMessage]="errorMessage()" (retry)="refreshAll()"></app-error-retry>
+  } @else if (showEmptyState()) {
+    <div class="empty-state"><span class="material-icons">group_off</span><h3>No users found</h3><p>Adjust filters or create a new account.</p></div>
+  } @else {
+    <app-table>
+      <tr appTableHeader>
+        <th>User</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Joined</th>
+        <th class="text-right">Actions</th>
+      </tr>
+
+      @for (user of items(); track user.id) {
+        <tr appTableBody>
+          <td><div class="user-cell"><div class="user-avatar">{{ user.name.charAt(0) }}</div><div class="user-meta"><span class="user-name">{{ user.name }}</span><span class="user-email">{{ user.email }}</span></div></div></td>
+          <td><app-badge [variant]="user.role === 'admin' ? 'purple' : 'primary'" size="sm">{{ user.role }}</app-badge></td>
+          <td><app-badge [variant]="user.status === 'active' ? 'success' : 'gray'" size="sm">{{ user.status }}</app-badge></td>
+          <td>{{ user.createdAt | date:'mediumDate' }}</td>
+          <td class="text-right"><div class="row-actions"><app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="openEditUser(user)"><span class="material-icons">edit</span></app-button><app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="toggleStatus(user)"><span class="material-icons">{{ user.status === 'active' ? 'block' : 'check_circle' }}</span></app-button><app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="confirmDelete(user)"><span class="material-icons danger">delete</span></app-button></div></td>
+        </tr>
+      }
+    </app-table>
+
+    <mat-paginator class="custom-paginator" [length]="total()" [pageIndex]="pageIndex()" [pageSize]="pageSize()" [pageSizeOptions]="[5, 10, 20]" (page)="onPage($event)"></mat-paginator>
+  }
 </app-card>

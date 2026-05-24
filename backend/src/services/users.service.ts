@@ -17,9 +17,14 @@ export interface UserListFilters {
   q?: string;
 }
 
+export type UserSortBy = 'createdAt' | 'name' | 'email' | 'role' | 'status';
+export type UserSortOrder = 'asc' | 'desc';
+
 export interface ListUsersInput {
   page: number;
   limit: number;
+  sortBy?: UserSortBy;
+  sortOrder?: UserSortOrder;
   filters: UserListFilters;
 }
 
@@ -87,10 +92,13 @@ export const listUsers = async (input: ListUsersInput): Promise<PaginatedResult<
     filter.$or = [{ name: re }, { email: re }];
   }
 
+  const sortDirection = input.sortOrder === 'asc' ? 1 : -1;
+  const sortField = input.sortBy ?? 'createdAt';
+
   const [items, total] = await Promise.all([
     UserModel.find(filter)
       .select('name email role status createdAt updatedAt')
-      .sort({ createdAt: -1, _id: -1 })
+      .sort({ [sortField]: sortDirection, _id: -1 })
       .skip(skip)
       .limit(input.limit)
       .lean<Array<{ _id: mongoose.Types.ObjectId; name: string; email: string; role: UserRole; status: UserStatus; createdAt: Date; updatedAt: Date }>>()

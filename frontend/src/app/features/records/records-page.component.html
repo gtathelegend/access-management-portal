@@ -1,9 +1,68 @@
 <app-page-header
   title="Records"
-  subtitle="Browse access records and audit trails"
+  subtitle="Dedicated records workspace for browsing verification history, filtering access status, and opening full record details"
   eyebrow="Audit"
 ></app-page-header>
 
-<app-card title="Access Records">
-  <div class="placeholder">Connect this to audit/records APIs.</div>
+<section class="stats-grid">
+  @if (statsLoading()) {
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+  } @else {
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Pending</span><h3 class="stat-value">{{ stats().pendingVerifications }}</h3></app-card>
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Approved</span><h3 class="stat-value">{{ statusCount('approved') }}</h3></app-card>
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Rejected</span><h3 class="stat-value">{{ statusCount('rejected') }}</h3></app-card>
+    <app-card [compact]="true" class="stat-card"><span class="stat-label">Recent activity</span><h3 class="stat-value">{{ stats().recentActivityCount }}</h3></app-card>
+  }
+</section>
+
+<app-card title="Access Records" subtitle="Search, filter, sort, and inspect verification records" eyebrow="Audit trail" [divider]="true">
+  <div class="toolbar">
+    <app-input [formControl]="searchControl" placeholder="Search records" icon="search" [pill]="true" size="sm" helperText="Record ID, type, status, approver, or user"></app-input>
+    <div class="toolbar-actions">
+      <app-button variant="ghost" size="sm" (btnClick)="refreshAll()"><span class="material-icons">refresh</span>Refresh</app-button>
+    </div>
+  </div>
+
+  <div class="filters-grid">
+    <mat-form-field appearance="outline"><mat-label>Status</mat-label><mat-select [formControl]="statusControl"><mat-option value="">All statuses</mat-option><mat-option value="pending">Pending</mat-option><mat-option value="approved">Approved</mat-option><mat-option value="rejected">Rejected</mat-option></mat-select></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>Access level</mat-label><input matInput [formControl]="accessLevelControl" placeholder="standard / elevated / admin" /></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>From</mat-label><input matInput type="date" [formControl]="fromControl" /></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>To</mat-label><input matInput type="date" [formControl]="toControl" /></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>Sort by</mat-label><mat-select [formControl]="sortByControl"><mat-option value="createdAt">Created</mat-option><mat-option value="status">Status</mat-option><mat-option value="verificationType">Verification type</mat-option><mat-option value="accessLevel">Access level</mat-option></mat-select></mat-form-field>
+    <mat-form-field appearance="outline"><mat-label>Order</mat-label><mat-select [formControl]="sortOrderControl"><mat-option value="desc">Newest first</mat-option><mat-option value="asc">Oldest first</mat-option></mat-select></mat-form-field>
+  </div>
+
+  @if (recordsLoading()) {
+    <app-skeleton-table [rows]="8" [columns]="8"></app-skeleton-table>
+  }
+
+  @if (errorMessage()) {
+    <app-error-retry [errorMessage]="errorMessage()" (retry)="refreshAll()"></app-error-retry>
+  } @else if (showEmptyState()) {
+    <div class="empty-state"><span class="material-icons">assignment_late</span><h3>No records found</h3><p>Adjust filters or date ranges.</p></div>
+  } @else {
+    <app-table>
+      <tr appTableHeader>
+        <th>Record ID</th><th>User</th><th>Verification</th><th>Status</th><th>Access</th><th>Approved By</th><th>Created</th><th class="text-right">Actions</th>
+      </tr>
+
+      @for (record of filteredRecords(); track record._id) {
+        <tr appTableBody>
+          <td class="mono">{{ record._id.slice(0, 10) }}…</td>
+          <td>{{ getUserLabel(record.userId) }}</td>
+          <td>{{ record.verificationType }}</td>
+          <td><app-badge [variant]="record.status === 'approved' ? 'success' : record.status === 'pending' ? 'warning' : 'danger'" size="sm">{{ record.status }}</app-badge></td>
+          <td>{{ record.accessLevel }}</td>
+          <td class="mono">{{ record.approvedBy ?? '—' }}</td>
+          <td>{{ record.createdAt | date:'mediumDate' }}</td>
+          <td class="text-right"><div class="row-actions"><app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="openRecordDetails(record)"><span class="material-icons">visibility</span></app-button></div></td>
+        </tr>
+      }
+    </app-table>
+
+    <mat-paginator class="custom-paginator" [length]="total()" [pageIndex]="pageIndex()" [pageSize]="pageSize()" [pageSizeOptions]="[5, 10, 20]" (page)="onPage($event)"></mat-paginator>
+  }
 </app-card>

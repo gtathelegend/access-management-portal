@@ -34,6 +34,7 @@ import { CommonModule } from '@angular/common';
       align-items: center;
       justify-content: center;
       gap: var(--space-small);
+      box-sizing: border-box;
       padding: 0 16px;
       height: var(--control-height);
       border-radius: 14px;
@@ -48,11 +49,23 @@ import { CommonModule } from '@angular/common';
       color: var(--text-primary);
       background: var(--bg-surface);
       box-shadow: var(--shadow-sm);
+      min-width: 0;
+      flex-shrink: 0;
+      line-height: 1;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .app-button:hover:not(:disabled) {
       transform: translateY(-1px);
       box-shadow: var(--shadow-md);
+    }
+
+    @media (hover: none) {
+      .app-button:hover:not(:disabled) {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+      }
     }
 
     .app-button:disabled {
@@ -128,6 +141,7 @@ import { CommonModule } from '@angular/common';
       display: flex;
       align-items: center;
       gap: inherit;
+      min-width: 0;
     }
 
     .app-button--sm {

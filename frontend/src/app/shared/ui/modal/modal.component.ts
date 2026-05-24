@@ -35,6 +35,8 @@ import { Component, Input } from '@angular/core';
       display: grid;
       gap: var(--space-section);
       padding: var(--space-section);
+      width: min(100%, 720px);
+      max-width: calc(100vw - 24px);
     }
 
     .modal-shell--compact {
@@ -91,6 +93,26 @@ import { Component, Input } from '@angular/core';
       gap: 10px;
       padding-top: var(--space-normal);
       border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 599.98px) {
+      .modal-shell {
+        padding: var(--space-normal);
+        max-width: 100vw;
+      }
+
+      .modal-header {
+        align-items: center;
+      }
+
+      .modal-footer {
+        justify-content: flex-start;
+      }
+
+      .modal-footer > * {
+        flex: 1 1 100%;
+      }
     }
   `]
 })

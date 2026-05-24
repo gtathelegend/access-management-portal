@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { isPlatformBrowser, NgIf } from '@angular/common';
-import { Component, PLATFORM_ID, effect, inject, signal } from '@angular/core';
+import { Component, PLATFORM_ID, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -32,13 +32,40 @@ export class LayoutShellComponent {
       )
     : signal(false);
 
+  readonly isTablet = isPlatformBrowser(this.platformId)
+    ? toSignal(
+        this.breakpointObserver
+          .observe([Breakpoints.Tablet])
+          .pipe(map((state) => state.matches)),
+        { initialValue: false },
+      )
+    : signal(false);
+
+  readonly isCompactSidebar = computed(() => this.isHandset() || this.isTablet());
+
   readonly sidenavOpened = signal(true);
+  readonly sidebarCollapsed = signal(false);
 
   constructor() {
     effect(
       () => {
         const handset = this.isHandset();
-        this.sidenavOpened.set(!handset);
+        const tablet = this.isTablet();
+
+        if (handset) {
+          this.sidenavOpened.set(false);
+          this.sidebarCollapsed.set(false);
+          return;
+        }
+
+        if (tablet) {
+          this.sidenavOpened.set(true);
+          this.sidebarCollapsed.set(true);
+          return;
+        }
+
+        this.sidenavOpened.set(true);
+        this.sidebarCollapsed.set(false);
       },
       { allowSignalWrites: true },
     );
@@ -56,6 +83,11 @@ export class LayoutShellComponent {
   toggleSidenav(): void {
     if (this.isHandset()) {
       this.sidenavOpened.update((v) => !v);
+      return;
+    }
+
+    if (this.isTablet()) {
+      this.sidebarCollapsed.update((v) => !v);
     }
   }
 

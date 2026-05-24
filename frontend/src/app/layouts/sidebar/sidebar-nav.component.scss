@@ -5,6 +5,13 @@
   height: 100%;
   padding: var(--space-section) var(--space-normal);
   background-color: var(--bg-sidebar);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-top {
+  display: grid;
+  gap: 18px;
 }
 
 .brand {
@@ -13,6 +20,42 @@
   gap: 12px;
   padding: 0 4px;
   margin-bottom: 18px;
+}
+
+.sidebar--collapsed {
+  padding-inline: 12px;
+
+  .sidebar-top,
+  .sidebar-bottom {
+    gap: 12px;
+  }
+
+  .brand,
+  .nav-section-label,
+  .workspace-card,
+  .user-profile,
+  .nav-label,
+  .brand-text {
+    display: none;
+  }
+
+  .nav-link {
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  .nav {
+    gap: 8px;
+  }
+
+  .nav-icon {
+    margin: 0;
+  }
+
+  .sidebar-bottom {
+    border-top: 0;
+    padding-top: 0;
+  }
 }
 
 .logo-box {
@@ -69,6 +112,7 @@
   font-size: 14px;
   font-weight: 500;
   transition: all var(--transition-fast);
+  min-width: 0;
 
   &:hover {
     background-color: color-mix(in srgb, var(--bg-hover) 86%, transparent);
@@ -153,6 +197,13 @@
 
   &:hover {
     background-color: color-mix(in srgb, var(--bg-hover) 90%, transparent);
+  }
+}
+
+@media (max-width: 959.98px) {
+  .sidebar {
+    padding-top: calc(var(--space-section) - 2px);
+    padding-bottom: var(--space-normal);
   }
 }
 

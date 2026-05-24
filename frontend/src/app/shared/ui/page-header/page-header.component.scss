@@ -34,6 +34,8 @@
   line-height: 1.08;
   letter-spacing: -0.04em;
   color: var(--text-primary);
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .subtitle {
@@ -47,5 +49,10 @@
   .page-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .subtitle {
+    max-width: none;
+    font-size: 14px;
   }
 }

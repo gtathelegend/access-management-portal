@@ -36,18 +36,24 @@ import { CommonModule } from '@angular/common';
 
     .table-scroll {
       overflow-x: auto;
+      overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      max-width: 100%;
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
-      min-width: 640px;
+      min-width: 720px;
     }
 
     :host ::ng-deep {
       th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
         padding: 14px 16px;
         font-size: 12px;
         font-weight: 600;
@@ -73,6 +79,34 @@ import { CommonModule } from '@angular/common';
 
       tr:hover td {
         background: color-mix(in srgb, var(--bg-hover) 76%, transparent);
+      }
+
+      td:last-child,
+      th:last-child {
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .table {
+        min-width: 600px;
+      }
+
+      :host ::ng-deep {
+        th,
+        td {
+          padding: 12px 14px;
+        }
+      }
+    }
+
+    @media (max-width: 599.98px) {
+      .table {
+        min-width: 540px;
+      }
+
+      .table-shell {
+        border-radius: 18px;
       }
     }
   `]

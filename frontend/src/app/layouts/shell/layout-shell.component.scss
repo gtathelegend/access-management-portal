@@ -7,6 +7,10 @@
   background-color: var(--bg-primary);
 }
 
+.shell.sidebar-collapsed .sidebar-wrapper {
+  width: 88px;
+}
+
 .shell-backdrop {
   position: fixed;
   inset: 0;
@@ -37,10 +41,15 @@
   border-right: 1px solid var(--border-subtle);
   box-shadow: inset -1px 0 0 color-mix(in srgb, var(--border-subtle) 80%, transparent);
 
+  @media (min-width: 960px) and (max-width: 1199.98px) {
+    width: 88px;
+  }
+
   @media (max-width: 959.98px) {
     position: fixed;
     left: 0;
     top: 0;
+    width: min(100vw, var(--sidebar-width));
     transform: translateX(-100%);
     
     &.mobile-open {
@@ -73,4 +82,10 @@
   max-width: var(--content-max-width);
   margin: 0 auto;
   width: 100%;
+}
+
+@media (min-width: 960px) and (max-width: 1199.98px) {
+  .shell.sidebar-collapsed .page-inner {
+    max-width: calc(var(--content-max-width) + 40px);
+  }
 }

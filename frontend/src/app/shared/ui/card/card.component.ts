@@ -42,12 +42,20 @@ import { CommonModule } from '@angular/common';
       display: flex;
       flex-direction: column;
       gap: var(--space-normal);
+      min-width: 0;
+      overflow: hidden;
     }
 
     .card.hoverable:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-md);
       border-color: var(--border-strong);
+    }
+
+    @media (hover: none) {
+      .card.hoverable:hover {
+        transform: none;
+      }
     }
 
     .card.compact {
@@ -60,6 +68,7 @@ import { CommonModule } from '@angular/common';
       align-items: flex-start;
       justify-content: space-between;
       gap: var(--space-normal);
+      flex-wrap: wrap;
     }
 
     .card-heading {
@@ -107,6 +116,29 @@ import { CommonModule } from '@angular/common';
 
     .card-actions:empty {
       display: none;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-left: auto;
+    }
+
+    @media (max-width: 599.98px) {
+      .card {
+        padding: 16px;
+        border-radius: 18px;
+      }
+
+      .card-title {
+        font-size: 17px;
+      }
+
+      .card-subtitle {
+        font-size: 13px;
+      }
     }
   `]
 })

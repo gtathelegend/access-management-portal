@@ -33,6 +33,23 @@
 	color: var(--text-primary);
 	margin-top: 10px;
 	pointer-events: none;
+	width: min(100%, 640px);
+	max-width: calc(100vw - 24px);
+}
+
+@media (max-width: 599.98px) {
+	.loading-overlay {
+		padding: 10px;
+	}
+
+	.loading-card {
+		width: 100%;
+		padding: 12px 14px;
+	}
+
+	.subtitle {
+		max-width: none;
+	}
 }
 
 .copy {

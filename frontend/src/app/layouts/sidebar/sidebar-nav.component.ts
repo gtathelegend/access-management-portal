@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,6 +18,8 @@ import { SkeletonSidebarComponent } from '../../shared/components/skeleton-sideb
 })
 export class SidebarNavComponent {
   private readonly authService = inject(AuthService);
+
+  @Input() collapsed = false;
 
   readonly user = this.authService.currentUser;
 

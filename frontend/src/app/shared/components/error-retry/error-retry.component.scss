@@ -10,6 +10,8 @@
 		radial-gradient(circle at top, color-mix(in srgb, var(--accent-danger) 10%, transparent), transparent 46%),
 		color-mix(in srgb, var(--bg-surface) 88%, transparent);
 	box-shadow: var(--shadow-md);
+	width: 100%;
+	max-width: 100%;
 }
 
 .icon-wrap {

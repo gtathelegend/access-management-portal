@@ -124,6 +124,28 @@ export class AdminDashboardComponent {
     return this.currentUser()?.name ?? 'Admin';
   }
 
+  private dialogDimensions(): { width: string; maxWidth: string; height?: string } {
+    if (isPlatformBrowser(this.platformId) && window.innerWidth <= 599) {
+      return {
+        width: '100vw',
+        maxWidth: '100vw',
+        height: '100dvh',
+      };
+    }
+
+    if (isPlatformBrowser(this.platformId) && window.innerWidth <= 959) {
+      return {
+        width: 'min(720px, 92vw)',
+        maxWidth: '92vw',
+      };
+    }
+
+    return {
+      width: '720px',
+      maxWidth: '92vw',
+    };
+  }
+
   constructor() {
     this.searchControl.valueChanges
       .pipe(debounceTime(250), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
@@ -166,8 +188,8 @@ export class AdminDashboardComponent {
   openCreateUser(): void {
     const ref = this.dialog.open(UserDialogComponent, {
       data: { mode: 'create' },
-      width: '720px',
-      maxWidth: '92vw',
+      ...this.dialogDimensions(),
+      panelClass: ['amp-dialog-panel', 'amp-dialog-panel--form'],
     });
 
     ref
@@ -199,8 +221,8 @@ export class AdminDashboardComponent {
   openEditUser(user: AdminUser): void {
     const ref = this.dialog.open(UserDialogComponent, {
       data: { mode: 'edit', user },
-      width: '720px',
-      maxWidth: '92vw',
+      ...this.dialogDimensions(),
+      panelClass: ['amp-dialog-panel', 'amp-dialog-panel--form'],
     });
 
     ref
@@ -237,6 +259,10 @@ export class AdminDashboardComponent {
         confirmText: 'Delete',
         danger: true,
       },
+      width: isPlatformBrowser(this.platformId) && window.innerWidth <= 599 ? '100vw' : '420px',
+      maxWidth: isPlatformBrowser(this.platformId) && window.innerWidth <= 599 ? '100vw' : '92vw',
+      height: isPlatformBrowser(this.platformId) && window.innerWidth <= 599 ? '100dvh' : undefined,
+      panelClass: ['amp-dialog-panel', 'amp-dialog-panel--confirm'],
     });
 
     ref

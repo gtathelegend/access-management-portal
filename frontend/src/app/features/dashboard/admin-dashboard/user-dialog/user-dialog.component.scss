@@ -8,7 +8,9 @@
 
 .dialog-content {
   padding: 0 var(--space-section) var(--space-normal) !important;
-  max-height: 70vh;
+  max-height: min(70dvh, 620px);
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .dialog-form {
@@ -32,6 +34,7 @@
   padding: var(--space-normal) var(--space-section) var(--space-section) !important;
   gap: var(--space-small);
   border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
 }
 
 ::ng-deep {
@@ -39,5 +42,31 @@
     border-radius: var(--radius-xl) !important;
     background: var(--bg-surface) !important;
     box-shadow: var(--shadow-lg) !important;
+  }
+}
+
+@media (max-width: 599.98px) {
+  .dialog-title {
+    padding: var(--space-normal) var(--space-normal) var(--space-small) !important;
+    font-size: 18px !important;
+  }
+
+  .dialog-content {
+    padding: 0 var(--space-normal) var(--space-normal) !important;
+    max-height: calc(100dvh - 180px);
+  }
+
+  .dialog-actions {
+    padding: var(--space-normal) !important;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 599.98px) {
+  ::ng-deep .mat-mdc-dialog-container {
+    border-radius: 0 !important;
   }
 }

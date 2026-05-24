@@ -1,13 +1,13 @@
-<div class="shell" [class.sidebar-open]="sidenavOpened() || !isHandset()">
+<div class="shell" [class.sidebar-open]="sidenavOpened() || !isHandset()" [class.sidebar-collapsed]="sidebarCollapsed()">
   <div class="shell-backdrop" [class.visible]="isHandset() && sidenavOpened()" (click)="toggleSidenav()"></div>
 
   <aside class="sidebar-wrapper" [class.mobile-open]="sidenavOpened() && isHandset()">
-    <app-sidebar-nav></app-sidebar-nav>
+    <app-sidebar-nav [collapsed]="sidebarCollapsed()"></app-sidebar-nav>
   </aside>
 
   <div class="main-container">
     <app-top-navbar
-      [showMenuButton]="isHandset()"
+      [showMenuButton]="isCompactSidebar()"
       (menuToggle)="toggleSidenav()"
     ></app-top-navbar>
 

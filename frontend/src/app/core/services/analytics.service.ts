@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
@@ -20,8 +21,14 @@ export class AnalyticsService {
 
   constructor(private http: HttpClient) {}
 
-  getDashboardStats() {
-    return this.http.get<{ data: AnalyticsStats }>(`${this.apiUrl}/dashboard-stats`).pipe(
+  getDashboardStats(delayMs = 0) {
+    let params = new HttpParams();
+
+    if (delayMs > 0) {
+      params = params.set('delayMs', String(delayMs));
+    }
+
+    return this.http.get<{ data: AnalyticsStats }>(`${this.apiUrl}/dashboard-stats`, { params }).pipe(
       map(response => response.data)
     );
   }

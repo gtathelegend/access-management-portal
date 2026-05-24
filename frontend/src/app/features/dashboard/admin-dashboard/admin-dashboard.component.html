@@ -25,49 +25,56 @@
 </section>
 
 <section class="stats-grid">
-  <app-card [compact]="true" class="stat-card">
-    <div class="stat-head">
-      <div class="stat-bubble blue"><span class="material-icons">group</span></div>
-      <span class="stat-trend success">All accounts</span>
-    </div>
-    <div class="stat-data">
-      <span class="stat-label">Total users</span>
-      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().totalUsers }} }</h3>
-    </div>
-  </app-card>
+  @if (statsLoading()) {
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+  } @else {
+    <app-card [compact]="true" class="stat-card">
+      <div class="stat-head">
+        <div class="stat-bubble blue"><span class="material-icons">group</span></div>
+        <span class="stat-trend success">All accounts</span>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Total users</span>
+        <h3 class="stat-value">{{ stats().totalUsers }}</h3>
+      </div>
+    </app-card>
 
-  <app-card [compact]="true" class="stat-card">
-    <div class="stat-head">
-      <div class="stat-bubble green"><span class="material-icons">verified_user</span></div>
-      <span class="stat-trend success">Enabled</span>
-    </div>
-    <div class="stat-data">
-      <span class="stat-label">Active users</span>
-      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().activeUsers }} }</h3>
-    </div>
-  </app-card>
+    <app-card [compact]="true" class="stat-card">
+      <div class="stat-head">
+        <div class="stat-bubble green"><span class="material-icons">verified_user</span></div>
+        <span class="stat-trend success">Enabled</span>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Active users</span>
+        <h3 class="stat-value">{{ stats().activeUsers }}</h3>
+      </div>
+    </app-card>
 
-  <app-card [compact]="true" class="stat-card">
-    <div class="stat-head">
-      <div class="stat-bubble purple"><span class="material-icons">admin_panel_settings</span></div>
-      <span class="stat-trend">Privileged</span>
-    </div>
-    <div class="stat-data">
-      <span class="stat-label">Administrators</span>
-      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().adminCount }} }</h3>
-    </div>
-  </app-card>
+    <app-card [compact]="true" class="stat-card">
+      <div class="stat-head">
+        <div class="stat-bubble purple"><span class="material-icons">admin_panel_settings</span></div>
+        <span class="stat-trend">Privileged</span>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Administrators</span>
+        <h3 class="stat-value">{{ stats().adminCount }}</h3>
+      </div>
+    </app-card>
 
-  <app-card [compact]="true" class="stat-card">
-    <div class="stat-head">
-      <div class="stat-bubble warning"><span class="material-icons">pending_actions</span></div>
-      <span class="stat-trend warning">Needs review</span>
-    </div>
-    <div class="stat-data">
-      <span class="stat-label">Pending</span>
-      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().pendingVerifications }} }</h3>
-    </div>
-  </app-card>
+    <app-card [compact]="true" class="stat-card">
+      <div class="stat-head">
+        <div class="stat-bubble warning"><span class="material-icons">pending_actions</span></div>
+        <span class="stat-trend warning">Needs review</span>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Pending</span>
+        <h3 class="stat-value">{{ stats().pendingVerifications }}</h3>
+      </div>
+    </app-card>
+  }
 </section>
 
 <section class="main-grid">
@@ -103,9 +110,7 @@
       </div>
 
       @if (isLoading()) {
-        <div class="table-loading">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </div>
+        <app-skeleton-table [rows]="8" [columns]="5"></app-skeleton-table>
       }
 
       @if (errorMessage()) {
@@ -174,60 +179,65 @@
   </div>
 
   <aside class="insights-column">
-    <app-card title="Verification" subtitle="Live access posture" eyebrow="Secondary panel" [divider]="true" class="insight-card">
-      <div class="chart-box">
-        <div class="ring-chart">
-          <div class="ring-center">
-            <span class="ring-value">{{ stats().activeUsers }}</span>
-            <span class="ring-label">Active</span>
+    @if (statsLoading()) {
+      <app-skeleton-chart kind="pie"></app-skeleton-chart>
+      <app-skeleton-card [showHeader]="true"></app-skeleton-card>
+    } @else {
+      <app-card title="Verification" subtitle="Live access posture" eyebrow="Secondary panel" [divider]="true" class="insight-card">
+        <div class="chart-box">
+          <div class="ring-chart">
+            <div class="ring-center">
+              <span class="ring-value">{{ stats().activeUsers }}</span>
+              <span class="ring-label">Active</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="legend-list">
-        <div class="legend-item">
-          <div class="legend-dot green"></div>
-          <span class="legend-name">Active accounts</span>
-          <span class="legend-val">{{ stats().activeUsers }}</span>
+        <div class="legend-list">
+          <div class="legend-item">
+            <div class="legend-dot green"></div>
+            <span class="legend-name">Active accounts</span>
+            <span class="legend-val">{{ stats().activeUsers }}</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot purple"></div>
+            <span class="legend-name">Admins</span>
+            <span class="legend-val">{{ stats().adminCount }}</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot warning"></div>
+            <span class="legend-name">Pending reviews</span>
+            <span class="legend-val">{{ stats().pendingVerifications }}</span>
+          </div>
         </div>
-        <div class="legend-item">
-          <div class="legend-dot purple"></div>
-          <span class="legend-name">Admins</span>
-          <span class="legend-val">{{ stats().adminCount }}</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-dot warning"></div>
-          <span class="legend-name">Pending reviews</span>
-          <span class="legend-val">{{ stats().pendingVerifications }}</span>
-        </div>
-      </div>
-    </app-card>
+      </app-card>
 
-    <app-card title="Recent activity" subtitle="Latest system events" eyebrow="Workspace feed" [divider]="true" class="insight-card">
-      <div class="activity-feed">
-        <div class="activity-item">
-          <div class="activity-line"></div>
-          <div class="activity-point blue"></div>
-          <div class="activity-content">
-            <p class="activity-text">Access policy synced</p>
-            <span class="activity-time">2m ago</span>
+      <app-card title="Recent activity" subtitle="Latest system events" eyebrow="Workspace feed" [divider]="true" class="insight-card">
+        <div class="activity-feed">
+          <div class="activity-item">
+            <div class="activity-line"></div>
+            <div class="activity-point blue"></div>
+            <div class="activity-content">
+              <p class="activity-text">Access policy synced</p>
+              <span class="activity-time">2m ago</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-line"></div>
+            <div class="activity-point green"></div>
+            <div class="activity-content">
+              <p class="activity-text">2 users activated</p>
+              <span class="activity-time">08:32 AM</span>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-point purple"></div>
+            <div class="activity-content">
+              <p class="activity-text">Audit exports completed</p>
+              <span class="activity-time">Yesterday</span>
+            </div>
           </div>
         </div>
-        <div class="activity-item">
-          <div class="activity-line"></div>
-          <div class="activity-point green"></div>
-          <div class="activity-content">
-            <p class="activity-text">2 users activated</p>
-            <span class="activity-time">08:32 AM</span>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-point purple"></div>
-          <div class="activity-content">
-            <p class="activity-text">Audit exports completed</p>
-            <span class="activity-time">Yesterday</span>
-          </div>
-        </div>
-      </div>
-    </app-card>
+      </app-card>
+    }
   </aside>
 </section>

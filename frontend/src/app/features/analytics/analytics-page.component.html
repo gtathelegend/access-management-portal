@@ -6,9 +6,10 @@
 
 <div class="analytics-container">
   @if (loading) {
-    <div class="loading-state">
-      <mat-spinner diameter="40"></mat-spinner>
-      <p>Crunching portal data...</p>
+    <div class="grid">
+      <app-skeleton-chart kind="pie"></app-skeleton-chart>
+      <app-skeleton-chart kind="column"></app-skeleton-chart>
+      <app-skeleton-chart kind="bar" [wide]="true"></app-skeleton-chart>
     </div>
   } @else if (errorMessage()) {
     <app-error-retry

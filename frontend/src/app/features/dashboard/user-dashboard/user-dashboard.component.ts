@@ -16,6 +16,8 @@ import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
+import { SkeletonProfileComponent } from '../../../shared/components/skeleton-profile/skeleton-profile.component';
+import { SkeletonTableComponent } from '../../../shared/components/skeleton-table/skeleton-table.component';
 import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
 import { AppCardComponent } from '../../../shared/ui/card/card.component';
 import { AppButtonComponent } from '../../../shared/ui/button/button.component';
@@ -46,6 +48,8 @@ import type { RecordSortBy, SortOrder, VerificationRecord } from '../../../core/
     AppBadgeComponent,
     AppTableComponent,
     AppInputComponent,
+    SkeletonProfileComponent,
+    SkeletonTableComponent,
     ErrorRetryComponent,
   ],
   templateUrl: './user-dashboard.component.html',

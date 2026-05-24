@@ -5,6 +5,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 
 import { ErrorRetryComponent } from '../../shared/components/error-retry/error-retry.component';
+import { SkeletonChartComponent } from '../../shared/components/skeleton-chart/skeleton-chart.component';
+import { SkeletonCardComponent } from '../../shared/components/skeleton-card/skeleton-card.component';
 import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
 import { AnalyticsService, AnalyticsStats } from '../../core/services/analytics.service';
 
@@ -19,6 +21,8 @@ import { AppCardComponent } from '../../shared/ui/card/card.component';
     MatIconModule,
     MatProgressSpinnerModule,
     NgxChartsModule,
+    SkeletonChartComponent,
+    SkeletonCardComponent,
     ErrorRetryComponent,
     PageHeaderComponent
   ],

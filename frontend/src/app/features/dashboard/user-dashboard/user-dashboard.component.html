@@ -35,11 +35,7 @@
           </div>
         </div>
       } @else {
-        <div class="skeleton-list">
-          <div class="skeleton-item"></div>
-          <div class="skeleton-item"></div>
-          <div class="skeleton-item"></div>
-        </div>
+        <app-skeleton-profile></app-skeleton-profile>
       }
     </app-card>
 
@@ -71,9 +67,7 @@
       </div>
 
       @if (isLoading()) {
-        <div class="table-loading">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </div>
+        <app-skeleton-table [rows]="8" [columns]="5"></app-skeleton-table>
       }
 
       @if (errorMessage()) {

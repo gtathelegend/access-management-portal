@@ -22,6 +22,7 @@ export class RecordsService {
     if (params.approvedBy) httpParams = httpParams.set('approvedBy', params.approvedBy);
     if (params.createdFrom) httpParams = httpParams.set('createdFrom', params.createdFrom);
     if (params.createdTo) httpParams = httpParams.set('createdTo', params.createdTo);
+    if (typeof params.delayMs === 'number') httpParams = httpParams.set('delayMs', String(params.delayMs));
 
     return this.http.get<RecordsListResponse>(`${environment.apiUrl}/records`, { params: httpParams });
   }

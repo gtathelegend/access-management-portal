@@ -1,4 +1,5 @@
 <div class="sidebar">
+  @if (user()) {
   <div class="sidebar-top">
     <div class="brand">
       <div class="logo-box">
@@ -48,4 +49,7 @@
       <span class="material-icons more-icon">more_horiz</span>
     </div>
   </div>
+  } @else {
+    <app-skeleton-sidebar></app-skeleton-sidebar>
+  }
 </div>

@@ -22,6 +22,7 @@ export class UsersService {
     if (params.role) httpParams = httpParams.set('role', params.role);
     if (params.status) httpParams = httpParams.set('status', params.status);
     if (params.q) httpParams = httpParams.set('q', params.q);
+    if (typeof params.delayMs === 'number') httpParams = httpParams.set('delayMs', String(params.delayMs));
 
     return this.http.get<UsersListResponse>(`${environment.apiUrl}/users`, { params: httpParams });
   }

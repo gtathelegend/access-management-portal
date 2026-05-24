@@ -7,11 +7,12 @@ import { MatListModule } from '@angular/material/list';
 
 import { AuthService } from '../../core/services/auth.service';
 import { NavItem } from '../../core/models/nav-item.model';
+import { SkeletonSidebarComponent } from '../../shared/components/skeleton-sidebar/skeleton-sidebar.component';
 
 @Component({
   selector: 'app-sidebar-nav',
   standalone: true,
-  imports: [NgIf, TitleCasePipe, RouterLink, RouterLinkActive, MatListModule, MatIconModule, MatDividerModule],
+  imports: [NgIf, TitleCasePipe, RouterLink, RouterLinkActive, MatListModule, MatIconModule, MatDividerModule, SkeletonSidebarComponent],
   templateUrl: './sidebar-nav.component.html',
   styleUrl: './sidebar-nav.component.scss',
 })

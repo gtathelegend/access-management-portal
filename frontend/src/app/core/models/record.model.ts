@@ -34,4 +34,5 @@ export interface ListRecordsParams {
   approvedBy?: string;
   createdFrom?: string;
   createdTo?: string;
+  delayMs?: number;
 }

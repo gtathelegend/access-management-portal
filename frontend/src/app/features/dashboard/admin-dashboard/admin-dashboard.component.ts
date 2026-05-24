@@ -18,6 +18,9 @@ import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged, forkJoin, of, switchMap } from 'rxjs';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
+import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
+import { SkeletonTableComponent } from '../../../shared/components/skeleton-table/skeleton-table.component';
+import { SkeletonChartComponent } from '../../../shared/components/skeleton-chart/skeleton-chart.component';
 import { AppCardComponent } from '../../../shared/ui/card/card.component';
 import { AppButtonComponent } from '../../../shared/ui/button/button.component';
 import { AppBadgeComponent } from '../../../shared/ui/badge/badge.component';
@@ -50,6 +53,9 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
     AppBadgeComponent,
     AppTableComponent,
     AppInputComponent,
+    SkeletonCardComponent,
+    SkeletonTableComponent,
+    SkeletonChartComponent,
     ErrorRetryComponent,
   ],
   templateUrl: './admin-dashboard.component.html',

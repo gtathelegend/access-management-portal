@@ -13,6 +13,8 @@ export interface AuthContext {
 
 interface AuthJwtPayload extends JwtPayload {
   sub?: string;
+  id?: string;
+  email?: string;
   role?: AuthRole;
 }
 

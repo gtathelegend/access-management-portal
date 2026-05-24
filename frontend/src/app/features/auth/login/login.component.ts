@@ -13,6 +13,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
 import { AppCardComponent } from '../../../shared/ui/card/card.component';
 import { AppButtonComponent } from '../../../shared/ui/button/button.component';
+import type { LoginRoleOption, UserRole } from '../../../core/models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -40,9 +41,15 @@ export class LoginComponent {
   readonly errorMessage = signal<string | null>(null);
   hidePassword = true;
 
+  readonly roleOptions: LoginRoleOption[] = [
+    { value: 'user', label: 'General User' },
+    { value: 'admin', label: 'Admin' },
+  ];
+
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
+    role: ['', [Validators.required]],
   });
 
   constructor() {
@@ -61,7 +68,14 @@ export class LoginComponent {
 
     this.loading.set(true);
 
-    this.authService.login(this.form.getRawValue()).subscribe({
+    const value = this.form.getRawValue();
+    const payload = {
+      email: value.email.trim(),
+      password: value.password,
+      role: value.role as UserRole,
+    };
+
+    this.authService.login(payload).subscribe({
       next: () => {
         this.loading.set(false);
         this.redirectByRole();
@@ -71,6 +85,11 @@ export class LoginComponent {
         this.errorMessage.set(err instanceof Error ? err.message : 'Login failed');
       },
     });
+  }
+
+  selectRole(role: UserRole): void {
+    this.form.controls.role.setValue(role);
+    this.form.controls.role.markAsTouched();
   }
 
   private redirectByRole(): void {

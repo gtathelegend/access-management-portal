@@ -22,12 +22,32 @@
       <app-card title="Welcome back" subtitle="Use your work email and password" eyebrow="Secure sign in" [divider]="true">
         <form class="form" [formGroup]="form" (ngSubmit)="submit()">
           <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
+            <mat-label>User ID</mat-label>
             <input matInput type="email" formControlName="email" autocomplete="email" placeholder="name@company.com" />
             <mat-icon matSuffix>mail_outline</mat-icon>
-            <mat-error *ngIf="form.controls.email.hasError('required')">Email is required</mat-error>
-            <mat-error *ngIf="form.controls.email.hasError('email')">Enter a valid email</mat-error>
+            <mat-error *ngIf="form.controls.email.hasError('required')">User ID is required</mat-error>
+            <mat-error *ngIf="form.controls.email.hasError('email')">Enter a valid email-based user ID</mat-error>
           </mat-form-field>
+
+          <div class="role-selector" role="radiogroup" aria-label="Select login role">
+            @for (option of roleOptions; track option.value) {
+              <button
+                type="button"
+                class="role-option"
+                [class.active]="form.controls.role.value === option.value"
+                [attr.aria-pressed]="form.controls.role.value === option.value"
+                [attr.aria-label]="option.label"
+                (click)="selectRole(option.value)"
+              >
+                <span class="role-dot"></span>
+                <span>{{ option.label }}</span>
+              </button>
+            }
+          </div>
+          <div class="role-help" [class.error]="form.controls.role.touched && form.controls.role.invalid">
+            <span *ngIf="form.controls.role.touched && form.controls.role.invalid">Select a role to continue</span>
+            <span *ngIf="!(form.controls.role.touched && form.controls.role.invalid)">Choose the role assigned to your account</span>
+          </div>
 
           <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
@@ -64,6 +84,7 @@
             [loading]="loading()"
             size="lg"
             [block]="true"
+            [disabled]="form.invalid"
           >
             Sign in
           </app-button>

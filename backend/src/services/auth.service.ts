@@ -7,6 +7,7 @@ import { UserModel } from '../models/user.model.js';
 export interface LoginInput {
   email: string;
   password: string;
+  role: 'admin' | 'user';
 }
 
 export interface AuthenticatedUserDto {
@@ -45,6 +46,10 @@ export const loginWithEmailPassword = async (input: LoginInput): Promise<LoginRe
     throw invalidCredentials;
   }
 
+  if (user.role !== input.role) {
+    throw new AppError('Selected role does not match assigned permissions', 403);
+  }
+
   const signOptions: SignOptions = {
     expiresIn: env.jwtExpiresIn as SignOptions['expiresIn'],
   };
@@ -52,6 +57,8 @@ export const loginWithEmailPassword = async (input: LoginInput): Promise<LoginRe
   const token = jsonwebtoken.sign(
     {
       sub: user.id,
+      id: user.id,
+      email: user.email,
       role: user.role,
     },
     env.jwtSecret,

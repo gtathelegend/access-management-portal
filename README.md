@@ -33,8 +33,8 @@ Access Management Portal is a premium SaaS-style dashboard that demonstrates sec
 
 | Environment | Link |
 |---|---|
-| Frontend deployment | `<frontend-deployment-url>` |
-| Backend API | `<backend-api-url>` |
+| Frontend deployment | `https://amp.vedaangsharma.dev/` |
+| Backend API | `https://access-management-portal.onrender.com/` |
 
 ## Project Overview
 
@@ -706,39 +706,10 @@ This project was designed to demonstrate real engineering decisions rather than 
 - Proves that the UI remains stable while requests are pending.
 - Shows production-minded UX thinking rather than optimistic mock-data rendering.
 
-### What This Project Demonstrates
-
-- Production-style frontend architecture
-- Typed API integration
-- Role-based access control
-- Secure backend design
-- Async UX and loading-state engineering
-- Responsive SaaS interface design
-- Dark mode system architecture
-
-## Recruiter Notes
-
-If you are reviewing this project as an interviewer or recruiter, this repository is intended to show the following:
-
-| Area | Demonstrated Skill |
-|---|---|
-| Frontend engineering | Standalone Angular, reusable components, route guards, interceptors, responsive layouts |
-| Backend engineering | Express controllers/services, JWT auth, RBAC, validation, aggregation-based stats |
-| UI/UX engineering | Premium dashboard design, dark mode, motion discipline, accessibility-aware spacing |
-| System design | Clear separation of concerns, typed API contracts, scalable folder organization |
-| Async UX | Skeleton loaders, loading orchestration, retry flows, latency simulation |
-
 ## License
 
 This project is licensed under the MIT License.
 
----
-
-If you would like to expand this README further, the most useful next additions are real screenshots, deployment URLs, and a short architecture diagram exported from the live app.# Access Management Portal
-
-Access Management Portal is an enterprise-style role-based access control and verification management system built with Angular, Node.js, TypeScript, Express, and MongoDB.
-
-It includes secure login, role-based dashboards, user administration, verification record browsing, analytics, async loading states, and a polished SaaS-style UI inspired by products like Linear, Vercel, Clerk, and Notion.
 
 ## Overview
 
@@ -1052,7 +1023,7 @@ Notes / behaviors:
 ### 1. Clone and install dependencies
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/gtathelegend/access-management-portal
 cd access-management-portal
 cd backend && npm install
 cd ../frontend && npm install

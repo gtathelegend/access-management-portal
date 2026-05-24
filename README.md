@@ -1,5 +1,741 @@
 # Access Management Portal
 
+![Angular](https://img.shields.io/badge/Angular-17-red?logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
+
+Modern enterprise-grade role-based access management platform built with Angular and Node.js.
+
+Access Management Portal is a premium SaaS-style dashboard that demonstrates secure authentication, RBAC, admin user management, analytics, responsive layout engineering, and polished async UX. It is designed to feel like a production enterprise product while remaining easy to inspect as a portfolio project.
+
+## Project Preview
+
+### Dashboard
+
+![Dashboard Screenshot](screenshots/dashboard.png)
+
+### Login
+
+![Login Screenshot](screenshots/login.png)
+
+### Dark Mode
+
+![Dark Mode Screenshot](screenshots/dark-mode.png)
+
+### Mobile Responsive
+
+![Mobile Screenshot](screenshots/mobile.png)
+
+## Live Demo
+
+| Environment | Link |
+|---|---|
+| Frontend deployment | `<frontend-deployment-url>` |
+| Backend API | `<backend-api-url>` |
+
+## Project Overview
+
+Access Management Portal is a full-stack role-based access and verification system built to simulate a real enterprise operations console. The application was created to showcase how a modern SaaS dashboard can combine authentication, user administration, analytics, async request handling, and design-system consistency in one coherent product.
+
+The platform is structured around a clear separation of concerns:
+
+- The frontend provides a standalone Angular 17 experience with a premium dashboard shell, reusable UI primitives, route guards, loading interceptors, skeleton states, and dark/light theme support.
+- The backend exposes versioned REST APIs through Express and MongoDB/Mongoose, with JWT authentication, RBAC, controllers, services, middleware, and database validation.
+- The system is optimized for recruiter visibility: it demonstrates frontend engineering depth, backend API design, responsive layout craftsmanship, and enterprise-style asynchronous UX.
+
+The application supports:
+
+- Authentication and session persistence
+- Admin and user role separation
+- User lifecycle management
+- Verification records browsing
+- Dashboard analytics and stats
+- Artificial API delay simulation for loading-state demonstration
+- Responsive SaaS layouts for desktop, tablet, and mobile
+
+## Key Features
+
+### Authentication
+
+- JWT authentication
+- Secure login flow
+- Role-based access control
+- Route guards for protected views
+- Protected backend endpoints
+- Persistent session handling
+
+### Admin Features
+
+- User management dashboard
+- Create, edit, and delete users
+- Role assignment and status management
+- Analytics and operational stats
+- Pending verification monitoring
+- Activity-oriented admin workspace
+
+### User Features
+
+- Personalized dashboard
+- Records table with filtering and search
+- Verification status visibility
+- Responsive profile-oriented layout
+- Scoped access to user-specific data
+
+### Async Processing Features
+
+- Configurable API delay simulation
+- Global loading interceptor
+- Route transition loading states
+- Skeleton loaders for cards, tables, charts, and sidebars
+- Retry handling for transient failures
+- Graceful async UX without layout jank
+
+### UI/UX Features
+
+- Apple-inspired visual polish
+- Linear/Vercel-style dashboard composition
+- Responsive enterprise layouts
+- Dark and light mode support
+- Reusable design system primitives
+- Smooth transitions and consistent spacing
+
+## Tech Stack
+
+### Frontend
+
+| Technology | Purpose |
+|---|---|
+| Angular 17+ | Standalone SPA framework |
+| TypeScript | Type-safe application code |
+| Angular Material | UI primitives and interaction patterns |
+| RxJS | Reactive data flow and async orchestration |
+| SCSS | Theme tokens, layout, and component styling |
+
+### Backend
+
+| Technology | Purpose |
+|---|---|
+| Node.js | Server runtime |
+| Express.js | REST API layer |
+| JWT | Authentication and authorization |
+| Mongoose | MongoDB data modeling |
+| bcrypt | Password hashing |
+
+### Database
+
+| Technology | Purpose |
+|---|---|
+| MongoDB Atlas | Managed production database |
+
+### Deployment
+
+| Platform | Purpose |
+|---|---|
+| Vercel | Frontend deployment |
+| Render | Backend deployment |
+
+## Architecture
+
+### Frontend Architecture
+
+The frontend uses Angular 17 standalone architecture with a modular feature layout. Shared UI behavior is centralized through reusable components, while route-specific behavior remains isolated in feature modules.
+
+```txt
+src/app
+├── core
+├── shared
+├── features
+└── layouts
+```
+
+#### Folder Responsibilities
+
+| Folder | Responsibility |
+|---|---|
+| `core` | Authentication, API services, guards, interceptors, models, and global application logic |
+| `shared` | Reusable UI primitives, skeletons, modal shells, tables, buttons, and cross-feature components |
+| `features` | Business pages such as auth, dashboard, analytics, users, records, and settings |
+| `layouts` | App shell, top navigation, sidebar, and structural layout composition |
+
+### Backend Architecture
+
+The backend uses an enterprise-style layered structure that keeps routing, business rules, and data access separate.
+
+```txt
+src
+├── controllers
+├── services
+├── middleware
+├── routes
+├── models
+└── config
+```
+
+#### Folder Responsibilities
+
+| Folder | Responsibility |
+|---|---|
+| `controllers` | HTTP request/response handling |
+| `services` | Business logic and database aggregation |
+| `middleware` | Authentication, authorization, rate limiting, logging, delays, and error handling |
+| `routes` | Versioned REST route registration |
+| `models` | Mongoose schemas and data validation |
+| `config` | Environment, database, and app configuration |
+
+### System Design
+
+```mermaid
+flowchart LR
+  A[Angular UI] --> B[HTTP Interceptors]
+  B --> C[Express API /api/v1]
+  C --> D[Controllers]
+  D --> E[Services]
+  E --> F[Mongoose Models]
+  F --> G[MongoDB Atlas]
+```
+
+## System Design
+
+### Authentication Flow
+
+1. The user submits credentials through the login form.
+2. The backend validates the request and compares the password with bcrypt.
+3. On success, a JWT is issued and stored client-side for session persistence.
+4. Angular guards block unauthorized routes on the frontend.
+5. The auth interceptor attaches the bearer token to protected requests.
+
+### API Flow
+
+1. The frontend calls the appropriate `/api/v1/*` endpoint through typed services.
+2. The loading interceptor tracks request counts and route transitions.
+3. The Express router forwards the request to a controller.
+4. The controller delegates to a service for business logic.
+5. The service queries MongoDB through Mongoose models and returns a normalized payload.
+
+### RBAC Flow
+
+- Users authenticate through JWT.
+- Route guards and middleware verify role claims.
+- Admin endpoints are blocked for non-admin users.
+- User-specific pages only expose the current user’s scoped data.
+
+### Async Handling Architecture
+
+- The loading interceptor drives the global loading bar and spinner.
+- Skeleton loaders preserve layout stability while requests are pending.
+- Retry handling gives users a clear recovery path when requests fail.
+- Artificial delay support makes loading states visible for demos and QA.
+
+## UI/UX Design Philosophy
+
+This project intentionally follows an Apple-inspired enterprise aesthetic with a Linear/Vercel dashboard structure.
+
+### Design Principles
+
+- Semantic CSS variables are used for all themes, surfaces, borders, and accent colors.
+- Layout spacing is token-driven to preserve rhythm across screens.
+- Typography hierarchy emphasizes clarity, hierarchy, and quiet confidence.
+- Dark mode uses the same layout and spacing system as light mode to avoid shifts.
+- Components are designed to be reusable, consistent, and accessible.
+
+### UI Goals
+
+- Premium enterprise feel
+- High information density without visual clutter
+- Strong visual hierarchy
+- Responsive behavior without layout jumps
+- Accessible contrast in both themes
+
+## Security
+
+Security is handled with production-oriented controls across the stack.
+
+- JWT protects authenticated routes and API access.
+- Passwords are hashed with `bcrypt` before storage.
+- Protected routes require valid bearer tokens.
+- `helmet` hardens HTTP headers.
+- `express-rate-limit` reduces brute-force login abuse.
+- Environment variables keep secrets out of source control.
+
+## Performance Optimizations
+
+- Standalone Angular components reduce module overhead.
+- Lazy-loaded feature routes improve initial page load behavior.
+- Reusable shared components prevent duplication.
+- Pagination keeps large datasets manageable.
+- RxJS operators are used to debounce, compose, and stabilize async interactions.
+- API delay simulation is isolated so UX testing does not pollute business logic.
+
+## Responsiveness
+
+The application is engineered for desktop, tablet, and mobile use.
+
+- Desktop layouts use balanced dashboard grids and roomy content widths.
+- Tablet layouts collapse the sidebar and stack dashboard content appropriately.
+- Mobile layouts use a drawer sidebar, compact navbar, and full-width dialogs.
+- Tables use horizontal scrolling and sticky headers instead of clipping content.
+- Dialogs adapt to viewport size and become fullscreen on small screens.
+
+## Dark Mode
+
+Dark mode is built on a centralized CSS variable system rather than duplicated style branches.
+
+- Semantic tokens define surface, border, text, and accent colors.
+- Theme switching updates the root class without disturbing layout geometry.
+- The dark palette is tuned for contrast, legibility, and a macOS-like visual tone.
+- Component shadows and borders are adjusted so elevation feels natural in both modes.
+
+## API Documentation
+
+All endpoints are served under `/api/v1`.
+
+### Common Response Shape
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": {}
+}
+```
+
+### Auth Headers
+
+```txt
+Authorization: Bearer <JWT>
+```
+
+### Auth APIs
+
+#### POST `/api/v1/auth/login`
+
+Authenticates a user and returns a JWT plus user profile data.
+
+Request:
+
+```json
+{
+  "email": "admin@portal.com",
+  "password": "admin123"
+}
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": {
+    "token": "<jwt>",
+    "user": {
+      "id": "<user-id>",
+      "name": "Admin User",
+      "email": "admin@portal.com",
+      "role": "admin"
+    }
+  }
+}
+```
+
+### User APIs
+
+#### GET `/api/v1/users`
+
+Returns a paginated user list with search and filtering.
+
+Request query:
+
+```txt
+page=1&limit=10&q=admin&role=admin&status=active
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": {
+    "items": [],
+    "page": 1,
+    "limit": 10,
+    "total": 0,
+    "totalPages": 0
+  }
+}
+```
+
+#### POST `/api/v1/users`
+
+Creates a new user.
+
+Request:
+
+```json
+{
+  "name": "New User",
+  "email": "new@portal.com",
+  "password": "SecurePass123",
+  "role": "user",
+  "status": "active"
+}
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 201,
+  "data": {
+    "id": "<id>",
+    "name": "New User",
+    "email": "new@portal.com",
+    "role": "user",
+    "status": "active"
+  }
+}
+```
+
+#### PUT `/api/v1/users/:id`
+
+Updates an existing user.
+
+Request:
+
+```json
+{
+  "name": "Updated User",
+  "role": "admin",
+  "status": "active"
+}
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": {
+    "id": "<id>",
+    "name": "Updated User"
+  }
+}
+```
+
+#### DELETE `/api/v1/users/:id`
+
+Deletes a user.
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 204,
+  "data": null
+}
+```
+
+### Record APIs
+
+#### GET `/api/v1/records`
+
+Returns paginated verification records.
+
+Request query:
+
+```txt
+page=1&limit=10&status=pending&sortBy=createdAt&sortOrder=desc
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": {
+    "items": [],
+    "page": 1,
+    "limit": 10,
+    "total": 0,
+    "totalPages": 0
+  }
+}
+```
+
+### Stats APIs
+
+#### GET `/api/v1/stats`
+
+Returns a consolidated dashboard stats payload for the admin analytics surface.
+
+Response:
+
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "data": {
+    "totalUsers": 120,
+    "activeUsers": 108,
+    "adminCount": 8,
+    "pendingVerifications": 14,
+    "disabledUsers": 12,
+    "recentActivityCount": 31,
+    "verificationStats": {
+      "roleDistribution": [
+        { "name": "admin", "value": 8 },
+        { "name": "user", "value": 112 }
+      ],
+      "statusBreakdown": [
+        { "name": "approved", "value": 92 },
+        { "name": "pending", "value": 14 },
+        { "name": "rejected", "value": 14 }
+      ],
+      "verificationTrends": [
+        { "name": "2026-05-24", "value": 6 }
+      ]
+    }
+  }
+}
+```
+
+> Note: the backend also keeps `/api/v1/analytics/dashboard-stats` as a compatibility alias that returns the same payload.
+
+## Database Schema
+
+### User Schema
+
+The `User` collection stores authentication and lifecycle state.
+
+Key fields:
+
+- `name`
+- `email`
+- `password`
+- `role` (`admin` or `user`)
+- `status` (`active` or `disabled`)
+- timestamps
+
+Example:
+
+```json
+{
+  "name": "Admin User",
+  "email": "admin@portal.com",
+  "password": "<hashed-password>",
+  "role": "admin",
+  "status": "active",
+  "createdAt": "2026-05-24T10:00:00.000Z",
+  "updatedAt": "2026-05-24T10:00:00.000Z"
+}
+```
+
+### Record Schema
+
+The `Record` collection stores verification and access records.
+
+Key fields:
+
+- `userId`
+- `verificationType`
+- `status` (`pending`, `approved`, `rejected`)
+- `approvedBy`
+- `accessLevel`
+- timestamps
+
+Example:
+
+```json
+{
+  "userId": "6650f2a8d8d5e4b9c1b9a123",
+  "verificationType": "Identity Verification",
+  "status": "pending",
+  "approvedBy": null,
+  "accessLevel": "standard",
+  "createdAt": "2026-05-24T10:00:00.000Z",
+  "updatedAt": "2026-05-24T10:00:00.000Z"
+}
+```
+
+### Role System
+
+- `admin` users manage the portal, users, and analytics.
+- `user` accounts are limited to their own profile and record views.
+
+## Installation
+
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+- MongoDB Atlas cluster
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+### Seed the Database
+
+```bash
+cd backend
+npm run seed
+```
+
+## Environment Variables
+
+### Backend `.env.example`
+
+```env
+PORT=3000
+NODE_ENV=development
+MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/<db>
+JWT_SECRET=replace-with-a-strong-secret
+JWT_EXPIRES_IN=7d
+CLIENT_URL=http://localhost:4200
+CORS_ORIGIN=http://localhost:4200
+BCRYPT_SALT_ROUNDS=12
+```
+
+### Frontend `.env.example`
+
+```env
+BACKEND_API_URL=http://localhost:3000/api/v1
+```
+
+## Deployment
+
+### Frontend on Vercel
+
+1. Connect the repository to Vercel.
+2. Set `BACKEND_API_URL` to the deployed backend base URL including `/api/v1`.
+3. Deploy the Angular frontend.
+
+### Backend on Render
+
+1. Create a Render Web Service for the `backend` folder.
+2. Set the backend environment variables listed above.
+3. Use the production start command from the backend package.
+
+### MongoDB Atlas
+
+1. Create an Atlas cluster.
+2. Add a database user and whitelist your IP or use 0.0.0.0/0 for controlled demos.
+3. Copy the connection string into `MONGODB_URI`.
+
+## Dummy Credentials
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@portal.com` | `admin123` |
+| User | `user@portal.com` | `user123` |
+
+## Screenshots
+
+### Login Page
+
+![Login Page](screenshots/login.png)
+
+### Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### User Dashboard
+
+![User Dashboard](screenshots/user-dashboard.png)
+
+### Dark Mode
+
+![Dark Mode](screenshots/dark-mode.png)
+
+### Mobile Layout
+
+![Mobile Layout](screenshots/mobile.png)
+
+## Future Enhancements
+
+- Audit log history
+- WebSocket live updates
+- In-app notifications
+- Docker containerization
+- CI/CD pipelines
+- Kubernetes deployment strategy
+- Expanded analytics and forecasting
+
+## Engineering Highlights
+
+This project was designed to demonstrate real engineering decisions rather than a superficial CRUD demo.
+
+### Why Standalone Angular Architecture
+
+- Reduces framework overhead and keeps the application composition explicit.
+- Encourages highly reusable feature and UI components.
+- Makes lazy loading and route-level organization more straightforward.
+- Fits well with a modern enterprise dashboard where independent feature composition matters.
+
+### Why a Modular Backend Architecture
+
+- Separates routing, business logic, and persistence concerns.
+- Makes the API easier to scale, test, and extend.
+- Keeps controller logic thin and service logic reusable.
+- Supports clear ownership of auth, user, record, and analytics domains.
+
+### Why Async Simulation Matters
+
+- Demonstrates that the frontend can handle real-world latency gracefully.
+- Makes loading states, retry states, and skeleton states visible during review.
+- Proves that the UI remains stable while requests are pending.
+- Shows production-minded UX thinking rather than optimistic mock-data rendering.
+
+### What This Project Demonstrates
+
+- Production-style frontend architecture
+- Typed API integration
+- Role-based access control
+- Secure backend design
+- Async UX and loading-state engineering
+- Responsive SaaS interface design
+- Dark mode system architecture
+
+## Recruiter Notes
+
+If you are reviewing this project as an interviewer or recruiter, this repository is intended to show the following:
+
+| Area | Demonstrated Skill |
+|---|---|
+| Frontend engineering | Standalone Angular, reusable components, route guards, interceptors, responsive layouts |
+| Backend engineering | Express controllers/services, JWT auth, RBAC, validation, aggregation-based stats |
+| UI/UX engineering | Premium dashboard design, dark mode, motion discipline, accessibility-aware spacing |
+| System design | Clear separation of concerns, typed API contracts, scalable folder organization |
+| Async UX | Skeleton loaders, loading orchestration, retry flows, latency simulation |
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+If you would like to expand this README further, the most useful next additions are real screenshots, deployment URLs, and a short architecture diagram exported from the live app.# Access Management Portal
+
 Access Management Portal is an enterprise-style role-based access control and verification management system built with Angular, Node.js, TypeScript, Express, and MongoDB.
 
 It includes secure login, role-based dashboards, user administration, verification record browsing, analytics, async loading states, and a polished SaaS-style UI inspired by products like Linear, Vercel, Clerk, and Notion.

@@ -30,12 +30,11 @@ export const createApp = () => {
   });
 
   app.get('/health', (_req, res) => {
-    res.status(200).json({
-      success: true,
-      statusCode: 200,
-      timestamp: new Date().toISOString(),
-      status: 'ok',
-    });
+    res.status(200).send('OK');
+  });
+
+  app.get('/ping', (_req, res) => {
+    res.status(204).end();
   });
 
   app.use('/api/v1', delayFromQuery({ maxMs: 30_000 }), v1Router);

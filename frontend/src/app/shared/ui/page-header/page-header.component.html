@@ -1,7 +1,7 @@
-<div class="page-header">
-  <div class="accent"></div>
+<section class="page-header" [class.page-header--compact]="compact">
   <div class="titles">
+    <div class="eyebrow" *ngIf="eyebrow">{{ eyebrow }}</div>
     <div class="title">{{ title }}</div>
     <div *ngIf="subtitle" class="subtitle">{{ subtitle }}</div>
   </div>
-</div>
+</section>

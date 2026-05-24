@@ -32,6 +32,11 @@ export class TopNavbarComponent {
   readonly user = this.authService.currentUser;
   readonly loading = this.loadingService.loading$;
 
+  readonly quickActions = [
+    { label: 'Command K', shortcut: ['⌘', 'K'] },
+    { label: 'Notifications', icon: 'notifications_none' },
+  ];
+
   get avatarLabel(): string {
     const name = this.user()?.name?.trim();
     if (!name) {
@@ -47,6 +52,10 @@ export class TopNavbarComponent {
 
   toggleTheme(): void {
     this.themeService.toggle();
+  }
+
+  goToSearch(): void {
+    void this.router.navigate(['/analytics']);
   }
 
   logout(): void {

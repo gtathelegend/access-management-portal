@@ -1,9 +1,30 @@
 .shell {
+  position: relative;
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   background-color: var(--bg-primary);
+}
+
+.shell-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.38);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  z-index: 85;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (min-width: 960px) {
+    display: none;
+  }
 }
 
 .sidebar-wrapper {
@@ -14,6 +35,7 @@
   transition: transform var(--transition-normal);
   background-color: var(--bg-sidebar);
   border-right: 1px solid var(--border-subtle);
+  box-shadow: inset -1px 0 0 color-mix(in srgb, var(--border-subtle) 80%, transparent);
 
   @media (max-width: 959.98px) {
     position: fixed;
@@ -40,7 +62,7 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: var(--space-large);
+  padding: var(--space-section);
   
   @media (max-width: 599.98px) {
     padding: var(--space-normal);
@@ -48,21 +70,7 @@
 }
 
 .page-inner {
-  max-width: 1400px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
   width: 100%;
-}
-
-.sidebar-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(15, 23, 42, 0.4);
-  backdrop-filter: blur(4px);
-  z-index: 90;
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }

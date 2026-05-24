@@ -23,11 +23,14 @@ export class SidebarNavComponent {
   readonly items: NavItem[] = [
     { label: 'Dashboard', icon: 'space_dashboard', route: '/dashboard' },
     { label: 'Users', icon: 'group', route: '/users' },
-    { label: 'Access Records', icon: 'badge', route: '/records' },
+    { label: 'Records', icon: 'badge', route: '/records' },
     { label: 'Analytics', icon: 'query_stats', route: '/analytics' },
-    { label: 'Activity Logs', icon: 'history', route: '/analytics' },
     { label: 'Settings', icon: 'settings', route: '/settings' },
-    { label: 'Help & Support', icon: 'support_agent', route: '/settings' },
+  ];
+
+  readonly workspaceStats = [
+    { label: 'Approvals', value: '18', tone: 'primary' },
+    { label: 'Pending', value: '4', tone: 'warning' },
   ];
 
   get avatarLabel(): string {

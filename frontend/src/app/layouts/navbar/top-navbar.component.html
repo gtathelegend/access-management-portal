@@ -8,17 +8,25 @@
     >
       <span class="material-icons">menu</span>
     </button>
+
+    <div class="brand-mark" *ngIf="!showMenuButton">
+      <span class="brand-dot"></span>
+      <div class="brand-copy">
+        <span class="brand-label">Access Portal</span>
+        <span class="brand-subtitle">Enterprise dashboard</span>
+      </div>
+    </div>
   </div>
 
   <div class="navbar-center">
-    <div class="search-bar">
+    <button class="search-bar" type="button" (click)="goToSearch()" aria-label="Open search">
       <span class="material-icons search-icon">search</span>
-      <input type="text" placeholder="Search anything..." aria-label="Search" />
-      <div class="search-shortcut">
+      <span class="search-placeholder">Search users, records, analytics</span>
+      <div class="search-shortcut" aria-hidden="true">
         <span class="shortcut-key">⌘</span>
         <span class="shortcut-key">K</span>
       </div>
-    </div>
+    </button>
   </div>
 
   <div class="navbar-right">

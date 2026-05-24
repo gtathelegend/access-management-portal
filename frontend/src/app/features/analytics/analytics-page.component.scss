@@ -1,6 +1,7 @@
 .analytics-container {
   display: flex;
   flex-direction: column;
+  gap: var(--space-section);
 }
 
 .grid {
@@ -40,6 +41,18 @@
   .ngx-charts {
     text {
       fill: var(--text-secondary) !important;
+    }
+
+    .gridline-path {
+      stroke: var(--border-subtle) !important;
+    }
+
+    .axis-label {
+      fill: var(--text-muted) !important;
+    }
+
+    .legend-label {
+      color: var(--text-secondary) !important;
     }
   }
 }

@@ -4,17 +4,23 @@
   display: block;
 }
 
-.hero {
+.dashboard-hero {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
-  gap: var(--space-small);
-  margin-bottom: var(--space-section);
+  justify-content: space-between;
+  gap: var(--space-section);
+  padding: 0 0 var(--space-section);
 
   @media (max-width: 767.98px) {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+.hero-copy {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
 }
 
 .hero-eyebrow {
@@ -23,23 +29,29 @@
   color: var(--accent-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: var(--space-micro);
 }
 
 .hero-title {
-  margin: 0 0 6px;
-  font-size: clamp(30px, 3vw, 42px);
+  margin: 0;
+  font-size: clamp(34px, 4vw, 48px);
   line-height: 1.04;
-  letter-spacing: -0.03em;
-  font-weight: 700;
+  letter-spacing: -0.05em;
+  font-weight: 650;
   max-width: 14ch;
 }
 
 .hero-subtitle {
   margin: 0;
-  max-width: 520px;
-  font-size: 14px;
-  line-height: 1.45;
+  max-width: 56ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .hero-actions {
@@ -51,7 +63,7 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: var(--space-section);
   margin-bottom: var(--space-section);
 
   @media (max-width: 1024.98px) {
@@ -65,53 +77,58 @@
 
 .stat-card {
   display: block;
-  min-height: 118px;
-  
-  :host ::ng-deep .card {
-    padding: 14px 16px;
-  }
+  min-height: 128px;
 
   :host ::ng-deep .card-content {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 12px;
-    min-height: 72px;
+    min-height: 76px;
   }
 
   :host ::ng-deep .card-header {
-    margin-bottom: 8px;
+    margin-bottom: 0;
   }
 
-  :host ::ng-deep .card-title {
-    font-size: 16px;
-  }
-
+  :host ::ng-deep .card-title,
   :host ::ng-deep .card-subtitle {
-    font-size: 12px;
+    display: none;
+  }
+
+  :host ::ng-deep .card {
+    padding: 14px 16px;
   }
 }
 
-.stat-icon-box {
+.stat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-bubble {
   width: 42px;
   height: 42px;
-  border-radius: var(--radius-md);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
 
   .material-icons { font-size: 21px; }
 
-  &.blue { background: #dbeafe; color: #2563eb; }
-  &.green { background: #dcfce7; color: #16a34a; }
-  &.purple { background: #f3e8ff; color: #8b5cf6; }
-  &.warning { background: #fef3c7; color: #d97706; }
+  &.blue { background: color-mix(in srgb, var(--accent-primary) 12%, var(--bg-surface)); color: var(--accent-primary); }
+  &.green { background: color-mix(in srgb, var(--accent-success) 14%, var(--bg-surface)); color: var(--accent-success); }
+  &.purple { background: color-mix(in srgb, var(--accent-purple) 12%, var(--bg-surface)); color: var(--accent-purple); }
+  &.warning { background: color-mix(in srgb, var(--accent-warning) 14%, var(--bg-surface)); color: var(--accent-warning); }
 
   :host-context(.theme-dark) & {
-    &.blue { background: rgba(37, 99, 235, 0.2); }
-    &.green { background: rgba(22, 163, 74, 0.2); }
-    &.purple { background: rgba(139, 92, 246, 0.2); }
-    &.warning { background: rgba(217, 119, 6, 0.2); }
+    &.blue { background: rgba(37, 99, 235, 0.18); }
+    &.green { background: rgba(34, 197, 94, 0.16); }
+    &.purple { background: rgba(139, 92, 246, 0.16); }
+    &.warning { background: rgba(217, 119, 6, 0.16); }
   }
 }
 
@@ -122,7 +139,7 @@
 }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -131,15 +148,16 @@
 
 .stat-value {
   margin: 0;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 650;
   color: var(--text-primary);
 }
 
 .stat-trend {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
+  white-space: nowrap;
 
   &.success { color: var(--accent-success); }
   &.warning { color: var(--accent-warning); }
@@ -147,8 +165,8 @@
 
 .main-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: var(--space-section);
   align-items: start;
 
   @media (max-width: 1199.98px) {
@@ -161,7 +179,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: var(--space-normal);
 
   @media (max-width: 767.98px) {
     flex-direction: column;
@@ -172,15 +190,16 @@
 .filter-group {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .compact-select {
-  width: 132px;
+  width: 150px;
   font-size: 13px;
   
   ::ng-deep {
     .mat-mdc-form-field-wrapper { padding-bottom: 0; }
-    .mat-mdc-text-field-wrapper { height: 38px; }
+    .mat-mdc-text-field-wrapper { height: 38px; border-radius: 14px; }
     .mat-mdc-form-field-flex { height: 38px; align-items: center; }
     .mat-mdc-form-field-infix { padding-top: 0; padding-bottom: 0; width: auto; min-height: auto; }
     .mat-mdc-form-field-subscript-wrapper { display: none; }
@@ -189,7 +208,6 @@
 }
 
 :host ::ng-deep app-input .input-field {
-  height: 38px;
   font-size: 13px;
 }
 
@@ -197,22 +215,10 @@
   font-size: 18px;
 }
 
-:host ::ng-deep app-input .input-wrapper.has-icon .input-field {
-  padding-left: 36px;
-}
-
-:host ::ng-deep app-table .table-container {
-  border-radius: 18px;
-}
-
 :host ::ng-deep app-table th,
 :host ::ng-deep app-table td {
   padding: 12px 14px;
   font-size: 13px;
-}
-
-:host ::ng-deep app-table th {
-  font-size: 11px;
 }
 
 :host ::ng-deep app-table tr.mat-mdc-row,
@@ -223,21 +229,20 @@
 .user-cell {
   display: flex;
   align-items: center;
-  gap: var(--space-small);
+  gap: 12px;
 }
 
 .user-avatar {
-  width: 30px;
-  height: 30px;
-  background: var(--bg-hover);
-  border: 1px solid var(--border-subtle);
+  width: 32px;
+  height: 32px;
+  background: color-mix(in srgb, var(--accent-primary) 10%, var(--bg-surface));
   border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--accent-primary);
 }
 
 .user-meta {
@@ -246,20 +251,20 @@
 }
 
 .user-name {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .user-email {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
 .row-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 2px;
+  gap: 4px;
 }
 
 .material-icons.danger {
@@ -270,7 +275,7 @@
 
 .custom-paginator {
   background: transparent !important;
-  margin-top: 8px;
+  margin-top: 10px;
 
   ::ng-deep .mat-mdc-paginator-container {
     min-height: 44px;
@@ -279,36 +284,20 @@
 }
 
 .insight-card {
-  margin-bottom: 16px;
-
-  :host ::ng-deep .card {
-    padding: 16px;
-  }
-
-  :host ::ng-deep .card-header {
-    margin-bottom: 12px;
-  }
-
-  :host ::ng-deep .card-title {
-    font-size: 16px;
-  }
-
-  :host ::ng-deep .card-subtitle {
-    font-size: 12px;
-  }
+  margin-bottom: var(--space-section);
 }
 
 .chart-box {
   display: flex;
   justify-content: center;
-  padding: 8px 0 4px;
+  padding: 4px 0 8px;
 }
 
 .ring-chart {
-  width: 120px;
-  height: 120px;
+  width: 124px;
+  height: 124px;
   border-radius: 50%;
-  border: 10px solid var(--bg-hover);
+  border: 10px solid color-mix(in srgb, var(--bg-hover) 90%, transparent);
   border-top-color: var(--accent-primary);
   display: flex;
   align-items: center;
@@ -323,8 +312,8 @@
 }
 
 .ring-value {
-  font-size: 21px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 650;
   color: var(--text-primary);
 }
 
@@ -336,7 +325,7 @@
 .legend-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   margin-top: 10px;
 }
 
@@ -409,13 +398,13 @@
 
 .activity-text {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
 }
 
 .activity-time {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 

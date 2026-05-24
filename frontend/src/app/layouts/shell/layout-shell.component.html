@@ -1,4 +1,6 @@
 <div class="shell" [class.sidebar-open]="sidenavOpened() || !isHandset()">
+  <div class="shell-backdrop" [class.visible]="isHandset() && sidenavOpened()" (click)="toggleSidenav()"></div>
+
   <aside class="sidebar-wrapper" [class.mobile-open]="sidenavOpened() && isHandset()">
     <app-sidebar-nav></app-sidebar-nav>
   </aside>
@@ -15,10 +17,4 @@
       </div>
     </main>
   </div>
-
-  <div 
-    *ngIf="isHandset() && sidenavOpened()" 
-    class="sidebar-overlay" 
-    (click)="toggleSidenav()"
-  ></div>
 </div>

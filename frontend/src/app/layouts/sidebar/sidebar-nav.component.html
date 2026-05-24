@@ -5,12 +5,14 @@
         <span class="logo-icon">A</span>
       </div>
       <div class="brand-text">
-        <h2 class="brand-name">Portal</h2>
-        <p class="brand-subtitle">Management</p>
+        <div class="brand-name">Access Portal</div>
+        <div class="brand-subtitle">Enterprise Console</div>
       </div>
     </div>
 
-    <nav class="nav">
+    <div class="nav-section-label">Workspace</div>
+
+    <nav class="nav" aria-label="Primary">
       @for (item of items; track item.route) {
         <a
           class="nav-link"
@@ -26,6 +28,15 @@
   </div>
 
   <div class="sidebar-bottom">
+    <div class="workspace-card">
+      @for (stat of workspaceStats; track stat.label) {
+        <div class="workspace-metric">
+          <span class="metric-label">{{ stat.label }}</span>
+          <span class="metric-value" [class]="'tone-' + stat.tone">{{ stat.value }}</span>
+        </div>
+      }
+    </div>
+
     <div class="user-profile" *ngIf="user() as u">
       <div class="avatar">
         {{ avatarLabel }}
@@ -34,7 +45,7 @@
         <span class="user-name">{{ u.name }}</span>
         <span class="user-role">{{ u.role | titlecase }}</span>
       </div>
-      <span class="material-icons more-icon">unfold_more</span>
+      <span class="material-icons more-icon">more_horiz</span>
     </div>
   </div>
 </div>

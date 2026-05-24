@@ -1,24 +1,29 @@
-<header class="hero">
-  <div class="hero-content">
+<section class="dashboard-hero">
+  <div class="hero-copy">
     <div class="hero-eyebrow">Personal dashboard</div>
     <h1 class="hero-title">Welcome back{{ user()?.name ? ', ' + user()!.name : '' }}</h1>
-    <p class="hero-subtitle">Track your verification history and keep an eye on the account details tied to your workspace access.</p>
+    <p class="hero-subtitle">
+      Track your verification history and keep an eye on the account details tied to your workspace access.
+    </p>
   </div>
 
-  <app-button variant="ghost" (btnClick)="refresh()">
+  <app-button variant="ghost" size="sm" (btnClick)="refresh()">
     <span class="material-icons">refresh</span>
     Refresh
   </app-button>
-</header>
+</section>
 
-<div class="main-grid">
+<section class="main-grid">
   <aside class="sidebar-column">
-    <app-card title="Profile" subtitle="Your account details">
+    <app-card title="Profile" subtitle="Your account details" eyebrow="Identity" [divider]="true">
       @if (user()) {
         <div class="profile-details">
-          <div class="detail-item">
-            <span class="detail-label">Name</span>
-            <span class="detail-value">{{ user()!.name }}</span>
+          <div class="profile-visual">
+            <div class="profile-avatar">{{ user()!.name.charAt(0) }}</div>
+            <div class="profile-meta">
+              <span class="profile-name">{{ user()!.name }}</span>
+              <span class="profile-role">{{ user()!.role | titlecase }}</span>
+            </div>
           </div>
           <div class="detail-item">
             <span class="detail-label">Email</span>
@@ -26,7 +31,7 @@
           </div>
           <div class="detail-item">
             <span class="detail-label">Role</span>
-            <app-badge variant="primary">{{ user()!.role }}</app-badge>
+            <app-badge variant="primary" size="sm">{{ user()!.role }}</app-badge>
           </div>
         </div>
       } @else {
@@ -37,16 +42,31 @@
         </div>
       }
     </app-card>
+
+    <app-card title="Request status" subtitle="Current access posture" eyebrow="Summary" [divider]="true" class="status-card">
+      <div class="status-grid">
+        <div class="status-chip success">
+          <span class="status-number">{{ filteredRecords().length }}</span>
+          <span class="status-label">Visible records</span>
+        </div>
+        <div class="status-chip warning">
+          <span class="status-number">{{ total() }}</span>
+          <span class="status-label">Total records</span>
+        </div>
+      </div>
+    </app-card>
   </aside>
 
   <div class="content-column">
-    <app-card title="Verification Records" subtitle="Your access request history">
+    <app-card title="Verification records" subtitle="Your access request history" eyebrow="Workspace history" [divider]="true">
       <div class="table-toolbar">
-        <app-input 
-          [formControl]="filterControl" 
-          placeholder="Filter records..." 
+        <app-input
+          [formControl]="filterControl"
+          placeholder="Filter records"
           icon="filter_list"
           [pill]="true"
+          size="sm"
+          helperText="Search type, status, or approver"
         ></app-input>
       </div>
 
@@ -57,10 +77,7 @@
       }
 
       @if (errorMessage()) {
-        <app-error-retry
-          [errorMessage]="errorMessage()!"
-          (retry)="refresh()"
-        ></app-error-retry>
+        <app-error-retry [errorMessage]="errorMessage()!" (retry)="refresh()"></app-error-retry>
       } @else if (showEmptyState()) {
         <div class="empty-state">
           <span class="material-icons">assignment_late</span>
@@ -72,9 +89,9 @@
           <tr appTableHeader>
             <th>Created</th>
             <th>Verification</th>
-            <th>Access Level</th>
+            <th>Access level</th>
             <th>Status</th>
-            <th>Approved By</th>
+            <th>Approved by</th>
           </tr>
           @for (record of filteredRecords(); track record._id) {
             <tr appTableBody>
@@ -82,7 +99,7 @@
               <td>{{ record.verificationType }}</td>
               <td>{{ record.accessLevel }}</td>
               <td>
-                <app-badge [variant]="record.status === 'approved' ? 'success' : record.status === 'pending' ? 'warning' : 'danger'">
+                <app-badge [variant]="record.status === 'approved' ? 'success' : record.status === 'pending' ? 'warning' : 'danger'" size="sm">
                   {{ record.status }}
                 </app-badge>
               </td>
@@ -104,4 +121,4 @@
       }
     </app-card>
   </div>
-</div>
+</section>

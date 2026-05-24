@@ -7,89 +7,106 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <button
+      class="app-button"
       [type]="type"
       [disabled]="disabled || loading"
-      class="btn"
-      [class]="'btn-' + variant"
-      [class.btn-loading]="loading"
-      [class.btn-icon-only]="iconOnly"
+      [class.app-button--primary]="variant === 'primary'"
+      [class.app-button--secondary]="variant === 'secondary'"
+      [class.app-button--ghost]="variant === 'ghost'"
+      [class.app-button--danger]="variant === 'danger'"
+      [class.app-button--loading]="loading"
+      [class.app-button--icon-only]="iconOnly"
+      [class.app-button--block]="block"
+      [class.app-button--sm]="size === 'sm'"
+      [class.app-button--lg]="size === 'lg'"
       (click)="onClick($event)"
+      [attr.aria-busy]="loading"
     >
-      <span class="btn-content" *ngIf="!loading">
+      <span class="button-content" *ngIf="!loading">
         <ng-content></ng-content>
       </span>
-      <span class="spinner" *ngIf="loading"></span>
+      <span class="spinner" *ngIf="loading" aria-hidden="true"></span>
     </button>
   `,
   styles: [`
-    .btn {
+    .app-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0 var(--space-normal);
-      height: 40px;
-      border-radius: var(--radius-md);
+      gap: var(--space-small);
+      padding: 0 16px;
+      height: var(--control-height);
+      border-radius: 14px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-      transition: all var(--transition-fast);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
       border: 1px solid transparent;
-      gap: var(--space-small);
       white-space: nowrap;
       outline: none;
       position: relative;
+      color: var(--text-primary);
+      background: var(--bg-surface);
+      box-shadow: var(--shadow-sm);
     }
 
-    .btn:disabled {
+    .app-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .app-button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
-    .btn-primary {
+    .app-button--primary {
       background: var(--accent-primary);
       color: white;
     }
 
-    .btn-primary:hover:not(:disabled) {
-      background: #1d4ed8;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    .app-button--primary:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--accent-primary) 88%, black);
     }
 
-    .btn-secondary {
-      background: var(--bg-hover);
+    .app-button--secondary {
+      background: color-mix(in srgb, var(--bg-surface) 82%, var(--bg-hover));
       color: var(--text-primary);
       border-color: var(--border-subtle);
     }
 
-    .btn-secondary:hover:not(:disabled) {
-      background: var(--border-subtle);
+    .app-button--secondary:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--bg-hover) 72%, var(--bg-surface));
       border-color: var(--border-strong);
     }
 
-    .btn-ghost {
+    .app-button--ghost {
       background: transparent;
       color: var(--text-secondary);
+      border-color: transparent;
+      box-shadow: none;
     }
 
-    .btn-ghost:hover:not(:disabled) {
-      background: var(--bg-hover);
+    .app-button--ghost:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--bg-hover) 88%, transparent);
       color: var(--text-primary);
     }
 
-    .btn-danger {
+    .app-button--danger {
       background: var(--accent-danger);
       color: white;
     }
 
-    .btn-danger:hover:not(:disabled) {
-      background: #dc2626;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    .app-button--danger:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--accent-danger) 86%, black);
     }
 
-    .btn-icon-only {
-      width: 40px;
+    .app-button--icon-only {
+      width: var(--control-height);
       padding: 0;
+      border-radius: 9999px;
     }
 
     .spinner {
@@ -107,10 +124,28 @@ import { CommonModule } from '@angular/common';
       100% { transform: rotate(360deg); }
     }
 
-    .btn-content {
+    .button-content {
       display: flex;
       align-items: center;
       gap: inherit;
+    }
+
+    .app-button--sm {
+      height: var(--control-height-compact);
+      padding: 0 12px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
+    .app-button--lg {
+      height: 48px;
+      padding: 0 18px;
+      border-radius: 16px;
+      font-size: 15px;
+    }
+
+    .app-button--block {
+      width: 100%;
     }
   `]
 })
@@ -120,6 +155,8 @@ export class AppButtonComponent {
   @Input() disabled = false;
   @Input() loading = false;
   @Input() iconOnly = false;
+  @Input() block = false;
+  @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Output() btnClick = new EventEmitter<MouseEvent>();
 
   onClick(event: MouseEvent) {

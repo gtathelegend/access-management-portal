@@ -3,19 +3,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-large);
-  background-color: var(--bg-primary);
+  gap: var(--space-normal);
+  padding: 0 var(--space-section);
+  background: color-mix(in srgb, var(--bg-primary) 78%, transparent);
+  backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border-subtle);
   position: sticky;
   top: 0;
-  z-index: 80;
+  z-index: 95;
 
   @media (max-width: 599.98px) {
     padding: 0 var(--space-normal);
   }
 }
 
-.navbar-left, .navbar-right {
+.navbar-left,
+.navbar-right {
   flex: 1;
   display: flex;
   align-items: center;
@@ -29,53 +32,85 @@
   flex: 2;
   display: flex;
   justify-content: center;
-  
+
   @media (max-width: 767.98px) {
     display: none;
   }
 }
 
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--accent-primary), color-mix(in srgb, var(--accent-primary) 62%, var(--accent-sky)));
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-primary) 8%, transparent);
+}
+
+.brand-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.brand-label {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
 .search-bar {
   display: flex;
   align-items: center;
-  background-color: var(--bg-hover);
+  justify-content: space-between;
+  gap: var(--space-small);
+  width: min(100%, 560px);
+  height: 46px;
+  padding: 0 14px;
+  background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  padding: 0 var(--space-normal);
-  height: 40px;
-  width: 100%;
-  max-width: 400px;
+  border-radius: 18px;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
+  cursor: pointer;
 
   &:focus-within {
-    background-color: var(--bg-surface);
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    border-color: color-mix(in srgb, var(--accent-primary) 42%, var(--border-subtle));
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-primary) 10%, transparent), var(--shadow-md);
+  }
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--accent-primary) 26%, var(--border-subtle));
+    transform: translateY(-1px);
   }
 }
 
 .search-icon {
   font-size: 18px;
   color: var(--text-muted);
-  margin-right: var(--space-small);
 }
 
-.search-bar input {
-  background: transparent;
-  border: none;
-  outline: none;
-  color: var(--text-primary);
+.search-placeholder {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
   font-size: 14px;
-  width: 100%;
-
-  &::placeholder {
-    color: var(--text-muted);
-  }
+  color: var(--text-muted);
 }
 
 .search-shortcut {
   display: flex;
-  gap: 2px;
+  gap: 4px;
 }
 
 .shortcut-key {
@@ -84,14 +119,14 @@
   color: var(--text-muted);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  padding: 1px 4px;
-  border-radius: 4px;
+  padding: 2px 5px;
+  border-radius: 6px;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: var(--space-small);
+  gap: 8px;
 }
 
 .icon-btn {
@@ -108,24 +143,24 @@
   transition: all var(--transition-fast);
 
   &:hover {
-    background-color: var(--bg-hover);
+    background-color: color-mix(in srgb, var(--bg-hover) 88%, transparent);
     color: var(--text-primary);
   }
 
   .material-icons {
-    font-size: 22px;
+    font-size: 20px;
   }
 }
 
 .user-trigger {
-  padding-left: var(--space-small);
+  padding-left: 2px;
   cursor: pointer;
 }
 
 .avatar-small {
-  width: 32px;
-  height: 32px;
-  background: var(--accent-primary);
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(180deg, var(--accent-primary), color-mix(in srgb, var(--accent-primary) 70%, black));
   color: white;
   border-radius: var(--radius-pill);
   display: flex;
@@ -141,7 +176,7 @@
 }
 
 .user-dropdown-header {
-  padding: var(--space-normal);
+  padding: var(--space-normal) var(--space-section);
 }
 
 .dropdown-name {

@@ -3,11 +3,12 @@
     <section class="intro-section">
       <div class="brand">
         <div class="logo">A</div>
-        <span class="brand-name">Portal</span>
+        <span class="brand-name">Access Portal</span>
       </div>
+      <div class="intro-eyebrow">Enterprise access management</div>
       <h1 class="intro-title">Sign in to a calmer access workspace.</h1>
       <p class="intro-text">
-        Manage approvals, review records, and keep the portal in sync with a light Apple-like control surface.
+        Manage approvals, review records, and keep the portal in sync with a light Apple-inspired control surface.
       </p>
 
       <div class="feature-tags">
@@ -18,7 +19,7 @@
     </section>
 
     <div class="login-form-area">
-      <app-card title="Welcome back" subtitle="Use your work email and password">
+      <app-card title="Welcome back" subtitle="Use your work email and password" eyebrow="Secure sign in" [divider]="true">
         <form class="form" [formGroup]="form" (ngSubmit)="submit()">
           <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
@@ -61,6 +62,8 @@
             variant="primary"
             type="submit"
             [loading]="loading()"
+            size="lg"
+            [block]="true"
           >
             Sign in
           </app-button>

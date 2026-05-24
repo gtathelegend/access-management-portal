@@ -1,17 +1,16 @@
-<h2 mat-dialog-title class="dialog-title">{{ data.title }}</h2>
-
-<div mat-dialog-content class="dialog-content">
+<app-modal [title]="data.title" [hasFooter]="true" [compact]="true" [icon]="data.danger ? 'warning' : 'help_outline'">
   <p class="dialog-message">{{ data.message }}</p>
-</div>
 
-<div mat-dialog-actions align="end" class="dialog-actions">
-  <app-button variant="ghost" (btnClick)="cancel()">
-    {{ data.cancelText ?? 'Cancel' }}
-  </app-button>
-  <app-button
-    [variant]="data.danger ? 'danger' : 'primary'"
-    (btnClick)="confirm()"
-  >
-    {{ data.confirmText ?? 'Confirm' }}
-  </app-button>
-</div>
+  <div modalFooter class="dialog-actions">
+    <app-button variant="ghost" size="sm" (btnClick)="cancel()">
+      {{ data.cancelText ?? 'Cancel' }}
+    </app-button>
+    <app-button
+      [variant]="data.danger ? 'danger' : 'primary'"
+      size="sm"
+      (btnClick)="confirm()"
+    >
+      {{ data.confirmText ?? 'Confirm' }}
+    </app-button>
+  </div>
+</app-modal>

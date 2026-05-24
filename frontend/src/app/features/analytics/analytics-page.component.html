@@ -1,4 +1,8 @@
-<app-page-header title="Analytics" subtitle="Insights and portal metrics"></app-page-header>
+<app-page-header
+  title="Analytics"
+  subtitle="Insights and portal metrics"
+  eyebrow="Executive summary"
+></app-page-header>
 
 <div class="analytics-container">
   @if (loading) {
@@ -13,7 +17,7 @@
     ></app-error-retry>
   } @else {
     <div class="grid">
-      <app-card title="Requests by Status" class="chart-card">
+      <app-card title="Requests by Status" eyebrow="Breakdown" class="chart-card" [divider]="true">
         <div class="chart-wrapper">
           <ngx-charts-pie-chart
             [scheme]="colorScheme"
@@ -27,7 +31,7 @@
         </div>
       </app-card>
 
-      <app-card title="Verification Trends" class="chart-card">
+      <app-card title="Verification Trends" eyebrow="Momentum" class="chart-card" [divider]="true">
         <div class="chart-wrapper">
           <ngx-charts-bar-vertical
             [scheme]="colorScheme"
@@ -45,7 +49,7 @@
         </div>
       </app-card>
 
-      <app-card title="Role Distribution" class="chart-card full-width">
+      <app-card title="Role Distribution" eyebrow="Access mix" class="chart-card full-width" [divider]="true">
         <div class="chart-wrapper">
           <ngx-charts-bar-horizontal
             [scheme]="colorScheme"

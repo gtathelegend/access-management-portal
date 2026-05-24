@@ -34,12 +34,16 @@ export class ThemeService {
     }
 
     const body = this.document?.body;
-    if (!body) {
+    const root = this.document?.documentElement;
+    if (!body || !root) {
       return;
     }
 
     body.classList.remove('theme-light', 'theme-dark');
+    root.classList.remove('theme-light', 'theme-dark');
     body.classList.add(mode === 'dark' ? 'theme-dark' : 'theme-light');
+    root.classList.add(mode === 'dark' ? 'theme-dark' : 'theme-light');
+    root.style.colorScheme = mode;
 
     try {
       localStorage.setItem(STORAGE_KEY, mode);

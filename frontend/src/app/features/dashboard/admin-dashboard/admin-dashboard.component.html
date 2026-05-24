@@ -1,92 +1,92 @@
-<header class="hero">
-  <div class="hero-content">
+<section class="dashboard-hero">
+  <div class="hero-copy">
     <div class="hero-eyebrow">Operations console</div>
     <h1 class="hero-title">Welcome back, {{ welcomeName }}</h1>
     <p class="hero-subtitle">
-      Monitor portal activity, review access requests, and manage users from your calm workspace.
+      Review access approvals, track portal health, and manage the directory from a calmer, more spacious workspace.
     </p>
+    <div class="hero-chips">
+      <span class="app-chip">Enterprise ready</span>
+      <span class="app-chip">Role-based access</span>
+      <span class="app-chip">Audit trail</span>
+    </div>
   </div>
+
   <div class="hero-actions">
-    <app-button variant="ghost" (btnClick)="refreshAll()">
+    <app-button variant="ghost" size="sm" (btnClick)="refreshAll()">
       <span class="material-icons">refresh</span>
       Refresh
     </app-button>
-    <app-button variant="primary" (btnClick)="openCreateUser()">
+    <app-button variant="primary" size="sm" (btnClick)="openCreateUser()">
       <span class="material-icons">person_add</span>
       Add user
     </app-button>
   </div>
-</header>
+</section>
 
 <section class="stats-grid">
   <app-card [compact]="true" class="stat-card">
-    <div class="stat-icon-box blue">
-      <span class="material-icons">group</span>
-    </div>
-    <div class="stat-data">
-      <span class="stat-label">Total Users</span>
-      <h3 class="stat-value">
-        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().totalUsers }} }
-      </h3>
+    <div class="stat-head">
+      <div class="stat-bubble blue"><span class="material-icons">group</span></div>
       <span class="stat-trend success">All accounts</span>
     </div>
+    <div class="stat-data">
+      <span class="stat-label">Total users</span>
+      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().totalUsers }} }</h3>
+    </div>
   </app-card>
 
   <app-card [compact]="true" class="stat-card">
-    <div class="stat-icon-box green">
-      <span class="material-icons">check_circle</span>
-    </div>
-    <div class="stat-data">
-      <span class="stat-label">Active Users</span>
-      <h3 class="stat-value">
-        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().activeUsers }} }
-      </h3>
+    <div class="stat-head">
+      <div class="stat-bubble green"><span class="material-icons">verified_user</span></div>
       <span class="stat-trend success">Enabled</span>
     </div>
+    <div class="stat-data">
+      <span class="stat-label">Active users</span>
+      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().activeUsers }} }</h3>
+    </div>
   </app-card>
 
   <app-card [compact]="true" class="stat-card">
-    <div class="stat-icon-box purple">
-      <span class="material-icons">admin_panel_settings</span>
+    <div class="stat-head">
+      <div class="stat-bubble purple"><span class="material-icons">admin_panel_settings</span></div>
+      <span class="stat-trend">Privileged</span>
     </div>
     <div class="stat-data">
       <span class="stat-label">Administrators</span>
-      <h3 class="stat-value">
-        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().adminCount }} }
-      </h3>
-      <span class="stat-trend">Privileged</span>
+      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().adminCount }} }</h3>
     </div>
   </app-card>
 
   <app-card [compact]="true" class="stat-card">
-    <div class="stat-icon-box warning">
-      <span class="material-icons">pending_actions</span>
+    <div class="stat-head">
+      <div class="stat-bubble warning"><span class="material-icons">pending_actions</span></div>
+      <span class="stat-trend warning">Needs review</span>
     </div>
     <div class="stat-data">
       <span class="stat-label">Pending</span>
-      <h3 class="stat-value">
-        @if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().pendingVerifications }} }
-      </h3>
-      <span class="stat-trend warning">Needs review</span>
+      <h3 class="stat-value">@if (statsLoading()) { <span class="skeleton-text"></span> } @else { {{ stats().pendingVerifications }} }</h3>
     </div>
   </app-card>
 </section>
 
-<div class="main-grid">
+<section class="main-grid">
   <div class="content-column">
-    <app-card title="User Directory" subtitle="Manage account access and roles">
+    <app-card title="User directory" subtitle="Manage account access, roles, and lifecycle status" eyebrow="Primary workspace" [divider]="true">
       <div class="table-filters">
-        <app-input 
-          [formControl]="searchControl" 
-          placeholder="Search users..." 
+        <app-input
+          [formControl]="searchControl"
+          placeholder="Search users"
           icon="search"
           [pill]="true"
+          size="sm"
+          helperText="Name or email"
         ></app-input>
 
         <div class="filter-group">
           <mat-form-field appearance="outline" class="compact-select">
             <mat-select [formControl]="roleControl" placeholder="All Roles">
-              <mat-option value="">All Roles</mat-option>
+              <mat-option value="">All roles</mat-option>
               <mat-option value="admin">Admin</mat-option>
               <mat-option value="user">User</mat-option>
             </mat-select>
@@ -94,7 +94,7 @@
 
           <mat-form-field appearance="outline" class="compact-select">
             <mat-select [formControl]="statusControl" placeholder="All Status">
-              <mat-option value="">All Status</mat-option>
+              <mat-option value="">All status</mat-option>
               <mat-option value="active">Active</mat-option>
               <mat-option value="disabled">Disabled</mat-option>
             </mat-select>
@@ -109,15 +109,12 @@
       }
 
       @if (errorMessage()) {
-        <app-error-retry
-          [errorMessage]="errorMessage()"
-          (retry)="refreshAll()"
-        ></app-error-retry>
+        <app-error-retry [errorMessage]="errorMessage()" (retry)="refreshAll()"></app-error-retry>
       } @else if (showEmptyState()) {
         <div class="empty-state">
           <span class="material-icons">group_off</span>
           <h3>No users found</h3>
-          <p>Try adjusting your search or filters.</p>
+          <p>Try adjusting search or filters.</p>
         </div>
       } @else {
         <app-table>
@@ -140,22 +137,22 @@
                 </div>
               </td>
               <td>
-                <app-badge [variant]="user.role === 'admin' ? 'purple' : 'primary'">
+                <app-badge [variant]="user.role === 'admin' ? 'purple' : 'primary'" size="sm">
                   {{ user.role }}
                 </app-badge>
               </td>
               <td>
-                <app-badge [variant]="user.status === 'active' ? 'success' : 'gray'">
+                <app-badge [variant]="user.status === 'active' ? 'success' : 'gray'" size="sm">
                   {{ user.status }}
                 </app-badge>
               </td>
               <td>{{ user.createdAt | date:'mediumDate' }}</td>
               <td class="text-right">
                 <div class="row-actions">
-                  <app-button variant="ghost" [iconOnly]="true" (btnClick)="openEditUser(user)">
+                  <app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="openEditUser(user)">
                     <span class="material-icons">edit</span>
                   </app-button>
-                  <app-button variant="ghost" [iconOnly]="true" (btnClick)="confirmDelete(user)">
+                  <app-button variant="ghost" [iconOnly]="true" size="sm" (btnClick)="confirmDelete(user)">
                     <span class="material-icons danger">delete</span>
                   </app-button>
                 </div>
@@ -177,7 +174,7 @@
   </div>
 
   <aside class="insights-column">
-    <app-card title="Verification" class="insight-card">
+    <app-card title="Verification" subtitle="Live access posture" eyebrow="Secondary panel" [divider]="true" class="insight-card">
       <div class="chart-box">
         <div class="ring-chart">
           <div class="ring-center">
@@ -189,7 +186,7 @@
       <div class="legend-list">
         <div class="legend-item">
           <div class="legend-dot green"></div>
-          <span class="legend-name">Active Accounts</span>
+          <span class="legend-name">Active accounts</span>
           <span class="legend-val">{{ stats().activeUsers }}</span>
         </div>
         <div class="legend-item">
@@ -199,13 +196,13 @@
         </div>
         <div class="legend-item">
           <div class="legend-dot warning"></div>
-          <span class="legend-name">Pending Reviews</span>
+          <span class="legend-name">Pending reviews</span>
           <span class="legend-val">{{ stats().pendingVerifications }}</span>
         </div>
       </div>
     </app-card>
 
-    <app-card title="Recent Activity" class="insight-card">
+    <app-card title="Recent activity" subtitle="Latest system events" eyebrow="Workspace feed" [divider]="true" class="insight-card">
       <div class="activity-feed">
         <div class="activity-item">
           <div class="activity-line"></div>
@@ -233,4 +230,4 @@
       </div>
     </app-card>
   </aside>
-</div>
+</section>

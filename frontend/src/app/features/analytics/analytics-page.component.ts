@@ -1,6 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
@@ -40,10 +39,10 @@ export class AnalyticsPageComponent implements OnInit {
   showYAxisLabel = true;
 
   colorScheme: Color = {
-    name: 'vivid',
+    name: 'enterprise',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#3f51b5', '#e91e63', '#9c27b0', '#673ab7', '#2196f3', '#00bcd4']
+    domain: ['#2563EB', '#22C55E', '#F59E0B', '#8B5CF6', '#38BDF8', '#FB7185']
   };
 
   constructor(private analyticsService: AnalyticsService) {}

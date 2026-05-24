@@ -11,4 +11,6 @@ import { Component, Input } from '@angular/core';
 export class PageHeaderComponent {
   @Input({ required: true }) title!: string;
   @Input() subtitle?: string;
+  @Input() eyebrow?: string;
+  @Input() compact = false;
 }

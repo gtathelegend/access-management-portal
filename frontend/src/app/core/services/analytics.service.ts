@@ -4,31 +4,24 @@ import { HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
-export interface AnalyticsStats {
-  totalUsers: number;
-  activeUsers: number;
-  totalRecords: number;
-  roleDistribution: { name: string; value: number }[];
-  statusBreakdown: { name: string; value: number }[];
-  verificationTrends: { name: string; value: number }[];
-}
+import type { DashboardStatsResponse } from '../models/stats.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
-  private apiUrl = `${environment.apiUrl}/analytics`;
+  private apiUrl = `${environment.apiUrl}/stats`;
 
   constructor(private http: HttpClient) {}
 
-  getDashboardStats(delayMs = 0) {
+  getDashboardStats(delayMs = environment.demoDelayMs) {
     let params = new HttpParams();
 
     if (delayMs > 0) {
-      params = params.set('delayMs', String(delayMs));
+      params = params.set('delay', String(delayMs));
     }
 
-    return this.http.get<{ data: AnalyticsStats }>(`${this.apiUrl}/dashboard-stats`, { params }).pipe(
+    return this.http.get<{ data: DashboardStatsResponse }>(this.apiUrl, { params }).pipe(
       map(response => response.data)
     );
   }

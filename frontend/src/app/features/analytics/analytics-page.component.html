@@ -22,7 +22,7 @@
         <div class="chart-wrapper">
           <ngx-charts-pie-chart
             [scheme]="colorScheme"
-            [results]="stats?.statusBreakdown"
+            [results]="stats?.verificationStats?.statusBreakdown"
             [gradient]="gradient"
             [legend]="showLegend"
             [labels]="true"
@@ -36,7 +36,7 @@
         <div class="chart-wrapper">
           <ngx-charts-bar-vertical
             [scheme]="colorScheme"
-            [results]="stats?.verificationTrends"
+            [results]="stats?.verificationStats?.verificationTrends"
             [gradient]="gradient"
             [xAxis]="showXAxis"
             [yAxis]="showYAxis"
@@ -54,7 +54,7 @@
         <div class="chart-wrapper">
           <ngx-charts-bar-horizontal
             [scheme]="colorScheme"
-            [results]="stats?.roleDistribution"
+            [results]="stats?.verificationStats?.roleDistribution"
             [gradient]="gradient"
             [xAxis]="showXAxis"
             [yAxis]="showYAxis"

@@ -15,7 +15,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
-import { debounceTime, distinctUntilChanged, forkJoin, of, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+
+import { environment } from '../../../../environments/environment';
 
 import { ErrorRetryComponent } from '../../../shared/components/error-retry/error-retry.component';
 import { SkeletonCardComponent } from '../../../shared/components/skeleton-card/skeleton-card.component';
@@ -28,8 +30,9 @@ import { AppTableComponent } from '../../../shared/ui/table/table.component';
 import { AppInputComponent } from '../../../shared/ui/input/input.component';
 import { ConfirmDialogComponent } from '../../../shared/ui/confirm-dialog/confirm-dialog.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { RecordsService } from '../../../core/services/records.service';
+import { StatsService } from '../../../core/services/stats.service';
 import { UsersService } from '../../../core/services/users.service';
+import type { DashboardStatsResponse } from '../../../core/models/stats.model';
 import type { AdminUser, UserRole, UserStatus } from '../../../core/models/user-admin.model';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
@@ -64,7 +67,7 @@ import { UserDialogComponent } from './user-dialog/user-dialog.component';
 export class AdminDashboardComponent {
   private readonly authService = inject(AuthService);
   private readonly usersService = inject(UsersService);
-  private readonly recordsService = inject(RecordsService);
+  private readonly statsService = inject(StatsService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly platformId = inject(PLATFORM_ID);
@@ -99,11 +102,18 @@ export class AdminDashboardComponent {
   readonly pageSize = signal<number>(10);
   readonly total = signal<number>(0);
 
-  readonly stats = signal({
+  readonly stats = signal<DashboardStatsResponse>({
     totalUsers: 0,
     activeUsers: 0,
     adminCount: 0,
     pendingVerifications: 0,
+    disabledUsers: 0,
+    recentActivityCount: 0,
+    verificationStats: {
+      roleDistribution: [],
+      statusBreakdown: [],
+      verificationTrends: [],
+    },
   });
 
   readonly showEmptyState = computed(() => {
@@ -267,6 +277,7 @@ export class AdminDashboardComponent {
         q: this.q() || undefined,
         role: this.roleFilter(),
         status: this.statusFilter(),
+        delay: environment.demoDelayMs,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -287,21 +298,12 @@ export class AdminDashboardComponent {
   private loadStats(): void {
     this.statsLoading.set(true);
 
-    forkJoin({
-      totalUsers: this.usersService.listUsers({ page: 1, limit: 1 }),
-      activeUsers: this.usersService.listUsers({ page: 1, limit: 1, status: 'active' }),
-      adminCount: this.usersService.listUsers({ page: 1, limit: 1, role: 'admin' }),
-      pendingVerifications: this.recordsService.listRecords({ page: 1, limit: 1, status: 'pending' }),
-    })
+    this.statsService
+      .getDashboardStats()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (res) => {
-          this.stats.set({
-            totalUsers: res.totalUsers.total,
-            activeUsers: res.activeUsers.total,
-            adminCount: res.adminCount.total,
-            pendingVerifications: res.pendingVerifications.total,
-          });
+        next: (stats) => {
+          this.stats.set(stats);
           this.statsLoading.set(false);
         },
         error: () => {

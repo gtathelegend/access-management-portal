@@ -8,7 +8,8 @@ import { ErrorRetryComponent } from '../../shared/components/error-retry/error-r
 import { SkeletonChartComponent } from '../../shared/components/skeleton-chart/skeleton-chart.component';
 import { SkeletonCardComponent } from '../../shared/components/skeleton-card/skeleton-card.component';
 import { PageHeaderComponent } from '../../shared/ui/page-header/page-header.component';
-import { AnalyticsService, AnalyticsStats } from '../../core/services/analytics.service';
+import { StatsService } from '../../core/services/stats.service';
+import type { DashboardStatsResponse } from '../../core/models/stats.model';
 
 import { AppCardComponent } from '../../shared/ui/card/card.component';
 
@@ -30,7 +31,7 @@ import { AppCardComponent } from '../../shared/ui/card/card.component';
   styleUrl: './analytics-page.component.scss',
 })
 export class AnalyticsPageComponent implements OnInit {
-  stats?: AnalyticsStats;
+  stats?: DashboardStatsResponse;
   errorMessage = signal<string | null>(null);
   loading = true;
 
@@ -49,7 +50,7 @@ export class AnalyticsPageComponent implements OnInit {
     domain: ['#2563EB', '#22C55E', '#F59E0B', '#8B5CF6', '#38BDF8', '#FB7185']
   };
 
-  constructor(private analyticsService: AnalyticsService) {}
+  constructor(private statsService: StatsService) {}
 
   ngOnInit(): void {
     this.loadStats();
@@ -63,7 +64,7 @@ export class AnalyticsPageComponent implements OnInit {
     this.loading = true;
     this.errorMessage.set(null);
 
-    this.analyticsService.getDashboardStats().subscribe({
+    this.statsService.getDashboardStats().subscribe({
       next: (data) => {
         this.stats = data;
         this.loading = false;

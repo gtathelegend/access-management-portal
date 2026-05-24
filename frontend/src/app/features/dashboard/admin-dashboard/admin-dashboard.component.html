@@ -30,6 +30,8 @@
     <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
     <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
     <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
+    <app-skeleton-card [compact]="true" [showHeader]="false"></app-skeleton-card>
   } @else {
     <app-card [compact]="true" class="stat-card">
       <div class="stat-head">
@@ -72,6 +74,28 @@
       <div class="stat-data">
         <span class="stat-label">Pending</span>
         <h3 class="stat-value">{{ stats().pendingVerifications }}</h3>
+      </div>
+    </app-card>
+
+    <app-card [compact]="true" class="stat-card">
+      <div class="stat-head">
+        <div class="stat-bubble neutral"><span class="material-icons">block</span></div>
+        <span class="stat-trend">Restricted</span>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Disabled users</span>
+        <h3 class="stat-value">{{ stats().disabledUsers }}</h3>
+      </div>
+    </app-card>
+
+    <app-card [compact]="true" class="stat-card">
+      <div class="stat-head">
+        <div class="stat-bubble blue"><span class="material-icons">schedule</span></div>
+        <span class="stat-trend success">Recent</span>
+      </div>
+      <div class="stat-data">
+        <span class="stat-label">Activity window</span>
+        <h3 class="stat-value">{{ stats().recentActivityCount }}</h3>
       </div>
     </app-card>
   }
@@ -207,6 +231,11 @@
             <div class="legend-dot warning"></div>
             <span class="legend-name">Pending reviews</span>
             <span class="legend-val">{{ stats().pendingVerifications }}</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot neutral"></div>
+            <span class="legend-name">Disabled accounts</span>
+            <span class="legend-val">{{ stats().disabledUsers }}</span>
           </div>
         </div>
       </app-card>

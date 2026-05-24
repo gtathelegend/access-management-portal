@@ -22,7 +22,8 @@ export class UsersService {
     if (params.role) httpParams = httpParams.set('role', params.role);
     if (params.status) httpParams = httpParams.set('status', params.status);
     if (params.q) httpParams = httpParams.set('q', params.q);
-    if (typeof params.delayMs === 'number') httpParams = httpParams.set('delayMs', String(params.delayMs));
+    const delayMs = params.delay ?? params.delayMs;
+    if (typeof delayMs === 'number' && delayMs > 0) httpParams = httpParams.set('delay', String(delayMs));
 
     return this.http.get<UsersListResponse>(`${environment.apiUrl}/users`, { params: httpParams });
   }

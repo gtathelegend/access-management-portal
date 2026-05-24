@@ -25,6 +25,7 @@ export interface ListUsersParams {
   role?: UserRole;
   status?: UserStatus;
   q?: string;
+  delay?: number;
   delayMs?: number;
 }
 

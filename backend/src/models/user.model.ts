@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import mongoose, { Schema, type HydratedDocument, type Model } from 'mongoose';
 
+import { env } from '../config/env.js';
+
 export type UserRole = 'admin' | 'user';
 export type UserStatus = 'active' | 'disabled';
 
@@ -78,8 +80,7 @@ userSchema.pre('save', async function () {
     return;
   }
 
-  const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS ?? 12);
-  this.password = await bcrypt.hash(this.password, saltRounds);
+  this.password = await bcrypt.hash(this.password, env.bcryptSaltRounds);
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {

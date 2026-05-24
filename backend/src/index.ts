@@ -4,7 +4,7 @@ import { createApp } from './app.js';
 import { logger } from './utils/logger.js';
 
 const start = async (): Promise<void> => {
-  await connectDb(env.mongoDbUri);
+  await connectDb();
 
   const app = createApp();
   const server = app.listen(env.port, () => {

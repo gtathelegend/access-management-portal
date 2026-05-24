@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import jsonwebtoken, { type JwtPayload, type Secret } from 'jsonwebtoken';
+import jsonwebtoken, { type JwtPayload } from 'jsonwebtoken';
 
 import { env } from '../config/env.js';
 import { AppError } from '../utils/app-error.js';
@@ -37,10 +37,8 @@ export const requireAuth = (req: Request, _res: Response, next: NextFunction): v
     return;
   }
 
-  const jwtSecret: Secret = env.jwtSecret;
-
   try {
-    const decoded = jsonwebtoken.verify(token, jwtSecret) as AuthJwtPayload;
+    const decoded = jsonwebtoken.verify(token, env.jwtSecret) as AuthJwtPayload;
 
     const userId = decoded.sub;
     const role = decoded.role;

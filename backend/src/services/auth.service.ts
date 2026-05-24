@@ -1,4 +1,4 @@
-import jsonwebtoken, { type Secret, type SignOptions } from 'jsonwebtoken';
+import jsonwebtoken, { type SignOptions } from 'jsonwebtoken';
 
 import { AppError } from '../utils/app-error.js';
 import { env } from '../config/env.js';
@@ -45,7 +45,6 @@ export const loginWithEmailPassword = async (input: LoginInput): Promise<LoginRe
     throw invalidCredentials;
   }
 
-  const jwtSecret: Secret = env.jwtSecret;
   const signOptions: SignOptions = {
     expiresIn: env.jwtExpiresIn as SignOptions['expiresIn'],
   };
@@ -55,7 +54,7 @@ export const loginWithEmailPassword = async (input: LoginInput): Promise<LoginRe
       sub: user.id,
       role: user.role,
     },
-    jwtSecret,
+    env.jwtSecret,
     signOptions,
   );
 

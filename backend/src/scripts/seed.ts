@@ -212,7 +212,7 @@ const upsertRecord = async (
 };
 
 const main = async (): Promise<void> => {
-  await connectDb(env.mongoDbUri);
+  await connectDb();
 
   try {
     logger.info('seeding_started');

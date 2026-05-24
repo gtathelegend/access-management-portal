@@ -386,6 +386,9 @@ Recommended runtime settings:
 - `NODE_ENV=production`
 - `PORT=<your-host-provided-port>`
 - `MONGODB_URI=<your MongoDB connection string>`
+- `JWT_SECRET=<a strong random secret>`
+- `JWT_EXPIRES_IN=<token lifetime, for example 7d>`
+- `CLIENT_URL=<your frontend origin>`
 
 ## Environment Variables
 
@@ -393,12 +396,12 @@ Recommended runtime settings:
 
 | Variable | Required | Description |
 |---|---|---|
+| `PORT` | Yes | Server port |
+| `NODE_ENV` | Yes | Must be `development`, `test`, or `production` |
 | `MONGODB_URI` | Yes | MongoDB connection string |
 | `JWT_SECRET` | Yes | Secret used to sign and verify JWTs |
-| `JWT_EXPIRES_IN` | No | JWT expiration, defaults to `1h` |
-| `PORT` | No | Server port, defaults to `3000` |
-| `CORS_ORIGIN` | No | Allowed frontend origin(s), comma-separated |
-| `NODE_ENV` | No | `development`, `test`, or `production` |
+| `JWT_EXPIRES_IN` | Yes | JWT expiration, for example `7d` |
+| `CLIENT_URL` | Yes | Allowed frontend origin for CORS |
 | `BCRYPT_SALT_ROUNDS` | No | Password hashing cost, defaults to `12` |
 
 ### Frontend

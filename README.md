@@ -124,10 +124,10 @@ The application is deployed using a cloud-native architecture that separates pre
 ```mermaid
 flowchart TD
   U[User Browser] --> D1[Cloudflare DNS]
-  D1 --> F[AWS Amplify\n(Angular Frontend)]
+  D1 --> F[AWS Amplify<br/>(Angular Frontend)]
   F -->|HTTPS API Calls| D2[Cloudflare DNS]
   D2 --> L[AWS Application Load Balancer]
-  L --> E[AWS Elastic Beanstalk\n(Node.js API)]
+  L --> E[AWS Elastic Beanstalk<br/>(Node.js API)]
   E --> M[MongoDB Atlas]
 ```
 

@@ -1185,3 +1185,5 @@ The seed script populates these collections:
 - `npm run build`: Build the frontend for production
 - `npm run test`: Run unit tests
 - `npm run lint`: Run Angular linting
+
+

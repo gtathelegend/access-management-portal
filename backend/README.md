@@ -1,46 +1,37 @@
 # Access Management Portal Backend
 
-Production-ready Express + TypeScript API for the Access Management Portal.
+## Deployment Steps
 
-## Scripts
+This backend is configured for deployment to AWS Elastic Beanstalk.
 
-- `npm run dev` - local development with nodemon
-- `npm run build` - compile TypeScript to `dist/`
-- `npm run start` - run the compiled production server from `dist/server.js`
+### Prerequisites
 
-## Environment Variables
+1.  **AWS CLI** installed and configured.
+2.  **EB CLI** installed (optional but recommended).
 
-Copy `.env.example` to `.env` for local development and set the following values in AWS Elastic Beanstalk:
+### Deployment Steps
 
-- `NODE_ENV` - `development` locally, `production` on AWS
-- `PORT` - optional locally, provided by Elastic Beanstalk in production
-- `MONGODB_URI` - MongoDB Atlas connection string
-- `JWT_SECRET` - strong signing secret
-- `JWT_EXPIRES_IN` - example: `7d`
-- `CLIENT_URL` - Angular frontend URL from Amplify
-- `BCRYPT_SALT_ROUNDS` - optional, defaults to `12`
+1.  **Zip the backend folder**:
+    Make sure you are inside the `backend` directory and zip all files (including `.ebextensions`, `Procfile`, `package.json`, `src`, etc.).
+    *Note: `.ebignore` will ensure `node_modules` and other unnecessary files are not included if you use the EB CLI.*
 
-## AWS Elastic Beanstalk Deployment
+2.  **Create an Elastic Beanstalk Environment**:
+    - Platform: **Node.js 20** (on AL2023 or AL2).
+    - Upload your zip file.
 
-1. Create an Elastic Beanstalk Node.js environment.
-2. Set the environment variables above in the EB console.
-3. Deploy the backend folder with `Procfile`, `.ebextensions`, `package.json`, and `src/` included.
-4. EB runs the build step from `.ebextensions/nodecommand.config`, then starts the app with `npm run start`.
+3.  **Configure Environment Variables**:
+    In the Elastic Beanstalk console, go to **Configuration -> Updates, monitoring, and logging -> Platform software** and add the following environment properties:
+    - `NODE_ENV`: `production`
+    - `MONGODB_URI`: Your MongoDB Atlas connection string.
+    - `JWT_SECRET`: A secure random string.
+    - `JWT_EXPIRES_IN`: e.g., `7d`.
+    - `CLIENT_URL`: The URL of your deployed frontend (e.g., your Amplify URL).
+    - `PORT`: `8080` (EB default).
+    - `BCRYPT_SALT_ROUNDS`: `12` (optional).
 
-## Health Check
+## Configuration Details
 
-- `GET /health` - unauthenticated health check for AWS and uptime monitoring.
-- Response:
-
-```json
-{
-  "status": "ok",
-  "message": "Access Management Portal API running"
-}
-```
-
-## Notes
-
-- API routes remain under `/api/v1`.
-- JWT auth, role checks, records, users, stats, analytics, and delay middleware are preserved.
-- CORS is restricted to the configured `CLIENT_URL` and supports credentialed requests.
+- **Procfile**: Tells Beanstalk to run `npm start`.
+- **.ebextensions/00_options.config**: Sets Node.js version and ensures devDependencies are installed for building.
+- **.ebextensions/01_build.config**: Automatically runs `npm run build` during deployment.
+- **.ebignore**: Prevents large/unnecessary files from being uploaded.

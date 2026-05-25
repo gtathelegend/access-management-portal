@@ -1,5 +1,6 @@
 # Access Management Portal
 
+![AWS](https://img.shields.io/badge/AWS-Amplify%20%26%20EB-orange?logo=amazon-aws&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-17-red?logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js&logoColor=white)
@@ -9,7 +10,7 @@
 
 Modern enterprise-grade role-based access management platform built with Angular and Node.js.
 
-Access Management Portal is a premium SaaS-style platform that demonstrates secure authentication, RBAC, dedicated user and records management pages, analytics, responsive layout engineering, and polished async UX. It is designed to feel like a production enterprise product while remaining easy to inspect as a portfolio project.
+Access Management Portal is a premium SaaS-style platform that demonstrates secure authentication, RBAC, dedicated user and records management pages, analytics, responsive layout engineering, and polished async UX. The application is deployed using AWS-managed cloud services, demonstrating full-stack cloud deployment practices and production-style application delivery. It is designed to feel like a production enterprise product while remaining easy to inspect as a portfolio project.
 
 ## Project Preview
 
@@ -40,9 +41,10 @@ Access Management Portal is a premium SaaS-style platform that demonstrates secu
 ## Live Demo
 
 | Environment | Link |
-|---|---|
-| Frontend deployment | `https://amp.vedaangsharma.dev/` |
-| Backend API | `https://access-management-portal.onrender.com/` |
+| --- | --- |
+| Frontend deployment | `[Amplify URL]` |
+| Backend API | `[Elastic Beanstalk URL]` |
+| Health check | `[Elastic Beanstalk URL]/health` |
 
 ## Project Overview
 
@@ -105,7 +107,7 @@ The application supports:
 ### UI/UX Features
 
 - Apple-inspired visual polish
-- Linear/Vercel-style dashboard composition
+- Linear-style dashboard composition
 - Responsive enterprise layouts
 - Dark and light mode support
 - Reusable design system primitives
@@ -126,7 +128,7 @@ The application supports:
 ### Backend
 
 | Technology | Purpose |
-|---|---|
+| --- | --- |
 | Node.js | Server runtime |
 | Express.js | REST API layer |
 | JWT | Authentication and authorization |
@@ -136,15 +138,54 @@ The application supports:
 ### Database
 
 | Technology | Purpose |
-|---|---|
+| --- | --- |
 | MongoDB Atlas | Managed production database |
 
 ### Deployment
 
 | Platform | Purpose |
-|---|---|
-| Vercel | Frontend deployment |
-| Render | Backend deployment |
+| --- | --- |
+| AWS Amplify | Frontend deployment |
+| AWS Elastic Beanstalk | Backend deployment |
+
+AWS Amplify provides GitHub-connected frontend hosting, CI/CD automation, HTTPS, and CDN delivery. AWS Elastic Beanstalk provides managed Node.js hosting, environment management, scaling support, and deployment automation. MongoDB Atlas remains the managed cloud database layer for secure production storage.
+
+## Cloud Infrastructure
+
+```text
+Client Browser
+  ↓
+AWS Amplify
+(Angular Frontend)
+  ↓
+AWS Elastic Beanstalk
+(Node.js API)
+  ↓
+MongoDB Atlas
+```
+
+The frontend is served by AWS Amplify and calls the backend through environment-configured API URLs. Elastic Beanstalk runs the Express API, applies production environment variables, and forwards database operations to MongoDB Atlas. This keeps the presentation, application, and data tiers clearly separated while remaining easy to operate in AWS.
+
+### AWS Amplify
+
+- Frontend hosting for the Angular application
+- GitHub-based CI/CD integration
+- Automatic HTTPS provisioning
+- CDN-backed delivery for improved performance
+
+### AWS Elastic Beanstalk
+
+- Managed Node.js hosting for the backend API
+- Environment variable management
+- Deployment automation and rollback support
+- Managed infrastructure with scaling capabilities
+
+### MongoDB Atlas
+
+- Managed cloud database platform
+- Secure connection string-based access
+- Scalable storage and operational visibility
+- Production-friendly hosted database service
 
 ## Architecture
 
@@ -240,7 +281,7 @@ flowchart LR
 
 ## UI/UX Design Philosophy
 
-This project intentionally follows an Apple-inspired enterprise aesthetic with a Linear/Vercel dashboard structure.
+This project intentionally follows an Apple-inspired enterprise aesthetic with a Linear-style dashboard structure.
 
 ### Design Principles
 
@@ -621,27 +662,26 @@ MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/<db>
 JWT_SECRET=replace-with-a-strong-secret
 JWT_EXPIRES_IN=7d
 CLIENT_URL=http://localhost:4200
-CORS_ORIGIN=http://localhost:4200
 BCRYPT_SALT_ROUNDS=12
 ```
 
 ### Frontend `.env.example`
 
 ```env
-BACKEND_API_URL=http://localhost:3000/api/v1
+API_BASE_URL=http://localhost:3000/api/v1
 ```
 
 ## Deployment
 
-### Frontend on Vercel
+### Frontend on AWS Amplify
 
-1. Connect the repository to Vercel.
-2. Set `BACKEND_API_URL` to the deployed backend base URL including `/api/v1`.
+1. Connect the repository to AWS Amplify.
+2. Set `API_BASE_URL` to the deployed backend base URL including `/api/v1`.
 3. Deploy the Angular frontend.
 
-### Backend on Render
+### Backend on AWS Elastic Beanstalk
 
-1. Create a Render Web Service for the `backend` folder.
+1. Create an Elastic Beanstalk Node.js environment for the `backend` folder.
 2. Set the backend environment variables listed above.
 3. Use the production start command from the backend package.
 
@@ -686,8 +726,11 @@ BACKEND_API_URL=http://localhost:3000/api/v1
 - WebSocket live updates
 - In-app notifications
 - Docker containerization
-- CI/CD pipelines
-- Kubernetes deployment strategy
+- ECS migration
+- CloudWatch monitoring
+- CI/CD enhancements
+- Infrastructure as Code
+- Auto-scaling policies
 - Expanded analytics and forecasting
 
 ## Engineering Highlights
@@ -731,9 +774,9 @@ The backend exposes versioned REST endpoints under `/api/v1`, while the frontend
 
 ## Deployed Links
 
-- Frontend (Vercel): `https://amp.vedaangsharma.dev/`
-- Backend API (Render): `https://access-management-portal.onrender.com`
-  - Base path: `/api/v1` (example health check: `https://access-management-portal.onrender.com/api/v1/health`)
+- Frontend (AWS Amplify): `[Amplify URL]`
+- Backend API (AWS Elastic Beanstalk): `[Elastic Beanstalk URL]`
+  - Base path: `/api/v1` (example health check: `[Elastic Beanstalk URL]/api/v1/health`)
 
 ## Features
 
@@ -776,9 +819,9 @@ The backend exposes versioned REST endpoints under `/api/v1`, while the frontend
 
 ### Deployment Ready
 
-- Vercel-friendly frontend configuration
-- Production environment file replacement
-- SPA route rewrites
+- AWS Amplify frontend hosting
+- Elastic Beanstalk backend deployment
+- Production environment variable handling
 - Environment-based API base URL handling
 
 ## Dashboards and Behaviors
@@ -883,8 +926,8 @@ access-management-portal
 ├── frontend
 │   ├── src
 │   ├── angular.json
-│   ├── vercel.json
 │   └── package.json
+├── amplify.yml
 └── README.md
 ```
 
@@ -1069,20 +1112,20 @@ npm start
 
 ## Deployment Instructions
 
-### Frontend on Vercel
+### Frontend on AWS Amplify
 
 - Production builds use `frontend/src/environments/environment.production.ts`
 - The frontend reads its API base URL from `environment.apiUrl`
-- On Vercel, the API base URL is injected at build time via the `BACKEND_API_URL` environment variable
+- On AWS Amplify, the API base URL is injected at build time via `API_BASE_URL`
 
 Steps:
 
-1. Deploy the backend API (any host is fine).
-2. In your Vercel project (Frontend), set `BACKEND_API_URL` to your backend API base URL, including `/api/v1`.
-   - Example (this repo’s deployed backend): `https://access-management-portal.onrender.com/api/v1`
+1. Connect the repository to AWS Amplify.
+2. Set `API_BASE_URL` to your Elastic Beanstalk backend base URL, including `/api/v1`.
+  - Example: `[Elastic Beanstalk URL]/api/v1`
 3. Redeploy the frontend.
 
-If `BACKEND_API_URL` is not set, the build falls back to `/api/v1` (which will hit the same host as the frontend).
+If `API_BASE_URL` is not set, the build falls back to `/api/v1` (which will hit the same host as the frontend).
 
 Production build:
 
@@ -1091,28 +1134,30 @@ cd frontend
 npm run build
 ```
 
-### Backend Deployment
+### Backend on AWS Elastic Beanstalk
 
-Deploy the Express API to your hosting platform of choice and set the required environment variables.
+Deploy the Express API to AWS Elastic Beanstalk and set the required environment variables.
 
 Recommended runtime settings:
 
 - `NODE_ENV=production`
 - `PORT=<your-host-provided-port>`
-- `MONGODB_URI=<your MongoDB connection string>`
+- `MONGODB_URI=<your MongoDB Atlas connection string>`
 - `JWT_SECRET=<a strong random secret>`
 - `JWT_EXPIRES_IN=<token lifetime, for example 7d>`
-- `CLIENT_URL=<your frontend origin>`
+- `CLIENT_URL=<your Amplify origin>`
+
+Elastic Beanstalk manages the Node.js runtime, deployment automation, and environment provisioning for the API.
 
 ## Environment Variables
 
 ### Backend
 
 | Variable | Required | Description |
-|---|---|---|
-| `PORT` | Yes | Server port |
+| --- | --- | --- |
+| `PORT` | Yes | Server port exposed by Elastic Beanstalk |
 | `NODE_ENV` | Yes | Must be `development`, `test`, or `production` |
-| `MONGODB_URI` | Yes | MongoDB connection string |
+| `MONGODB_URI` | Yes | MongoDB Atlas connection string |
 | `JWT_SECRET` | Yes | Secret used to sign and verify JWTs |
 | `JWT_EXPIRES_IN` | Yes | JWT expiration, for example `7d` |
 | `CLIENT_URL` | Yes | Allowed frontend origin for CORS |
@@ -1121,14 +1166,20 @@ Recommended runtime settings:
 ### Frontend
 
 | Variable/File | Required | Description |
-|---|---|---|
+| --- | --- | --- |
 | `frontend/src/environments/environment.ts` | Yes | Development API base URL |
 | `frontend/src/environments/environment.production.ts` | Yes | Production API base URL for builds |
-| `BACKEND_API_URL` (Vercel env var) | No | Backend API base URL used for the Vercel build (defaults to `/api/v1`) |
+| `API_BASE_URL` (Amplify env var) | No | Backend API base URL used for the Amplify build (defaults to `/api/v1`) |
 
 ## Screenshots
 
 Add screenshots here to showcase the app in action:
+
+- `screenshots/amplify-deployment.png`
+- `screenshots/aws-architecture.png`
+- `screenshots/elastic-beanstalk-dashboard.png`
+
+Suggested visual coverage:
 
 - Login page
 - Dashboard overview

@@ -12,59 +12,22 @@ Modern enterprise-grade role-based access management platform built with Angular
 
 Access Management Portal is a premium SaaS-style platform that demonstrates secure authentication, RBAC, dedicated user and records management pages, analytics, responsive layout engineering, and polished async UX. The application is deployed using AWS-managed cloud services, demonstrating full-stack cloud deployment practices and production-style application delivery. It is designed to feel like a production enterprise product while remaining easy to inspect as a portfolio project.
 
-## Project Preview
-
-### Dashboard Overview
-
-![Dashboard Overview](screenshots/dashboard-overview.png)
-
-### Users Page
-
-![Users Page](screenshots/users-page.png)
-
-### Records Page
-
-![Records Page](screenshots/records-page.png)
-
-### Login
-
-![Login Screenshot](screenshots/login.png)
-
-### Dark Mode
-
-![Dark Mode Screenshot](screenshots/dark-mode.png)
-
-### Mobile Responsive
-
-![Mobile Screenshot](screenshots/mobile.png)
-
 ## Live Demo
 
 | Environment | Link |
 | --- | --- |
-| Frontend deployment | `[Amplify URL]` |
-| Backend API | `[Elastic Beanstalk URL]` |
-| Health check | `[Elastic Beanstalk URL]/health` |
+| Frontend deployment | [amp-demo.vedaangsharma.dev](https://amp-demo.vedaangsharma.dev) |
+| Backend API | [amp-api.vedaangsharma.dev/api/v1](https://amp-api.vedaangsharma.dev/api/v1) |
+| Health check | [amp-api.vedaangsharma.dev/api/v1/health](https://amp-api.vedaangsharma.dev/api/v1/health) |
+| Source code | [github.com/gtathelegend/access-management-portal](https://github.com/gtathelegend/access-management-portal) |
 
 ## Project Overview
 
 Access Management Portal is a full-stack role-based access and verification system built to simulate a real enterprise operations console. The application was created to showcase how a modern SaaS dashboard can combine authentication, user administration, analytics, async request handling, and design-system consistency in one coherent product.
 
-The platform is structured around a clear separation of concerns:
 
-- The frontend provides a standalone Angular 17 experience with a premium dashboard shell, reusable UI primitives, route guards, loading interceptors, skeleton states, and dark/light theme support.
-- The backend exposes versioned REST APIs through Express and MongoDB/Mongoose, with JWT authentication, RBAC, controllers, services, middleware, and database validation.
-- The system is optimized for recruiter visibility: it demonstrates frontend engineering depth, backend API design, responsive layout craftsmanship, and enterprise-style asynchronous UX.
 
-The application supports:
 
-- Authentication and session persistence
-- Admin and user role separation
-- User lifecycle management
-- Verification records browsing
-- Dashboard analytics and stats
-- Artificial API delay simulation for loading-state demonstration
-- Responsive SaaS layouts for desktop, tablet, and mobile
 
 ## Key Features
 
@@ -145,12 +108,133 @@ The application supports:
 
 | Platform | Purpose |
 | --- | --- |
-| AWS Amplify | Frontend deployment |
-| AWS Elastic Beanstalk | Backend deployment |
+| AWS Amplify | Angular application hosting and frontend build orchestration |
+| AWS Elastic Beanstalk | Node.js API hosting and managed runtime lifecycle |
+| AWS Application Load Balancer | HTTPS traffic routing to the backend service |
+| AWS Certificate Manager | TLS certificate provisioning and renewal |
+| Cloudflare | DNS, subdomain routing, and edge-controlled domain management |
+| MongoDB Atlas | Managed cloud database for application state |
 
-AWS Amplify provides GitHub-connected frontend hosting, CI/CD automation, HTTPS, and CDN delivery. AWS Elastic Beanstalk provides managed Node.js hosting, environment management, scaling support, and deployment automation. MongoDB Atlas remains the managed cloud database layer for secure production storage.
+This production stack mirrors a real SaaS delivery model: the frontend is independently deployed on Amplify, the backend is isolated on Elastic Beanstalk, TLS is terminated and renewed through ACM, the ALB fronts the API layer, Cloudflare owns public DNS, and MongoDB Atlas provides managed data persistence.
 
-## Cloud Infrastructure
+## Production Cloud Deployment
+
+The application is deployed using a cloud-native architecture that separates presentation, application, and data concerns the same way a production SaaS platform would.
+
+```mermaid
+flowchart TD
+  U[User Browser] --> D1[Cloudflare DNS]
+  D1 --> F[AWS Amplify\n(Angular Frontend)]
+  F -->|HTTPS API Calls| D2[Cloudflare DNS]
+  D2 --> L[AWS Application Load Balancer]
+  L --> E[AWS Elastic Beanstalk\n(Node.js API)]
+  E --> M[MongoDB Atlas]
+```
+
+### Custom Domain & SSL Setup
+
+The public frontend is served from [https://amp-demo.vedaangsharma.dev](https://amp-demo.vedaangsharma.dev), while the backend API is exposed through the custom API domain [https://amp-api.vedaangsharma.dev/api/v1](https://amp-api.vedaangsharma.dev/api/v1).
+
+This was implemented to give the project a realistic production footprint: a branded frontend domain, a separate API domain, and a clean `/api/v1` boundary that is easy to document, monitor, and scale.
+
+- Cloudflare manages the DNS zone and routes the custom subdomains.
+- AWS Amplify serves the Angular frontend over HTTPS.
+- AWS Certificate Manager issues and renews the backend SSL certificate.
+- The Application Load Balancer terminates HTTPS traffic and forwards requests to Elastic Beanstalk.
+- HTTP requests are redirected to HTTPS so the application is always accessed securely.
+- The frontend talks to the backend using the production API base URL from the environment configuration.
+
+### HTTPS & Security Hardening
+
+The deployment is hardened so the app behaves like a real secure SaaS platform rather than a demo site.
+
+- TLS encryption protects traffic in transit between users, the frontend, and the API.
+- ACM-managed certificates remove manual certificate rotation and reduce operational risk.
+- HTTPS-only communication prevents credentials and tokens from traveling over plain HTTP.
+- Secure API access keeps the backend behind a load balancer instead of exposing the service directly.
+- CORS configuration restricts browser access to the approved frontend origin.
+- Environment variables keep secrets and deployment-specific values out of the source tree.
+- JWT authentication secures user sessions and protects privileged API routes.
+- Rate limiting reduces abuse risk and helps protect authentication endpoints.
+- Secure headers add baseline browser hardening for common web attacks.
+
+### AWS Infrastructure Components
+
+| Component | Service | Purpose |
+|------------|------------|------------|
+| Frontend Hosting | AWS Amplify | Angular application hosting |
+| Backend Hosting | AWS Elastic Beanstalk | Node.js API hosting |
+| Load Balancer | AWS ALB | HTTPS traffic routing |
+| SSL Certificates | AWS ACM | TLS certificate management |
+| DNS Management | Cloudflare | Domain routing |
+| Database | MongoDB Atlas | Managed NoSQL database |
+
+These services work together as a layered production platform: Cloudflare handles the public domain entry points, Amplify delivers the frontend, ALB and ACM secure and route the API traffic, Elastic Beanstalk runs the application process, and MongoDB Atlas persists the operational data.
+
+## Cloud Engineering Highlights
+
+This project demonstrates production cloud engineering in a way recruiters can map directly to real-world platform work.
+
+- AWS cloud deployment across managed frontend, backend, routing, and database services.
+- Custom domain management with separate branded frontend and API subdomains.
+- SSL certificate provisioning and renewal through ACM.
+- HTTPS enforcement across the full request path.
+- Cloud networking concepts including DNS routing, load balancing, and origin separation.
+- Managed infrastructure services that reduce operational overhead while staying production-ready.
+- End-to-end deployment workflows from source control to live cloud environments.
+- Frontend/backend integration through explicit environment-based API configuration.
+- Cloud database connectivity using MongoDB Atlas rather than a local or self-hosted database.
+
+## Real-World Engineering Decisions
+
+The deployment choices were made for scalability, maintainability, security, and developer experience.
+
+- AWS Amplify was chosen for the frontend because it provides simple CI/CD, atomic deployments, HTTPS, and fast static delivery for Angular builds.
+- AWS Elastic Beanstalk was chosen for the backend because it handles Node.js runtime management, deployment orchestration, and environment lifecycle without forcing the team to manage servers directly.
+- MongoDB Atlas was used because it offers a managed cloud database with scaling, backups, and connection-string-based integration.
+- AWS Application Load Balancer was added so the backend sits behind a production-grade HTTPS entry point instead of being exposed directly.
+- AWS Certificate Manager was used so SSL certificates are provisioned and renewed automatically.
+- Cloudflare was integrated to manage DNS records and custom domain routing while keeping the public subdomains clean and predictable.
+
+## Cloud & Infrastructure Skills Demonstrated
+
+This project shows practical experience with cloud delivery patterns that are expected in production engineering teams.
+
+- AWS Amplify for frontend delivery and build automation.
+- AWS Elastic Beanstalk for managed backend hosting.
+- AWS Application Load Balancer for secure request routing.
+- AWS Certificate Manager for automated TLS certificate management.
+- Cloudflare DNS for custom domain control.
+- MongoDB Atlas for managed cloud persistence.
+- Environment management for production configuration.
+- HTTPS security for safe browser-to-backend communication.
+- Custom domains for professional SaaS-style branding.
+- Production deployments that separate build, routing, and runtime concerns.
+
+## Health Check
+
+The backend exposes a health endpoint that is used by the load balancer and by deployment verification checks.
+
+```http
+GET /health
+```
+
+Purpose:
+
+- Load balancer health checks
+- Deployment verification
+- Monitoring endpoint
+
+Example response:
+
+```json
+{
+  "status": "ok",
+  "message": "Access Management Portal API running"
+}
+```
+
+## Production Cloud Deployment
 
 ```text
 Client Browser
@@ -164,28 +248,7 @@ AWS Elastic Beanstalk
 MongoDB Atlas
 ```
 
-The frontend is served by AWS Amplify and calls the backend through environment-configured API URLs. Elastic Beanstalk runs the Express API, applies production environment variables, and forwards database operations to MongoDB Atlas. This keeps the presentation, application, and data tiers clearly separated while remaining easy to operate in AWS.
-
-### AWS Amplify
-
-- Frontend hosting for the Angular application
-- GitHub-based CI/CD integration
-- Automatic HTTPS provisioning
-- CDN-backed delivery for improved performance
-
-### AWS Elastic Beanstalk
-
-- Managed Node.js hosting for the backend API
-- Environment variable management
-- Deployment automation and rollback support
-- Managed infrastructure with scaling capabilities
-
-### MongoDB Atlas
-
-- Managed cloud database platform
-- Secure connection string-based access
-- Scalable storage and operational visibility
-- Production-friendly hosted database service
+The frontend is served by AWS Amplify and calls the backend through environment-configured API URLs. Elastic Beanstalk runs the Express API, applies production environment variables, and forwards database operations to MongoDB Atlas. Cloudflare keeps the custom subdomains stable while ACM and the ALB enforce end-to-end HTTPS. This keeps the presentation, application, and data tiers clearly separated while remaining easy to operate in AWS.
 
 ## Architecture
 
@@ -354,27 +417,16 @@ All endpoints are served under `/api/v1`.
 
 ### Auth Headers
 
-```txt
 Authorization: Bearer <JWT>
-```
 
-### Auth APIs
 
-#### POST `/api/v1/auth/login`
 
-Authenticates a user and returns a JWT plus user profile data.
 
-Request:
 
-```json
 {
-  "email": "admin@portal.com",
   "password": "admin123"
-}
 ```
-
 Response:
-
 ```json
 {
   "success": true,
@@ -636,27 +688,12 @@ npm install
 npm start
 ```
 
-### Backend Setup
 
-```bash
 cd backend
-npm install
-npm run dev
-```
 
-### Seed the Database
-
-```bash
-cd backend
-npm run seed
-```
 
 ## Environment Variables
-
 ### Backend `.env.example`
-
-```env
-PORT=3000
 NODE_ENV=development
 MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/<db>
 JWT_SECRET=replace-with-a-strong-secret
@@ -676,7 +713,7 @@ API_BASE_URL=http://localhost:3000/api/v1
 ### Frontend on AWS Amplify
 
 1. Connect the repository to AWS Amplify.
-2. Set `API_BASE_URL` to the deployed backend base URL including `/api/v1`.
+2. Set `API_BASE_URL` to `https://amp-api.vedaangsharma.dev/api/v1`.
 3. Deploy the Angular frontend.
 
 ### Backend on AWS Elastic Beanstalk
@@ -698,27 +735,6 @@ API_BASE_URL=http://localhost:3000/api/v1
 | Admin | `admin@portal.com` | `admin123` |
 | User | `user@portal.com` | `user123` |
 
-## Screenshots
-
-### Login Page
-
-![Login Page](screenshots/login.png)
-
-### Admin Dashboard
-
-![Admin Dashboard](screenshots/admin-dashboard.png)
-
-### User Dashboard
-
-![User Dashboard](screenshots/user-dashboard.png)
-
-### Dark Mode
-
-![Dark Mode](screenshots/dark-mode.png)
-
-### Mobile Layout
-
-![Mobile Layout](screenshots/mobile.png)
 
 ## Future Enhancements
 
@@ -774,9 +790,9 @@ The backend exposes versioned REST endpoints under `/api/v1`, while the frontend
 
 ## Deployed Links
 
-- Frontend (AWS Amplify): `[Amplify URL]`
-- Backend API (AWS Elastic Beanstalk): `[Elastic Beanstalk URL]`
-  - Base path: `/api/v1` (example health check: `[Elastic Beanstalk URL]/api/v1/health`)
+- Frontend (AWS Amplify): [https://amp-demo.vedaangsharma.dev](https://amp-demo.vedaangsharma.dev)
+- Backend API (AWS Elastic Beanstalk): [https://amp-api.vedaangsharma.dev/api/v1](https://amp-api.vedaangsharma.dev/api/v1)
+  - Base path: `/api/v1` (example health check: [https://amp-api.vedaangsharma.dev/api/v1/health](https://amp-api.vedaangsharma.dev/api/v1/health))
 
 ## Features
 
@@ -819,10 +835,11 @@ The backend exposes versioned REST endpoints under `/api/v1`, while the frontend
 
 ### Deployment Ready
 
-- AWS Amplify frontend hosting
-- Elastic Beanstalk backend deployment
-- Production environment variable handling
-- Environment-based API base URL handling
+- AWS Amplify frontend hosting at [https://amp-demo.vedaangsharma.dev](https://amp-demo.vedaangsharma.dev)
+- Elastic Beanstalk backend deployment behind an ALB at [https://amp-api.vedaangsharma.dev/api/v1](https://amp-api.vedaangsharma.dev/api/v1)
+- ACM-managed SSL certificates and HTTPS enforcement
+- Cloudflare DNS management for custom subdomains
+- Environment-based API base URL handling through `API_BASE_URL`
 
 ## Dashboards and Behaviors
 
@@ -1114,18 +1131,16 @@ npm start
 
 ### Frontend on AWS Amplify
 
-- Production builds use `frontend/src/environments/environment.production.ts`
-- The frontend reads its API base URL from `environment.apiUrl`
-- On AWS Amplify, the API base URL is injected at build time via `API_BASE_URL`
+- Production builds use `frontend/src/environments/environment.production.ts`.
+- The frontend reads its API base URL from `environment.apiUrl`.
+- On AWS Amplify, the API base URL is injected at build time via `API_BASE_URL`.
 
 Steps:
 
-1. Connect the repository to AWS Amplify.
-2. Set `API_BASE_URL` to your Elastic Beanstalk backend base URL, including `/api/v1`.
-  - Example: `[Elastic Beanstalk URL]/api/v1`
-3. Redeploy the frontend.
-
-If `API_BASE_URL` is not set, the build falls back to `/api/v1` (which will hit the same host as the frontend).
+1. Connect the GitHub repository to AWS Amplify.
+2. Set `API_BASE_URL` to `https://amp-api.vedaangsharma.dev/api/v1`.
+3. Redeploy the frontend so Amplify rebuilds with the production API base URL.
+4. Verify the app loads from [https://amp-demo.vedaangsharma.dev](https://amp-demo.vedaangsharma.dev).
 
 Production build:
 
@@ -1136,7 +1151,7 @@ npm run build
 
 ### Backend on AWS Elastic Beanstalk
 
-Deploy the Express API to AWS Elastic Beanstalk and set the required environment variables.
+Deploy the Express API to AWS Elastic Beanstalk behind the Application Load Balancer and set the required environment variables.
 
 Recommended runtime settings:
 
@@ -1145,7 +1160,14 @@ Recommended runtime settings:
 - `MONGODB_URI=<your MongoDB Atlas connection string>`
 - `JWT_SECRET=<a strong random secret>`
 - `JWT_EXPIRES_IN=<token lifetime, for example 7d>`
-- `CLIENT_URL=<your Amplify origin>`
+- `CLIENT_URL=https://amp-demo.vedaangsharma.dev`
+
+Production deployment notes:
+
+- Build the backend first with `npm run build` so `dist/server.js` is present in the bundle.
+- Attach the ACM certificate to the ALB listener and redirect HTTP to HTTPS.
+- Route the custom domain through Cloudflare so the API resolves to [https://amp-api.vedaangsharma.dev/api/v1](https://amp-api.vedaangsharma.dev/api/v1).
+- Confirm the health endpoint responds with the expected payload before publishing the frontend.
 
 Elastic Beanstalk manages the Node.js runtime, deployment automation, and environment provisioning for the API.
 
@@ -1160,7 +1182,7 @@ Elastic Beanstalk manages the Node.js runtime, deployment automation, and enviro
 | `MONGODB_URI` | Yes | MongoDB Atlas connection string |
 | `JWT_SECRET` | Yes | Secret used to sign and verify JWTs |
 | `JWT_EXPIRES_IN` | Yes | JWT expiration, for example `7d` |
-| `CLIENT_URL` | Yes | Allowed frontend origin for CORS |
+| `CLIENT_URL` | Yes | Allowed frontend origin for CORS and redirects |
 | `BCRYPT_SALT_ROUNDS` | No | Password hashing cost, defaults to `12` |
 
 ### Frontend
@@ -1168,30 +1190,8 @@ Elastic Beanstalk manages the Node.js runtime, deployment automation, and enviro
 | Variable/File | Required | Description |
 | --- | --- | --- |
 | `frontend/src/environments/environment.ts` | Yes | Development API base URL |
-| `frontend/src/environments/environment.production.ts` | Yes | Production API base URL for builds |
-| `API_BASE_URL` (Amplify env var) | No | Backend API base URL used for the Amplify build (defaults to `/api/v1`) |
-
-## Screenshots
-
-Add screenshots here to showcase the app in action:
-
-- `screenshots/amplify-deployment.png`
-- `screenshots/aws-architecture.png`
-- `screenshots/elastic-beanstalk-dashboard.png`
-
-Suggested visual coverage:
-
-- Login page
-- Dashboard overview
-- Users page
-- Records page
-- Analytics dashboard
-
-Suggested location:
-
-```txt
-screenshots/
-```
+| `frontend/src/environments/environment.production.ts` | Yes | Production API base URL template used during the Amplify build |
+| `API_BASE_URL` (Amplify env var) | Yes | Backend API base URL injected during the Amplify build, for example `https://amp-api.vedaangsharma.dev/api/v1` |
 
 ## Test Credentials
 

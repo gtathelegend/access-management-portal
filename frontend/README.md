@@ -26,15 +26,17 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
-## Vercel Deployment
+## AWS Amplify Deployment
 
-This frontend is configured for static deployment on Vercel.
+This frontend is deployed on AWS Amplify at [https://amp-demo.vedaangsharma.dev](https://amp-demo.vedaangsharma.dev) and builds against the production API at [https://amp-api.vedaangsharma.dev/api/v1](https://amp-api.vedaangsharma.dev/api/v1).
+
+Implementation details:
 
 - Production builds use `src/environments/environment.production.ts`.
-- The production API base URL defaults to `/api/v1`.
-- `vercel.json` rewrites `/api/v1/*` to your backend host and keeps client-side routes working.
-
-Before deploying, replace `https://YOUR_BACKEND_HOST.example.com` in `vercel.json` with your actual backend URL.
+- `amplify.yml` installs dependencies and runs the Angular build during Amplify deployments.
+- `API_BASE_URL` is injected at build time so the frontend points at the live Elastic Beanstalk API instead of a hardcoded host.
+- The compiled frontend is published from `frontend/dist/frontend/browser`.
+- The app uses Angular's environment replacement system, so local development still points to `http://localhost:3000/api/v1`.
 
 Typical production build command:
 

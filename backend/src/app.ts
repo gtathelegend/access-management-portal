@@ -11,16 +11,19 @@ import { v1Router } from './routes/v1/index.js';
 
 export const createApp = () => {
   const app = express();
+  const corsOptions = {
+    origin: env.clientUrl,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type', 'Accept'],
+    optionsSuccessStatus: 200,
+  };
 
   app.disable('x-powered-by');
   app.set('trust proxy', 1);
   app.use(helmet());
-  app.use(
-    cors({
-      origin: env.clientUrl,
-      credentials: true,
-    }),
-  );
+  app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions));
 
   app.use(express.json({ limit: '100kb' }));
   app.use(express.urlencoded({ extended: false, limit: '100kb' }));
@@ -35,7 +38,10 @@ export const createApp = () => {
   });
 
   app.get('/health', (_req, res) => {
-    res.status(200).send('OK');
+    res.status(200).json({
+      status: 'ok',
+      message: 'Access Management Portal API running',
+    });
   });
 
   app.get('/ping', (_req, res) => {

@@ -15,11 +15,17 @@ export interface Env {
 }
 
 const parseNodeEnv = (value: string | undefined): NodeEnv => {
-  if (value === 'production' || value === 'test' || value === 'development') {
-    return value;
+  const normalized = value?.trim().toLowerCase();
+
+  if (!normalized) {
+    return 'development';
   }
 
-  throw new Error('Missing or invalid environment variable: NODE_ENV');
+  if (normalized === 'production' || normalized === 'test' || normalized === 'development') {
+    return normalized;
+  }
+
+  throw new Error('Environment variable NODE_ENV must be development, test, or production');
 };
 
 const requireEnv = (key: string): string => {
@@ -33,7 +39,7 @@ const requireEnv = (key: string): string => {
 const parsePort = (value: string | undefined): number => {
   const raw = value?.trim();
   if (!raw) {
-    throw new Error('Missing required environment variable: PORT');
+    return 5000;
   }
 
   const parsed = Number(raw);
@@ -51,7 +57,9 @@ const parseBcryptSaltRounds = (value: string | undefined): number => {
 
   const parsed = Number(value);
   if (!Number.isInteger(parsed) || parsed < 4) {
-    throw new Error('Environment variable BCRYPT_SALT_ROUNDS must be a whole number greater than or equal to 4');
+    throw new Error(
+      'Environment variable BCRYPT_SALT_ROUNDS must be a whole number greater than or equal to 4',
+    );
   }
 
   return parsed;

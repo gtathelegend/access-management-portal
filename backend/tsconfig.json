@@ -6,7 +6,13 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
+    "noEmitOnError": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "moduleDetection": "force",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },

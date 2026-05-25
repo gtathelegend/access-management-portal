@@ -2,7 +2,14 @@ import type { NextFunction, Request, Response } from 'express';
 
 import { logger } from '../utils/logger.js';
 
+const IGNORED_PATHS = new Set(['/health', '/ping', '/api/v1/health']);
+
 export const requestLogger = (req: Request, res: Response, next: NextFunction): void => {
+  if (IGNORED_PATHS.has(req.path)) {
+    next();
+    return;
+  }
+
   const start = process.hrtime.bigint();
 
   res.on('finish', () => {

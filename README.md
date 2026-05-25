@@ -732,8 +732,9 @@ API_BASE_URL=http://localhost:3000/api/v1
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | `admin@portal.com` | `admin123` |
-| User | `user@portal.com` | `user123` |
+| Admin | `admin@amp.local` | `Admin@1234` |
+| Security Lead | `security@amp.local` | `Security@1234` |
+| User (example) | `ava.carter@amp.local` | `User@1234` |
 
 
 ## Future Enhancements
